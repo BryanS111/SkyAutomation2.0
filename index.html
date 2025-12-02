@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sky Automation | Soluciones de Automatización Industrial y Electricidad</title>
+    
+    <link rel="icon" href="assets/logo_favicon.svg" type="image/svg+xml">
+    
+    <meta name="description" content="Líderes en automatización industrial en El Salvador. Optimizamos procesos, mejoramos la productividad y reducimos costos mediante tecnologías innovadoras como PLC, HMI, SCADA y mantenimiento industrial.">
+    <meta name="keywords" content="Automatización Industrial, Electricidad, Mecatrónica, PLC, HMI, SCADA, Mantenimiento Predictivo, Variadores de Frecuencia, Sensores Industriales, El Salvador, Sky Automation">
+    <meta name="author" content="Sky Automation">
+    <meta name="robots" content="index, follow">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="assets/logo_favicon.svg" alt="Logotipo Sky Automation" class="header-logo-img">
+                SKY <span class="logo-accent">AUTOMATION</span>
+            </div>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+
+            <nav>
+                <ul class="nav-list" id="nav-list">
+                    <li><a href="#about" class="nav-link">Sobre Nosotros</a></li>
+                    <li><a href="#catalog-section" class="nav-link">Catálogo</a></li>
+                    <li><a href="#services" class="nav-link">Servicios</a></li>
+                    <li><a href="#contact" class="nav-link">Contacto</a></li>
+                    <li class="idp-item"><button id="btn-login-idp" class="idp-button"><i class="fas fa-lock"></i> IDP</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content hidden">
+                <h1>Revolucionando el Futuro Industrial</h1>
+                <p>Soluciones de automatización innovadoras, eficientes y sostenibles para maximizar su productividad.</p>
+                <a href="#catalog-section" class="cta-button">Ver Catálogo</a>
+            </div>
+        </section>
+
+        <section id="about" class="section-padding hidden">
+            <div class="container">
+                <h2 class="section-title">Nuestra Esencia</h2>
+                <div class="about-grid">
+                    <div class="about-text">
+                        <p>Somos una empresa líder dedicada a impulsar la transformación digital en la industria. Nos especializamos en mejorar la eficiencia y productividad a través de tecnologías de automatización avanzadas.</p>
+                        <div class="mission-vision">
+                            <div class="mv-box">
+                                <h3><i class="fas fa-rocket"></i> Misión</h3>
+                                <p>Optimizar procesos, mejorar la productividad y reducir costos operativos mediante sistemas robustos y escalables.</p>
+                            </div>
+                            <div class="mv-box">
+                                <h3><i class="fas fa-eye"></i> Visión</h3>
+                                <p>Ser líderes globales reconocidos por nuestra innovación, excelencia operativa y compromiso con la sostenibilidad.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                         <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Ingeniero trabajando en automatización">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="section-padding bg-light hidden">
+            <div class="container">
+                <h2 class="section-title">Nuestros Servicios</h2>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <i class="fas fa-cogs"></i>
+                        <h3>Automatización</h3>
+                        <p>Diseño y desarrollo: PLC, HMI, Variadores y Servodrives.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-wifi"></i>
+                        <h3>Soluciones IoT</h3>
+                        <p>Sensores inteligentes, análisis de datos en tiempo real y mantenimiento predictivo.</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-tools"></i>
+                        <h3>Mantenimiento</h3>
+                        <p>Soporte técnico 24/7, preventivo y correctivo a calderas, subestaciones y maquinaria.</p>
+                    </div>
+                </div>
+            </div>
+         </section>
+
+        <section id="catalog-section" class="section-padding">
+            <div class="container catalog-layout">
+                
+                <aside class="catalog-sidebar hidden left">
+                    <h3 class="sidebar-title">Categorías</h3>
+                    <ul id="category-list" class="category-filters">
+                        <li data-category="all" class="active">Todo el catálogo</li>
+                        </ul>
+                </aside>
+
+                <div class="catalog-main hidden right">
+                    <div class="catalog-header">
+                        <h2>Catálogo de Productos</h2>
+                        <p>Equipos eléctricos, electrónicos, neumáticos y de instrumentación.</p>
+                    </div>
+                    <div class="products-grid" id="products-container">
+                        <p style="text-align:center; width:100%; grid-column: 1/-1;">Cargando catálogo...</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="contact" class="section-padding bg-dark hidden">
+            <div class="container">
+                <h2 class="section-title text-white">Contáctanos</h2>
+                <div class="contact-wrapper">
+                    <div class="contact-info text-white">
+                         <p><i class="fas fa-map-marker-alt icon-accent"></i> Nuevo Lourdes poniente, senda el limón polígono L casa #6, Lourdes Colón, El Salvador</p>
+                         <p><i class="fas fa-phone icon-accent"></i> +503 7040 4773</p>
+                         <p><i class="fas fa-envelope icon-accent"></i> Sky.automation.sv@gmail.com</p>
+                    </div>
+                    <div class="map-container">
+                        <iframe 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            loading="lazy" 
+                            allowfullscreen 
+                            src="https://maps.google.com/maps?q=Lourdes+Colon+La+Libertad&t=&z=14&ie=UTF8&iwloc=&output=embed">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+             <div class="footer-logo">
+                WEBSITE DESIGNED BY <span class="logo-accent">COGNETIX INNOVATION</span>
+            </div>
+            <p>© 2024 Sky Automation. Excelencia Técnica e Innovación.</p>
+        </div>
+    </footer>
+
+
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content login-box">
+            <span class="close-modal" id="close-login">×</span>
+            <h3><i class="fas fa-user-shield"></i> Acceso Administrativo (IDP)</h3>
+            <p class="security-warning"><small>⚠️ Acceso exclusivo para administradores.</small></p>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username">Correo Electrónico</label>
+                    <input type="email" id="username" required placeholder="Ingrese su correo">
+                </div>
+                <div class="input-group password-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" required placeholder="Ingrese contraseña">
+                    <i class="far fa-eye toggle-password" id="toggle-password"></i>
+                </div>
+                <button type="submit" class="cta-button full-width">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboard-modal" class="modal-overlay">
+        <div class="modal-content admin-box" style="text-align: center; max-width: 400px;">
+            <div class="admin-header" style="justify-content: center; flex-direction: column; gap:10px;">
+                <h3><i class="fas fa-user-cog"></i> Panel de Administración</h3>
+                <p>Bienvenido, Admin</p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <button onclick="openModal('admin-modal')" class="cta-button full-width" style="background-color: var(--success-green);">
+                    <i class="fas fa-plus-circle"></i> Agregar Producto
+                </button>
+                
+                <button onclick="openModal('category-modal')" class="cta-button full-width" style="background-color: var(--info-blue);">
+                    <i class="fas fa-tags"></i> Agregar Categoría
+                </button>
+                
+                <button onclick="openDeleteList()" class="cta-button full-width" style="background-color: var(--danger-red);">
+                    <i class="fas fa-trash-alt"></i> Borrar Producto
+                </button>
+
+                <button id="dashboard-logout" class="logout-btn" style="margin-top: 10px;">Cerrar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="category-modal" class="modal-overlay">
+        <div class="modal-content login-box">
+            <span class="close-modal" onclick="closeModal('category-modal')">×</span>
+            <h3><i class="fas fa-tags"></i> Nueva Categoría</h3>
+            
+            <form id="category-form">
+                <div class="input-group">
+                    <label>Nombre de la Categoría:</label>
+                    <input type="text" id="cat-name" required placeholder="Ej: Neumática">
+                </div>
+                <button type="submit" class="cta-button full-width">Guardar Categoría</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="delete-list-modal" class="modal-overlay">
+        <div class="modal-content admin-box">
+            <span class="close-modal" onclick="closeModal('delete-list-modal')">×</span>
+            <h3><i class="fas fa-trash-alt"></i> Eliminar Productos</h3>
+            <p><small>Selecciona el producto que deseas eliminar:</small></p>
+            
+            <div id="delete-list-container" style="max-height: 300px; overflow-y: auto; margin-top: 15px; border: 1px solid #eee; border-radius: 8px;">
+                </div>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="modal-overlay">
+        <div class="modal-content admin-box">
+            <span class="close-modal" id="close-admin">×</span>
+            <div class="admin-header">
+                <h3><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h3>
+            </div>
+            
+            <form id="product-form">
+                <div class="input-group">
+                    <label for="prod-name">Nombre del Producto:</label>
+                    <input type="text" id="prod-name" required placeholder="Ej: Sensor Inductivo M18">
+                </div>
+
+                <div class="input-group two-col">
+                    <div>
+                        <label for="prod-category">Categoría:</label>
+                        <select id="prod-category" required>
+                            <option value="">Cargando...</option>
+                            </select>
+                    </div>
+                     <div>
+                        <label for="prod-price">Precio ($):</label>
+                        <input type="number" id="prod-price" step="0.01" min="0" required placeholder="0.00">
+                    </div>
+                </div>
+                 <div class="input-group">
+                    <label for="prod-image">URL de la Imagen:</label>
+                    <input type="url" id="prod-image" required placeholder="https://ejemplo.com/imagen.jpg">
+                    <small>Pega el enlace directo a la imagen.</small>
+                </div>
+
+                <button type="submit" class="cta-button full-width">Agregar al Catálogo</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal-overlay">
+        <div class="modal-content admin-box">
+            <span class="close-modal" id="close-edit">×</span>
+            <div class="admin-header">
+                <h3><i class="fas fa-edit"></i> Editar Producto</h3>
+            </div>
+            
+            <form id="edit-form">
+                <input type="hidden" id="edit-id"> 
+                <div class="input-group">
+                    <label>Nombre del Producto:</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+
+                <div class="input-group two-col">
+                    <div>
+                        <label>Categoría:</label>
+                        <select id="edit-category" required>
+                            <option value="">Cargando...</option>
+                            </select>
+                    </div>
+                     <div>
+                        <label>Precio ($):</label>
+                        <input type="number" id="edit-price" step="0.01" min="0" required>
+                    </div>
+                </div>
+                 <div class="input-group">
+                    <label>URL de la Imagen:</label>
+                    <input type="url" id="edit-image" required>
+                </div>
+
+                <button type="submit" class="cta-button full-width" style="background-color: var(--secondary);">Guardar Cambios</button>
+                <button type="button" id="btn-delete-product" class="cta-button full-width" style="background-color: var(--danger); margin-top: 10px;">Eliminar Producto</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="cart-float" onclick="toggleCart()">
+        <i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span>
+    </div>
+
+    <div id="cart-modal" class="modal-overlay">
+        <div class="modal-content cart-box">
+            <span class="close-modal" onclick="toggleCart()">×</span>
+            <h3>Tu Pedido</h3>
+            <div id="cart-items" class="cart-items-list">
+                </div>
+            <div class="cart-footer">
+                <div class="cart-total-row">
+                    <span>Total Estimado:</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+                <a href="#" id="whatsapp-btn" class="whatsapp-checkout-btn disabled" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Solicitar Cotización
+                </a>
+            </div>
+        </div>
+    </div>
+
+        <div id="toast-container"></div>
+
+
+        <div id="confirmation-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 350px; text-align: center;">
+            <span class="close-modal" onclick="closeModal('confirmation-modal')">×</span>
+            <h3 style="color: var(--danger); justify-content: center;">
+                <i class="fas fa-exclamation-triangle"></i> ¿Estás seguro?
+            </h3>
+            <p style="margin-bottom: 20px; color: #555;">Esta acción no se puede deshacer. ¿Deseas eliminar este producto permanentemente?</p>
+            
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="closeModal('confirmation-modal')" class="cta-button" style="background-color: #ccc; color: #333;">Cancelar</button>
+                <button id="btn-confirm-delete" class="cta-button" style="background-color: var(--danger);">¡Sí, borrar!</button>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
