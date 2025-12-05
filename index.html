@@ -99,22 +99,31 @@
         <section id="catalog-section" class="section-padding">
             <div class="container catalog-layout">
                 
-                <aside class="catalog-sidebar hidden left">
-                    <h3 class="sidebar-title">Categorías</h3>
-                    <ul id="category-list" class="category-filters">
-                        <li data-category="all" class="active">Todo el catálogo</li>
-                        </ul>
-                </aside>
+                
 
-                <div class="catalog-main hidden right">
+                <div class="catalog-main">
                     <div class="catalog-header">
                         <h2>Catálogo de Productos</h2>
-                        <p>Equipos eléctricos, electrónicos, neumáticos y de instrumentación.</p>
+                        <p>Equipos de control, electrónicos, eléctricos, instrumentación y neumáticos.</p>
                     </div>
+
+                    <aside class="catalog-filter-container">
+                        <div class="filter-wrapper">
+                            <label for="mobile-category-select" class="filter-label">
+                                <i class="fas fa-filter"></i> Filtrar Catálogo:
+                            </label>
+                            <select id="mobile-category-select" class="universal-select">
+                                <option value="all">Ver Todo el Catálogo</option>
+                                </select>
+                        </div>
+                    </aside>
+
                     <div class="products-grid" id="products-container">
                         <p style="text-align:center; width:100%; grid-column: 1/-1;">Cargando catálogo...</p>
                     </div>
                 </div>
+
+                
 
             </div>
         </section>

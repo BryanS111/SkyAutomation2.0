@@ -160,6 +160,7 @@ function logoutAdmin() {
         closeModal('dashboard-modal');
         closeModal('admin-modal');
         showToast("Has cerrado sesión.", "info");
+        f
     });
 }
 
@@ -167,22 +168,34 @@ function logoutAdmin() {
    7. RENDERIZADO (UI)
 ========================================= */
 
-function updateCategoryDropdowns() {
-    // Sidebar
-    const list = document.getElementById('category-list');
-    let html = `<li data-category="all" class="active" onclick="selectCategory(this, 'all')">Todo el catálogo <i class="fas fa-chevron-right"></i></li>`;
-    categories.forEach(cat => {
-        html += `<li data-category="${cat.name}" onclick="selectCategory(this, '${cat.name}')">${cat.name} <i class="fas fa-chevron-right"></i></li>`;
-    });
-    list.innerHTML = html;
+/* EN js/main.js - Reemplaza la función updateCategoryDropdowns */
 
-    // Selects
+function updateCategoryDropdowns() {
+    // 1. Llenar los SELECTS DE LOS MODALES (Admin/Editar)
     const optionsHTML = `<option value="">Seleccione...</option>` + 
         categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
     
-    // Verificar que los elementos existan antes de asignar
     if(document.getElementById('prod-category')) document.getElementById('prod-category').innerHTML = optionsHTML;
     if(document.getElementById('edit-category')) document.getElementById('edit-category').innerHTML = optionsHTML;
+
+    // 2. Llenar el SELECT PRINCIPAL (El del Catálogo)
+    // Nota: Usamos el mismo ID que tenías para no romper nada
+    const mainSelect = document.getElementById('mobile-category-select');
+    
+    if(mainSelect) {
+        let mobileHtml = `<option value="all">Ver Todo el Catálogo</option>`;
+        categories.forEach(cat => {
+            mobileHtml += `<option value="${cat.name}"> ${cat.name}</option>`;
+        });
+        mainSelect.innerHTML = mobileHtml;
+
+        // Escuchar cambios
+        mainSelect.onchange = (e) => {
+            currentCategoryFilter = e.target.value;
+            renderProducts();
+            showToast(`Filtrando por: ${currentCategoryFilter === 'all' ? 'Todo' : currentCategoryFilter}`, 'info');
+        };
+    }
 }
 
 window.selectCategory = (element, category) => {
