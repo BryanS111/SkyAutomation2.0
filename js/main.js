@@ -160,7 +160,6 @@ function logoutAdmin() {
         closeModal('dashboard-modal');
         closeModal('admin-modal');
         showToast("Has cerrado sesión.", "info");
-        f
     });
 }
 
@@ -214,9 +213,21 @@ function renderProducts() {
         return;
     }
 
+    /* DENTRO DE js/main.js - Función renderProducts */
+
     container.innerHTML = filtered.map(p => `
-        <div class="product-card fade-in">
-            ${currentUser ? `<button onclick="openEditModal('${p.firestoreId}')" style="position:absolute; top:10px; right:10px; z-index:10; cursor:pointer;">✏️</button>` : ''}
+        <div class="product-card fade-in" style="position: relative;">
+            
+            ${currentUser ? `
+            <button 
+                onclick="window.openEditModal('${p.firestoreId}')" 
+                style="position:absolute; top:10px; right:10px; z-index:10; cursor:pointer; background: white; border: none; border-radius: 50%; width: 35px; height: 35px; display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                
+                <img src="assets/edit.svg" style="width: 20px; height: 20px;">
+                
+            </button>
+        ` : ''}
+
             <div class="product-img-wrapper">
                 <img src="${p.image}" class="product-img" onerror="this.onerror=null;this.src='https://dummyimage.com/300x220/ccc/000&text=Foto'">
             </div>
@@ -380,16 +391,25 @@ function initEventListeners() {
     
     window.removeFromCart = (i) => { cart.splice(i, 1); updateCartUI(); };
     
-    window.openEditModal = (id) => {
-        const p = products.find(x => x.firestoreId === id);
-        if(!p) return;
-        document.getElementById('edit-id').value = id;
-        document.getElementById('edit-name').value = p.name;
-        document.getElementById('edit-category').value = p.category;
-        document.getElementById('edit-price').value = p.price;
-        document.getElementById('edit-image').value = p.image;
-        document.getElementById('btn-delete-product').onclick = () => askDeleteConfirmation(id);
-    };
+    /* Busca este bloque dentro de function initEventListeners() */
+
+window.openEditModal = (id) => {
+    const p = products.find(x => x.firestoreId === id);
+    if(!p) return;
+
+    // 1. Llenas los datos (Esto ya lo tenías bien)
+    document.getElementById('edit-id').value = id;
+    document.getElementById('edit-name').value = p.name;
+    document.getElementById('edit-category').value = p.category;
+    document.getElementById('edit-price').value = p.price;
+    document.getElementById('edit-image').value = p.image;
+    
+    // 2. Configuras el botón de borrar (Esto también estaba bien)
+    document.getElementById('btn-delete-product').onclick = () => askDeleteConfirmation(id);
+
+    // 3. EL ERROR ESTABA AQUÍ: Faltaba esta línea para mostrar la ventana
+    openModal('edit-modal'); // <--- ¡AGREGA ESTA LÍNEA!
+};
 }
 
 function updateCartUI() {
