@@ -31,20 +31,21 @@
             <nav>
                 <ul class="nav-list" id="nav-list">
                     <li><a href="#about" class="nav-link">Sobre Nosotros</a></li>
-                    <li><a href="#catalog-section" class="nav-link">Catálogo</a></li>
                     <li><a href="#services" class="nav-link">Servicios</a></li>
+                    <li><a href="#projects" class="nav-link">Proyectos</a></li>
+                    <li><a href="#catalog-section" class="nav-link">Catálogo</a></li>
                     <li><a href="#contact" class="nav-link">Contacto</a></li>
                     <li class="idp-item"><button id="btn-login-idp" class="idp-button"><i class="fas fa-lock"></i> IDP</button></li>
                 </ul>
             </nav>
         </div>
     </header>
-
+<!-- Main Content -->
     <main>
         <section class="hero">
-            <div class="hero-content hidden">
-                <h1>Revolucionando el Futuro Industrial</h1>
-                <p>Soluciones de automatización innovadoras, eficientes y sostenibles para maximizar su productividad.</p>
+            <div class="hero-content">
+                <h1>INNOVACIÓN Y CONTROL <br>AL ALCANCE DE TU INDUSTRIA</h1>
+                <p>Optimizamos procesos, mejoramos la productividad y reducimos costos operativos a través de tecnologías de automatización avanzadas.</p>
                 <a href="#catalog-section" class="cta-button">Ver Catálogo</a>
             </div>
         </section>
@@ -67,7 +68,7 @@
                         </div>
                     </div>
                     <div class="about-image">
-                         <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Ingeniero trabajando en automatización">
+                         <img src="assets/imagenes/img-sobrenosotros.webp" alt="Ingeniero trabajando en automatización">
                     </div>
                 </div>
             </div>
@@ -96,11 +97,40 @@
             </div>
          </section>
 
+        <!-- Proyectos Entregados: diseño con imagen a la izquierda y descripción a la derecha -->
+        <section id="projects" class="section-padding hidden">
+            <div class="container">
+                <h2 class="section-title">PROYECTOS ENTREGADOS</h2>
+
+                <div class="project-panel">
+                    <button type="button" class="project-nav prev" aria-label="Anterior proyecto" tabindex="0">‹</button>
+
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Mantenimiento en ISS">
+                        </div>
+
+                        <div class="project-info">
+                            <h3 class="project-title">Mantenimiento en ISS</h3>
+                            <p class="project-desc">En este proyecto se buscó actualizar las tecnologías utilizadas en el seguro, implementando un sistema PLC capaz de administrar el sistema eléctrico de todo el edificio. Se trabajó en tableros, optimización y pruebas de funcionamiento.</p>
+                        </div>
+                    </div>
+
+                    <button type="button" class="project-nav next" aria-label="Siguiente proyecto" tabindex="0">›</button>
+                </div>
+
+                <!-- Thumbnails / otras entradas (ocultas en móvil) -->
+                <div class="project-thumbs"> <!-- vamos a colocar imagenes locales de la carpeta assets -->
+                    <button type="button" class="thumb active" data-img="./assets/ejemploProyecto1.jpg" data-title="Mantenimiento en ISS" data-desc="Actualización y automatización de tableros eléctricos con PLC para control del edificio." aria-label="Proyecto Mantenimiento en ISS"></button>
+                    <button type="button" class="thumb" data-img="./assets/ejemploProyecto2.png" data-title="Modernización de Equipos en tal empresa" data-desc="Sustitución y configuración de variadores y sensores para optimizar procesos." aria-label="Proyecto Modernización"></button>
+                    <button type="button" class="thumb" data-img="./assets/ejemploProyecto3.webp" data-title="Instalación PLC en tal empresa" data-desc="Implementación de sistema PLC y HMI para supervisión y control automático." aria-label="Proyecto Instalación PLC"></button>
+                </div>
+
+            </div>
+        </section>
+
         <section id="catalog-section" class="section-padding">
             <div class="container catalog-layout">
-                
-                
-
                 <div class="catalog-main">
                     <div class="catalog-header">
                         <h2>Catálogo de Productos</h2>
@@ -166,8 +196,8 @@
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content login-box">
             <span class="close-modal" id="close-login">×</span>
-            <h3><i class="fas fa-user-shield"></i> Acceso Administrativo (IDP)</h3>
-            <p class="security-warning"><small>⚠️ Acceso exclusivo para administradores.</small></p>
+            <h3><i class="fas fa-user-shield"></i>  Acceso Administrativo (IDP)</h3>
+            <p class="security-warning"><small><i class="fas fa-exclamation-triangle"></i> Acceso exclusivo para administradores.</small></p>
             
             <form id="login-form">
                 <div class="input-group">

@@ -62,12 +62,18 @@ body {
 .text-white { color: var(--bg-white) !important; }
 .icon-accent { color: var(--accent-cyan); margin-right: 10px; }
 
-/* Animaciones */
+/* Animations removed: content shown immediately */
 .hidden { opacity: 1; transition: var(--transition); }
 .hidden.left { transform: translateX(-50px); }
 .hidden.right { transform: translateX(50px); }
 .show { opacity: 1; transform: translate(0); }
 
+/* Project elements show immediately (animations removed) */
+.project-image, .project-title, .project-desc {
+    opacity:1;
+    transform: none;
+    transition: none;
+}
 /* Botones */
 .cta-button {
     display: inline-block;
@@ -77,18 +83,34 @@ body {
     text-decoration: none;
     font-weight: 700;
     border-radius: 50px;
-    border: none;
+    
+    /* Agregamos borde del mismo color inicial para evitar saltos al hacer hover */
+    border: 2px solid var(--accent-cyan);
+    
     cursor: pointer;
-    transition: var(--transition);
+    /* Cambiamos a 'all' para que anime también el cambio de color de letra */
+    transition: all 0.3s ease; 
+    
     text-transform: uppercase;
     letter-spacing: 1px;
     font-size: 0.9rem;
 }
 
 .cta-button:hover {
-    background-color: #008ec4;
+    /* 1. El fondo se vuelve del color oscuro corporativo */
+    background-color: var(--primary-dark);
+    
+    /* 2. El borde acompaña al fondo */
+    border-color: var(--primary-dark);
+    
+    /* 3. AQUÍ ESTÁ EL CAMBIO: Letras blancas */
+    color: #ffffff;
+
+    /* 4. Elevación sutil (sin agrandar el botón, solo moverlo arriba) */
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 168, 232, 0.4);
+    
+    /* 5. Sombra más suave y oscura (más elegante) */
+    box-shadow: 0 10px 20px rgba(0, 43, 69, 0.3);
 }
 
 .full-width { width: 100%; }
@@ -149,7 +171,7 @@ header {
 
 /* --- 4. SECCIONES (Hero, About, Services) --- */
 .hero {
-    background: linear-gradient(rgba(10, 35, 66, 0.85), rgba(10, 35, 66, 0.85)), url('https://cdn.pixabay.com/photo/2018/03/14/12/46/industry-3225119_1280.jpg');
+    background: linear-gradient(rgba(10, 35, 66, 0.75), rgba(10, 35, 66, 0.75)), url('../assets/hero.webp');
     background-size: cover; background-position: center;
     height: calc(100vh - var(--header-height));
     display: flex; align-items: center; justify-content: center;
@@ -343,6 +365,14 @@ header {
     cursor: pointer; z-index: 990; transition: var(--transition);
 }
 #cart-float:hover { transform: scale(1.1) rotate(10deg); }
+
+/* Animación: girar 360º al agregar producto */
+@keyframes cart-spin {
+    100% { transform: rotate(360deg); }
+}
+#cart-float { transform-origin: center; }
+.cart-spin { animation: cart-spin 700ms cubic-bezier(.2,.9,.2,1); }
+
 #cart-count {
     position: absolute; top: -5px; right: -5px;
     background: var(--danger); color: white;
@@ -414,4 +444,241 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
     .two-col { grid-template-columns: 1fr; }
     
     .catalog-filter-container { width: 100%; } /* Select ocupa todo el ancho en móvil */
+}
+
+
+/* Estilos para sección Proyectos Entregados - diseño imagen izquierda / texto derecha */
+.carousel-title { text-align:center; text-transform:uppercase; letter-spacing:2px; margin-bottom:30px; }
+.project-panel{
+    background: #0f2b43; /* color azul oscuro similar a referencia */
+    padding: 40px 36px;
+    border-radius: 8px;
+    position: relative;
+    display:flex;
+    align-items:center;
+    gap:40px;
+    color: #ffffff;
+    touch-action: pan-y; /* permite swipe horizontal en el panel */
+}
+
+/* animation debug removed */
+
+/* Ajuste: evitar que el header fijo tape la sección al hacer anchor */
+#projects { scroll-margin-top: calc(var(--header-height)); }
+.project-nav{
+    width:60px; /* tamaño mayor para mejor visibilidad y touch-target */
+    height:60px;
+    border-radius:50%;
+    background:#ffffff;
+    color:#0f2b43;
+    border:none;
+    display:grid; /* grid centering evita problemas de baseline */
+    place-items:center;
+    font-size:32px; /* símbolo más grande y legible */
+    font-weight:700; /* símbolo más grueso */
+    line-height:1; /* evitar desplazamiento por baseline */
+    padding:0; /* asegurar que el contenido esté centrado */
+    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+    cursor:pointer;
+    position:absolute;
+    z-index:60; /* elevamos un poco más */
+    pointer-events: auto;
+    touch-action: manipulation;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+    /* centrado vertical del botón respecto al panel */
+    top:50%;
+    transform:translateY(-50%);
+}
+.project-nav:hover{ transform: translateY(-50%) scale(1.05); box-shadow:0 12px 30px rgba(0,0,0,0.28);}
+.project-nav.prev{ left:-36px; }
+.project-nav.next{ right:-36px; }
+
+.project-card{
+    display:flex;
+    gap:36px;
+    align-items:center;
+    width:100%;
+}
+.project-image{
+    flex: 0 0 44%;
+}
+.project-image img{
+    width:100%;
+    height:320px;
+    object-fit:cover;
+    border-radius:6px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+    display:block;
+}
+.project-info{
+    flex:1;
+    padding:20px 24px;
+}
+.project-title{
+    font-size:48px;
+    margin:0 0 10px 0;
+    line-height:1;
+}
+.project-desc{
+    font-size:20px;
+    line-height:1.8;
+    opacity:0.95;
+}
+
+.project-thumbs{
+    margin-top:22px;
+    display:flex;
+    gap:12px;
+    justify-content:center;
+}
+.project-thumbs .thumb{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    border:none;
+    background:#cbd5dc;
+    cursor:pointer;
+}
+
+
+.project-thumbs .thumb.active{ background:#00b4ff; }
+
+/* responsive */
+@media (max-width: 900px){
+    .project-card{ flex-direction:column; }
+    .project-image{ width:100%; }
+    .project-image img{ height:220px; }
+    .project-title{ font-size:32px; text-align:center; }
+    .project-info{ padding:16px 0; text-align:center; }
+    .project-nav.prev{ left:8px; }
+    .project-nav.next{ right:8px; }
+}
+
+@media (max-width: 700px){
+    /* En móvil ocultamos los botones porque tapan contenido; usamos swipe */
+    .project-nav{ display:none; }
+}
+
+@media (max-width: 500px){
+    .project-panel{ padding:24px 16px; }
+    .project-title{ font-size:24px; }
+    .project-desc{ font-size:16px; }
+}
+/* =========================================
+   MEDIA QUERY PARA MÓVILES (Max 768px)
+   Corrección: Sección Nuestra Esencia
+========================================= */
+@media screen and (max-width: 768px) {
+
+    /* 1. Contenedor General: Evita el desborde a la derecha */
+    #about .container {
+        width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+        overflow-x: hidden; /* Corta cualquier cosa que se salga */
+    }
+
+    /* 2. Grid Principal: Pone la Imagen arriba y el Texto abajo */
+    /* Usamos column-reverse porque en tu HTML el texto está primero, 
+       pero visualmente queremos la imagen al principio en móvil */
+    .about-grid {
+        display: flex;
+        flex-direction: column-reverse; 
+        gap: 30px;
+    }
+    
+    .about-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px; /* Un toque estético extra */
+    }
+
+    /* 3. CORRECCIÓN MISIÓN Y VISIÓN (Lo importante) */
+    .mission-vision {
+        display: flex;
+        flex-direction: column; /* Esto pone una CAJA SOBRE LA OTRA */
+        gap: 25px; /* Espacio entre Misión y Visión */
+        margin-top: 20px;
+    }
+
+    .mv-box {
+        width: 100%; /* Que ocupe todo el ancho disponible */
+        text-align: center; /* Centramos el texto e íconos */
+        
+        /* Mantenemos el estilo de la línea azul pero adaptado */
+        border-left: 5px solid #00adef; 
+        background-color: #f8f9fa; /* Fondo gris muy suave para resaltar */
+        padding: 20px;
+        border-radius: 0 10px 10px 0; /* Bordes redondeados a la derecha */
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Sombra suave */
+    }
+
+    .mv-box h3 {
+        margin-top: 0;
+        color: #003366; /* Azul oscuro corporativo para el título */
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+    }
+}
+/* =========================================
+   ANIMACIÓN DEL HERO
+   ========================================= */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estado inicial: Invisible y esperando */
+.hero-content h1, 
+.hero-content p, 
+.hero-content .cta-button {
+    opacity: 0;
+}
+
+/* Cuando JS agrega la clase 'active-hero', se activa la animación */
+.hero-content.active-hero h1 {
+    animation: fadeInUp 0.8s ease-out forwards 0.2s; /* Delay 0.2s */
+}
+
+.hero-content.active-hero p {
+    animation: fadeInUp 0.8s ease-out forwards 0.5s; /* Delay 0.5s */
+}
+
+.hero-content.active-hero .cta-button {
+    animation: fadeInUp 0.8s ease-out forwards 0.8s; /* Delay 0.8s */
+}
+
+/* =========================================
+   ANIMACIÓN SECCIÓN PROYECTOS
+   ========================================= */
+
+/* 1. Estado Base de los elementos del Proyecto */
+.project-image img {
+    transition: transform 0.6s ease, opacity 0.4s ease;
+    width: 100%;
+    border-radius: 8px; /* Asegura bordes suaves */
+    transform-origin: center center;
+}
+
+.project-info {
+    transition: transform 0.6s ease, opacity 0.4s ease;
+}
+
+/* 2. Efecto Hover en la imagen (Vida extra) */
+/* Cuando pasas el mouse por la tarjeta, la imagen hace un zoom muy lento */
+.project-card:hover .project-image img {
+    transform: scale(1.03); 
+}
+
+/* 3. Clase para la TRANSICIÓN (Cuando cambiamos de proyecto) */
+/* El JS agregará esta clase '.changing' momentáneamente */
+
+.project-card.changing .project-image img {
+    opacity: 0;
+    transform: scale(0.95); /* Se encoge un poquito al irse */
+}
+
+.project-card.changing .project-info {
+    opacity: 0;
+    transform: translateY(10px); /* Baja un poquito al irse */
 }
