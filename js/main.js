@@ -219,9 +219,18 @@ function renderProducts() {
             <div class="product-info">
                 <span class="product-category">${p.category}</span>
                 <h3 class="product-title">${p.name}</h3>
-                <div class="product-footer">
-                    <div class="product-price">$${p.price.toFixed(2)}</div>
-                    <button class="add-btn" onclick="window.addToCart('${p.firestoreId}')"><i class="fas fa-cart-plus"></i> Agregar</button>
+                
+                <div class="product-footer" style="display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 10px;">
+                     
+                     <button class="desc-link" onclick="window.openDescModal('${p.firestoreId}')">
+                        Descripción
+                     </button>
+
+                    <button class="add-btn" 
+                        onclick="window.addToCart('${p.firestoreId}')"
+                        style="font-size: 0.8rem; padding: 8px 15px;">
+                        <i class="fas fa-cart-plus"></i> Cotizar
+                    </button>
                 </div>
             </div>
         </div>
@@ -256,11 +265,24 @@ window.openEditModal = (id) => {
     document.getElementById('edit-id').value = id;
     document.getElementById('edit-name').value = p.name;
     document.getElementById('edit-category').value = p.category;
-    document.getElementById('edit-price').value = p.price;
+    // Cambio: Cargar descripción en lugar de precio
+    document.getElementById('edit-desc').value = p.description || ''; 
     document.getElementById('edit-image').value = p.image;
     
     document.getElementById('btn-delete-product').onclick = () => window.askDeleteConfirmation(id);
     openModal('edit-modal');
+};
+
+// --- NUEVA FUNCIÓN: ABRIR MODAL DE DETALLES ---
+window.openDescModal = (id) => {
+    const p = products.find(x => x.firestoreId === id);
+    if(!p) return;
+
+    document.getElementById('desc-title').innerText = p.name;
+    // Si no hay descripción guardada, mostrar texto por defecto
+    document.getElementById('desc-text').innerText = p.description ? p.description : "Sin descripción técnica disponible.";
+    
+    openModal('desc-modal');
 };
 
 window.askDeleteConfirmation = (id) => {
@@ -290,7 +312,7 @@ window.addToCart = (id) => {
             cartFloat.classList.add('cart-spin');
             setTimeout(() => cartFloat.classList.remove('cart-spin'), 700);
         }
-        showToast(`Agregado: ${p.name}`, "success");
+        showToast(`Agregado a cotización: ${p.name}`, "success");
     }
 };
 
@@ -301,25 +323,27 @@ function updateCartUI() {
     const container = document.getElementById('cart-items');
     
     if(cart.length === 0) {
-        container.innerHTML = "<p>Carrito vacío.</p>";
-        document.getElementById('cart-total').innerText = "$0.00";
+        container.innerHTML = "<p>Tu lista de cotización está vacía.</p>";
+        // Ya no mostramos precio total, sino estado
+        document.getElementById('cart-total').innerText = "Vacio";
         document.getElementById('whatsapp-btn').classList.add('disabled');
     } else {
-        let total = 0;
         container.innerHTML = cart.map((p, i) => {
-            total += p.price;
-            return `<div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                <span>${p.name}</span>
-                <span>$${p.price.toFixed(2)} <b onclick="window.removeFromCart(${i})" style="color:red; cursor:pointer; margin-left:10px;">x</b></span>
+            return `<div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 5px;">
+                <div style="font-size: 0.9rem;">
+                    <strong>${p.name}</strong><br>
+                    <small style="color:#666;">${p.category}</small>
+                </div>
+                <span onclick="window.removeFromCart(${i})" style="color:red; cursor:pointer; font-weight:bold; padding: 0 10px;">x</span>
             </div>`;
         }).join('');
-        document.getElementById('cart-total').innerText = "$" + total.toFixed(2);
         
-        // WhatsApp Link
-        let msg = "Hola Sky Automation, estoy interesado en el siguiente pedido:%0A%0A";
-        cart.forEach(p => { msg += `* ${p.name} - $${p.price.toFixed(2)}%0A`; });
-        msg += `%0ATOTAL A PAGAR: $${total.toFixed(2)}%0A%0A`;
-        msg += "Quedo atento para coordinar el pago y la entrega.";
+        document.getElementById('cart-total').innerText = "Por Cotizar";
+        
+        // WhatsApp Link - Lógica de Cotización
+        let msg = "Hola Sky Automation, me gustaría solicitar una cotización formal por los siguientes equipos:%0A%0A";
+        cart.forEach(p => { msg += `- ${p.name} (Cat: ${p.category})%0A`; });
+        msg += `%0A¿Podrían brindarme precios y disponibilidad?`;
 
         document.getElementById('whatsapp-btn').href = `https://wa.me/${whatsappNumber}?text=${msg}`;
         document.getElementById('whatsapp-btn').classList.remove('disabled');
@@ -389,6 +413,7 @@ function initEventListeners() {
         });
     }
 
+    // AGREGAR PRODUCTO (MODIFICADO: Guarda Descripción, no Precio)
     const prodForm = document.getElementById('product-form');
     if(prodForm) {
         prodForm.addEventListener('submit', (e) => {
@@ -400,13 +425,15 @@ function initEventListeners() {
                 id: Date.now(),
                 name: document.getElementById('prod-name').value,
                 category: cat,
-                price: parseFloat(document.getElementById('prod-price').value),
+                // price: parseFloat(...)  <-- ELIMINADO
+                description: document.getElementById('prod-desc').value, // <-- NUEVO
                 image: document.getElementById('prod-image').value
             });
             e.target.reset();
         });
     }
     
+    // EDITAR PRODUCTO (MODIFICADO: Edita Descripción, no Precio)
     const editForm = document.getElementById('edit-form');
     if(editForm) {
         editForm.addEventListener('submit', (e) => {
@@ -414,7 +441,8 @@ function initEventListeners() {
             updateProductInDB(document.getElementById('edit-id').value, {
                 name: document.getElementById('edit-name').value,
                 category: document.getElementById('edit-category').value,
-                price: parseFloat(document.getElementById('edit-price').value),
+                // price: ... <-- ELIMINADO
+                description: document.getElementById('edit-desc').value, // <-- NUEVO
                 image: document.getElementById('edit-image').value
             });
         });

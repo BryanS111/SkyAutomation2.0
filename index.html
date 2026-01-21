@@ -40,8 +40,8 @@
             </nav>
         </div>
     </header>
-<!-- Main Content -->
-    <main>
+
+<main>
         <section class="hero">
             <div class="hero-content">
                 <h1>INNOVACIÓN Y CONTROL <br>AL ALCANCE DE TU INDUSTRIA</h1>
@@ -97,7 +97,6 @@
             </div>
          </section>
 
-        <!-- Proyectos Entregados: diseño con imagen a la izquierda y descripción a la derecha -->
         <section id="projects" class="section-padding hidden">
             <div class="container">
                 <h2 class="section-title">PROYECTOS ENTREGADOS</h2>
@@ -107,23 +106,22 @@
 
                     <div class="project-card">
                         <div class="project-image">
-                            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Mantenimiento en ISS">
+                            <img src="./assets/ejemploProyecto1.jpg" alt="Mantenimiento en ISS">
                         </div>
 
                         <div class="project-info">
                             <h3 class="project-title">Mantenimiento en ISS</h3>
-                            <p class="project-desc">En este proyecto se buscó actualizar las tecnologías utilizadas en el seguro, implementando un sistema PLC capaz de administrar el sistema eléctrico de todo el edificio. Se trabajó en tableros, optimización y pruebas de funcionamiento.</p>
+                            <p class="project-desc">En este proyecto se buscó actualizar las tecnologías utilizadas en el seguro, implementando un sistema PLC capaz de administrar el sistema eléctrico de todo el edificio. Se trabajó en tableros, optimización y pruebas de funcionamiento. (Ejemplo)</p>
                         </div>
                     </div>
 
                     <button type="button" class="project-nav next" aria-label="Siguiente proyecto" tabindex="0">›</button>
                 </div>
 
-                <!-- Thumbnails / otras entradas (ocultas en móvil) -->
-                <div class="project-thumbs"> <!-- vamos a colocar imagenes locales de la carpeta assets -->
-                    <button type="button" class="thumb active" data-img="./assets/ejemploProyecto1.jpg" data-title="Mantenimiento en ISS" data-desc="Actualización y automatización de tableros eléctricos con PLC para control del edificio." aria-label="Proyecto Mantenimiento en ISS"></button>
-                    <button type="button" class="thumb" data-img="./assets/ejemploProyecto2.png" data-title="Modernización de Equipos en tal empresa" data-desc="Sustitución y configuración de variadores y sensores para optimizar procesos." aria-label="Proyecto Modernización"></button>
-                    <button type="button" class="thumb" data-img="./assets/ejemploProyecto3.webp" data-title="Instalación PLC en tal empresa" data-desc="Implementación de sistema PLC y HMI para supervisión y control automático." aria-label="Proyecto Instalación PLC"></button>
+                <div class="project-thumbs">
+                    <button type="button" class="thumb active" data-img="./assets/ejemploProyecto1.jpg" data-title="Mantenimiento en ISS" data-desc="En este proyecto se buscó actualizar las tecnologías utilizadas en el seguro, implementando un sistema PLC capaz de administrar el sistema eléctrico de todo el edificio. Se trabajó en tableros, optimización y pruebas de funcionamiento. (Ejemplo)" aria-label="Proyecto Mantenimiento en ISS"></button>
+                    <button type="button" class="thumb" data-img="./assets/ejemploProyecto2.png" data-title="(Título descriptivo del proyecto)" data-desc="Detalles." aria-label="Proyecto Modernización"></button>
+                    <button type="button" class="thumb" data-img="./assets/ejemploProyecto3.webp" data-title="(Título descriptivo del proyecto)" data-desc="Detalles." aria-label="Proyecto Instalación PLC"></button>
                 </div>
 
             </div>
@@ -152,9 +150,6 @@
                         <p style="text-align:center; width:100%; grid-column: 1/-1;">Cargando catálogo...</p>
                     </div>
                 </div>
-
-                
-
             </div>
         </section>
 
@@ -188,7 +183,7 @@
              <div class="footer-logo">
                 WEBSITE DESIGNED BY <span class="logo-accent">COGNETIX INNOVATION</span>
             </div>
-            <p>© 2024 Sky Automation. Excelencia Técnica e Innovación.</p>
+            <p>© 2026 Sky Automation. Excelencia Técnica e Innovación.</p>
         </div>
     </footer>
 
@@ -278,18 +273,18 @@
                     <input type="text" id="prod-name" required placeholder="Ej: Sensor Inductivo M18">
                 </div>
 
-                <div class="input-group two-col">
-                    <div>
-                        <label for="prod-category">Categoría:</label>
-                        <select id="prod-category" required>
-                            <option value="">Cargando...</option>
-                            </select>
-                    </div>
-                     <div>
-                        <label for="prod-price">Precio ($):</label>
-                        <input type="number" id="prod-price" step="0.01" min="0" required placeholder="0.00">
-                    </div>
+                <div class="input-group">
+                    <label for="prod-category">Categoría:</label>
+                    <select id="prod-category" required>
+                        <option value="">Cargando...</option>
+                    </select>
                 </div>
+
+                <div class="input-group">
+                    <label for="prod-desc">Descripción Técnica:</label>
+                    <textarea id="prod-desc" rows="4" placeholder="Ej: Voltaje 24V, Alcance 5mm, Salida PNP..." required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
                  <div class="input-group">
                     <label for="prod-image">URL de la Imagen:</label>
                     <input type="url" id="prod-image" required placeholder="https://ejemplo.com/imagen.jpg">
@@ -315,18 +310,18 @@
                     <input type="text" id="edit-name" required>
                 </div>
 
-                <div class="input-group two-col">
-                    <div>
-                        <label>Categoría:</label>
-                        <select id="edit-category" required>
-                            <option value="">Cargando...</option>
-                            </select>
-                    </div>
-                     <div>
-                        <label>Precio ($):</label>
-                        <input type="number" id="edit-price" step="0.01" min="0" required>
-                    </div>
+                <div class="input-group">
+                    <label>Categoría:</label>
+                    <select id="edit-category" required>
+                        <option value="">Cargando...</option>
+                    </select>
                 </div>
+                
+                <div class="input-group">
+                    <label>Descripción Técnica:</label>
+                    <textarea id="edit-desc" rows="4" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
                  <div class="input-group">
                     <label>URL de la Imagen:</label>
                     <input type="url" id="edit-image" required>
@@ -338,20 +333,34 @@
         </div>
     </div>
 
-    <div id="cart-float" onclick="toggleCart()">
-        <i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span>
+    <div id="desc-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-modal" onclick="closeModal('desc-modal')">×</span>
+            <h3 id="desc-title" style="margin-bottom: 10px; color: var(--primary);">Nombre Producto</h3>
+            <div class="modal-body" style="margin-top: 15px; text-align: left;">
+                <p id="desc-text" style="white-space: pre-wrap; line-height: 1.6; color: #555; font-size: 0.95rem;"></p>
+            </div>
+            <button type="button" class="cta-button full-width" onclick="closeModal('desc-modal')" style="margin-top: 20px; background-color: #666;">Cerrar</button>
+        </div>
     </div>
+
+    <a href="javascript:void(0)" id="cart-float" onclick="window.toggleCart()">
+    <div class="cart-icon-container">
+        <i class="fas fa-shopping-cart"></i> 
+        <span id="cart-count">0</span>
+    </div>
+</a>
 
     <div id="cart-modal" class="modal-overlay">
         <div class="modal-content cart-box">
             <span class="close-modal" onclick="toggleCart()">×</span>
-            <h3>Tu Pedido</h3>
+            <h3>Tu Cotización</h3>
             <div id="cart-items" class="cart-items-list">
                 </div>
             <div class="cart-footer">
                 <div class="cart-total-row">
-                    <span>Total Estimado:</span>
-                    <span id="cart-total">$0.00</span>
+                    <span>Estado:</span>
+                    <span id="cart-total">Pendiente</span>
                 </div>
                 <a href="#" id="whatsapp-btn" class="whatsapp-checkout-btn disabled" target="_blank">
                     <i class="fab fa-whatsapp"></i> Solicitar Cotización
@@ -360,10 +369,9 @@
         </div>
     </div>
 
-        <div id="toast-container"></div>
+    <div id="toast-container"></div>
 
-
-        <div id="confirmation-modal" class="modal-overlay">
+    <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content" style="max-width: 350px; text-align: center;">
             <span class="close-modal" onclick="closeModal('confirmation-modal')">×</span>
             <h3 style="color: var(--danger); justify-content: center;">
@@ -377,9 +385,7 @@
             </div>
         </div>
     </div>
-
     
-
     <script type="module" src="js/main.js"></script>
 </body>
 </html>

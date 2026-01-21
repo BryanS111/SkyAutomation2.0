@@ -682,3 +682,60 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
     opacity: 0;
     transform: translateY(10px); /* Baja un poquito al irse */
 }
+
+/* --- NUEVOS ESTILOS PARA DETALLES Y MODAL --- */
+
+/* 1. Estilo para el enlace de "Descripción" (antes botón gris) */
+.desc-link {
+    background: none;
+    border: none;
+    color: #0099ff; /* El azul cian de tu logo/marca */
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0 10px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.desc-link:hover {
+    color: #0056b3; /* Azul un poco más oscuro al pasar el mouse */
+}
+
+/* 2. Forzar que el botón de "Cerrar" en el modal de descripción sea Azul */
+#desc-modal button { 
+    background-color: #0099ff !important; /* Mismo azul que 'Agregar' */
+    color: white !important;
+    border: none;
+    border-radius: 5px; /* Si quieres mantener bordes redondeados suaves */
+}
+
+#desc-modal button:hover {
+    background-color: #007acc !important;
+}
+
+
+
+/* =============================================================
+   ESTILO ESPECÍFICO: BOTÓN "CERRAR" DEL MODAL DE DESCRIPCIÓN
+============================================================= */
+
+/* 1. Estado Normal: Forzamos el color Azul Cian de la marca */
+/* Usamos !important para anular cualquier estilo gris que haya quedado en el HTML */
+#desc-modal .cta-button {
+    background-color: var(--accent-cyan) !important;
+    border: 2px solid var(--accent-cyan) !important;
+    color: var(--primary-dark) !important;
+    transition: all 0.3s ease;
+}
+
+/* 2. Estado Hover: Forzamos el Azul Oscuro Corporativo */
+/* Esto replica el estilo del botón "Ver Catálogo" solo para este elemento */
+#desc-modal .cta-button:hover {
+    background-color: var(--primary-dark) !important;
+    border-color: var(--primary-dark) !important;
+    color: #ffffff !important;
+    /* Añadimos una sombra elegante y una ligera elevación */
+    box-shadow: 0 8px 20px rgba(10, 35, 66, 0.3);
+    transform: translateY(-2px);
+}
