@@ -22,6 +22,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+
 /* =========================================
    3. VARIABLES GLOBALES
 ========================================= */
@@ -32,6 +33,8 @@ let cart = [];
 let currentCategoryFilter = 'all';
 let currentUser = null; 
 let idToDelete = null; // Para confirmar borrado
+let currentSearchTerm = ''; // Búsqueda (futuro uso)
+let catIdToDelete = null; // Para confirmar borrado de categoría
 
 /* =========================================
    4. INICIALIZACIÓN
@@ -196,39 +199,45 @@ function updateCategoryDropdowns() {
 
 function renderProducts() {
     const container = document.getElementById('products-container');
-    const filtered = currentCategoryFilter === 'all' ? products : products.filter(p => p.category === currentCategoryFilter);
+    
+    // Lógica de filtrado MEJORADA (Busca en Nombre Y Descripción)
+    const filtered = products.filter(p => {
+        // 1. Chequeamos Categoría
+        const matchesCategory = currentCategoryFilter === 'all' || p.category === currentCategoryFilter;
+        
+        // 2. Chequeamos Texto (Buscador)
+        const term = currentSearchTerm.toLowerCase();
+        // Usamos ?. para evitar error si no hay descripción
+        const matchesSearch = p.name.toLowerCase().includes(term) || 
+                              (p.description && p.description.toLowerCase().includes(term)) ||
+                              (p.category && p.category.toLowerCase().includes(term));
+        
+        return matchesCategory && matchesSearch;
+    });
         
     if (filtered.length === 0) {
-        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px;"><p>No hay productos aquí.</p></div>`;
-        return;
+        // ... (el resto de la función sigue igual que antes) ...
+        // ... copia el resto de tu función renderProducts actual aquí ...
     }
 
+    // Renderizado (Mantenemos tu diseño actual)
     container.innerHTML = filtered.map(p => `
         <div class="product-card fade-in" style="position: relative;">
             ${currentUser ? `
-            <button 
-                onclick="window.openEditModal('${p.firestoreId}')" 
+            <button onclick="window.openEditModal('${p.firestoreId}')" 
                 style="position:absolute; top:10px; right:10px; z-index:10; cursor:pointer; background: white; border: none; border-radius: 50%; width: 35px; height: 35px; display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
                 <img src="assets/edit.svg" style="width: 20px; height: 20px;">
-            </button>
-            ` : ''}
+            </button>` : ''}
 
             <div class="product-img-wrapper">
-                <img src="${p.image}" class="product-img" onerror="this.onerror=null;this.src='https://dummyimage.com/300x220/ccc/000&text=Sin+Imagen'">
+                <img src="${p.image}" class="product-img" onerror="this.src='https://dummyimage.com/300x220/ccc/000&text=Sin+Imagen'">
             </div>
             <div class="product-info">
                 <span class="product-category">${p.category}</span>
                 <h3 class="product-title">${p.name}</h3>
-                
                 <div class="product-footer" style="display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 10px;">
-                     
-                     <button class="desc-link" onclick="window.openDescModal('${p.firestoreId}')">
-                        Descripción
-                     </button>
-
-                    <button class="add-btn" 
-                        onclick="window.addToCart('${p.firestoreId}')"
-                        style="font-size: 0.8rem; padding: 8px 15px;">
+                     <button class="desc-link" onclick="window.openDescModal('${p.firestoreId}')">Descripción</button>
+                    <button class="add-btn" onclick="window.addToCart('${p.firestoreId}')" style="font-size: 0.8rem; padding: 8px 15px;">
                         <i class="fas fa-cart-plus"></i> Cotizar
                     </button>
                 </div>
@@ -431,6 +440,26 @@ function initEventListeners() {
             });
             e.target.reset();
         });
+        
+        // DENTRO DE initEventListeners()
+
+    // Confirmación Borrar Categoría (Nuevo Modal)
+    const btnConfirmCatDel = document.getElementById('btn-confirm-cat-delete');
+    if(btnConfirmCatDel) {
+        btnConfirmCatDel.addEventListener('click', async () => {
+            if (catIdToDelete) {
+                try {
+                    await deleteDoc(doc(db, "categories", catIdToDelete));
+                    showToast("Categoría eliminada correctamente", "success");
+                    closeModal('cat-confirmation-modal');
+                    catIdToDelete = null;
+                } catch (e) {
+                    console.error(e);
+                    showToast("Error al eliminar: " + e.message, "error");
+                }
+            }
+        });
+    }
     }
     
     // EDITAR PRODUCTO (MODIFICADO: Edita Descripción, no Precio)
@@ -482,6 +511,23 @@ function initEventListeners() {
             e.target.style.display = 'none';
         }
     });
+
+    // Buscador Público
+    const searchInput = document.getElementById('public-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentSearchTerm = e.target.value;
+            renderProducts();
+        });
+    }
+
+    // Buscador para Borrar Productos (Admin)
+    const deleteSearch = document.getElementById('search-delete-product');
+    if (deleteSearch) {
+        deleteSearch.addEventListener('input', (e) => {
+            window.openDeleteList(e.target.value);
+        });
+    }
 }
 
 function initScrollAnimations() {
@@ -618,3 +664,70 @@ function initProjectsCarousel(){
         touchStartX = null;
     }, { passive: true });
 }
+
+// --- FUNCIÓN ACTUALIZADA: Lista de borrar productos con filtro ---
+window.openDeleteList = (filterText = '') => {
+    const container = document.getElementById('delete-list-container');
+    const term = filterText.toLowerCase();
+    
+    // Filtramos por nombre O descripción
+    const list = products.filter(p => 
+        p.name.toLowerCase().includes(term) ||
+        (p.description && p.description.toLowerCase().includes(term))
+    );
+
+    if (list.length === 0) {
+        container.innerHTML = "<p style='text-align:center; padding:20px;'>No hay coincidencias.</p>";
+    } else {
+        container.innerHTML = list.map(p => `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <img src="${p.image}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
+                    <span style="font-size:0.9rem; font-weight:500;">${p.name}</span>
+                </div>
+                <button onclick="window.askDeleteConfirmation('${p.firestoreId}')" 
+                        style="background:#ffdddd; color:#d9534f; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold;">
+                    Borrar
+                </button>
+            </div>
+        `).join('');
+    }
+    
+    // Solo abrimos el modal si no está ya abierto (para evitar parpadeos al escribir)
+    const modal = document.getElementById('delete-list-modal');
+    if (modal.style.display !== 'flex') {
+        closeModal('dashboard-modal');
+        openModal('delete-list-modal');
+    }
+};
+
+// --- NUEVA: Abrir lista de eliminar Categorías ---
+window.openDeleteCategoryList = () => {
+    const container = document.getElementById('delete-category-container');
+    
+    if (categories.length === 0) {
+        container.innerHTML = "<p style='text-align:center;'>No hay categorías creadas.</p>";
+    } else {
+        container.innerHTML = categories.map(c => `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #eee;">
+                <span style="font-weight:500;">${c.name}</span>
+                <button onclick="window.deleteCategoryConfirm('${c.firestoreId}', '${c.name}')" 
+                        style="background: white; border: 1px solid #dc3545; color:#dc3545; padding:5px 10px; border-radius:4px; cursor:pointer; transition:0.3s;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+    closeModal('dashboard-modal');
+    openModal('delete-category-modal');
+};
+
+// --- NUEVA: Confirmar Borrado de Categoría (Abre Modal) ---
+window.deleteCategoryConfirm = (id, name) => {
+    // Guardamos el ID globalmente
+    catIdToDelete = id;
+    // Ponemos el nombre en el modal
+    document.getElementById('cat-delete-name').innerText = `"${name}"`;
+    // Abrimos el modal elegante
+    openModal('cat-confirmation-modal');
+};

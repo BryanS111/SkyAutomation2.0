@@ -136,13 +136,28 @@
                     </div>
 
                     <aside class="catalog-filter-container">
-                        <div class="filter-wrapper">
-                            <label for="mobile-category-select" class="filter-label">
-                                <i class="fas fa-filter"></i> Filtrar Catálogo:
-                            </label>
-                            <select id="mobile-category-select" class="universal-select">
-                                <option value="all">Ver Todo el Catálogo</option>
-                                </select>
+                        <div class="catalog-controls-flex">
+                            
+                            <div class="control-box search-box-container">
+                                <label for="public-search" class="filter-label">
+                                    <i class="fas fa-search"></i> Buscar Producto:
+                                </label>
+                                <div style="position: relative;">
+                                    <input type="text" id="public-search" placeholder="Ej. Temporizador, control de fase..." 
+                                        style="width: 100%; padding: 12px 12px 12px 35px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; outline: none; transition: all 0.3s ease;">
+                                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+                                </div>
+                            </div>
+
+                            <div class="control-box filter-box-container">
+                                <label for="mobile-category-select" class="filter-label">
+                                    <i class="fas fa-filter"></i> Filtrar Categoría:
+                                </label>
+                                <select id="mobile-category-select" class="universal-select" style="width: 100%;">
+                                    <option value="all">Ver Todo el Catálogo</option>
+                                    </select>
+                            </div>
+
                         </div>
                     </aside>
 
@@ -188,6 +203,8 @@
     </footer>
 
 
+    <!-- Modal de Login y demas operaciones fuera de la estructura general-->
+
     <div id="login-modal" class="modal-overlay">
         <div class="modal-content login-box">
             <span class="close-modal" id="close-login">×</span>
@@ -220,13 +237,17 @@
                 <button onclick="openModal('admin-modal')" class="cta-button full-width" style="background-color: var(--success-green);">
                     <i class="fas fa-plus-circle"></i> Agregar Producto
                 </button>
-                
+
+                <button onclick="openDeleteList()" class="cta-button full-width" style="background-color: var(--danger-red);">
+                    <i class="fas fa-trash-alt"></i> Borrar Producto
+                </button>
+
                 <button onclick="openModal('category-modal')" class="cta-button full-width" style="background-color: var(--info-blue);">
                     <i class="fas fa-tags"></i> Agregar Categoría
                 </button>
                 
-                <button onclick="openDeleteList()" class="cta-button full-width" style="background-color: var(--danger-red);">
-                    <i class="fas fa-trash-alt"></i> Borrar Producto
+                <button class="cta-button full-width" onclick="window.openDeleteCategoryList()" style="margin-top: 10px; background-color: #dc3545; border-color: #dc3545;">
+                    <i class="fas fa-trash"></i> Eliminar Categoría
                 </button>
 
                 <button id="dashboard-logout" class="logout-btn" style="margin-top: 10px;">Cerrar Sesión</button>
@@ -249,16 +270,38 @@
         </div>
     </div>
 
-    <div id="delete-list-modal" class="modal-overlay">
-        <div class="modal-content admin-box">
-            <span class="close-modal" onclick="closeModal('delete-list-modal')">×</span>
-            <h3><i class="fas fa-trash-alt"></i> Eliminar Productos</h3>
-            <p><small>Selecciona el producto que deseas eliminar:</small></p>
+    <div id="delete-list-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 style="text-align:center; color: var(--primary-dark);">Eliminar Producto</h2>
             
-            <div id="delete-list-container" style="max-height: 300px; overflow-y: auto; margin-top: 15px; border: 1px solid #eee; border-radius: 8px;">
+            <div style="position: relative; margin-bottom: 15px;">
+                <i class="fas fa-search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+                <input type="text" id="search-delete-product" placeholder="Buscar producto a borrar..." 
+                    style="width: 100%; padding: 10px 10px 10px 35px; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+
+            <div id="delete-list-container" style="max-height: 300px; overflow-y: auto;">
                 </div>
+            <button class="cta-button full-width" onclick="closeModal('delete-list-modal')" style="margin-top: 20px;">Cerrar</button>
         </div>
     </div>
+
+    <!--modal para eliminar categoria-->
+    <div id="delete-category-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 style="text-align:center; color: var(--primary-dark); margin-bottom: 10px;">Eliminar Categoría</h2>
+            <p style="font-size: 0.85rem; color: #d9534f; text-align: center; margin-bottom: 15px; background: #fff3f3; padding: 10px; border-radius: 5px;">
+                <i class="fas fa-exclamation-triangle"></i> Advertencia: Borrar una categoría no elimina sus productos, pero quedarán sin categoría asignada.
+            </p>
+            
+            <div id="delete-category-container" style="max-height: 300px; overflow-y: auto;">
+                </div>
+            
+            <button class="cta-button full-width" onclick="closeModal('delete-category-modal')" style="margin-top: 20px;">Cerrar</button>
+        </div>
+    </div>
+
+    <!--modal para agregar producto-->
 
     <div id="admin-modal" class="modal-overlay">
         <div class="modal-content admin-box">
@@ -293,6 +336,29 @@
 
                 <button type="submit" class="cta-button full-width">Agregar al Catálogo</button>
             </form>
+        </div>
+    </div>
+
+
+    <!-- modal nuevo de confirmacion a la hora de eliminar categoria-->
+
+    <div id="cat-confirmation-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 400px; text-align: center; border-top: 5px solid var(--danger);">
+            <span class="close-modal" onclick="closeModal('cat-confirmation-modal')">×</span>
+            <h3 style="color: var(--danger); justify-content: center; font-size: 1.5rem;">
+                <i class="fas fa-trash-alt"></i> Eliminar Categoría
+            </h3>
+            <p style="margin-bottom: 20px; color: #555; font-size: 1.1rem;">
+                ¿Estás seguro de eliminar la categoría <b id="cat-delete-name"></b>?
+            </p>
+            <div style="background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; font-size: 0.9rem; margin-bottom: 20px;">
+                <i class="fas fa-exclamation-triangle"></i> Los productos asociados <strong>NO</strong> se borrarán, pero quedarán sin categoría.
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="closeModal('cat-confirmation-modal')" class="cta-button" style="background-color: #ccc; color: #333; border: none;">Cancelar</button>
+                <button id="btn-confirm-cat-delete" class="cta-button" style="background-color: var(--danger); border: none;">¡Sí, eliminar!</button>
+            </div>
         </div>
     </div>
 

@@ -218,18 +218,24 @@ header {
 }
 
 /* Contenedor del Filtro (Centrado y Bonito) */
+/* --- CORRECCIÓN DE ANCHO DEL CONTENEDOR DE FILTROS --- */
+
 .catalog-filter-container {
-    width: 100%;
-    max-width: 500px; /* Ancho máximo elegante para PC */
-    background: var(--bg-white);
-    padding: 1.25rem 1.5rem;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    border: 1px solid #eee;
-    text-align: center;
-    /* Centrar el bloque dentro de su contenedor y separar verticalmente */
-    margin: 1rem auto 1.5rem;
-    display: block;
+    /* 1. Permitimos que la caja ocupe el ancho disponible */
+    width: 100%; 
+    
+    /* 2. CLAVE: Aumentamos el ancho máximo para que quepan los dos inputs */
+    max-width: 900px; 
+    
+    /* 3. Aseguramos que esté centrada y tenga buen espaciado */
+    margin: 0 auto 30px auto; 
+    box-sizing: border-box; /* Para que el padding no rompa el ancho */
+    
+    /* Mantenemos tus estilos visuales (si ya los tenías, esto los refuerza) */
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px; /* O el borde que estés usando */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Sombra suave opcional */
 }
 
 .filter-label {
@@ -738,4 +744,46 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
     /* Añadimos una sombra elegante y una ligera elevación */
     box-shadow: 0 8px 20px rgba(10, 35, 66, 0.3);
     transform: translateY(-2px);
+}
+
+/* --- NUEVOS ESTILOS PARA CONTROLES DEL CATÁLOGO --- */
+
+/* Contenedor flexible */
+.catalog-controls-flex {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end; /* Alinea los inputs en la parte de abajo */
+    justify-content: center;
+    width: 100%;
+}
+
+/* Cajas individuales de los controles */
+.control-box {
+    flex: 1; /* Toman el mismo espacio disponible */
+    min-width: 250px; /* Ancho mínimo para que no se aplasten */
+}
+
+.filter-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: var(--primary-dark);
+}
+
+/* Estilo focus para el nuevo input de búsqueda (ya sin el triángulo) */
+#public-search:focus {
+    border-color: var(--accent-cyan) !important;
+    box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.2);
+}
+
+/* --- MEDIA QUERY PARA MÓVILES (Ajuste de layout) --- */
+@media (max-width: 768px) {
+    .catalog-controls-flex {
+        flex-direction: column; /* Se apilan verticalmente */
+        gap: 15px;
+    }
+    .control-box {
+        width: 100%; /* Ocupan todo el ancho */
+        min-width: auto;
+    }
 }
