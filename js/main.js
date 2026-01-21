@@ -1,3 +1,7 @@
+// --- CONFIGURACIÓN DE CLOUDINARY ---
+const CLOUDINARY_CLOUD_NAME = "duu9icy6k"; 
+const CLOUDINARY_PRESET = "sky_preset";
+
 /* =========================================
    1. IMPORTACIONES DE FIREBASE
 ========================================= */
@@ -6,7 +10,7 @@ import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 /* =========================================
-   2. CONFIGURACIÓN
+   2. CONFIGURACIÓN FIREBASE
 ========================================= */
 const firebaseConfig = {
   apiKey: "AIzaSyAqLbIw1m3mVQyHxq2qmhuIe6xrhegvV30",
@@ -32,9 +36,9 @@ let categories = [];
 let cart = [];
 let currentCategoryFilter = 'all';
 let currentUser = null; 
-let idToDelete = null; // Para confirmar borrado
-let currentSearchTerm = ''; // Búsqueda (futuro uso)
-let catIdToDelete = null; // Para confirmar borrado de categoría
+let idToDelete = null; // Para confirmar borrado producto
+let currentSearchTerm = ''; 
+let catIdToDelete = null; // Para confirmar borrado categoría
 
 /* =========================================
    4. INICIALIZACIÓN
@@ -200,14 +204,13 @@ function updateCategoryDropdowns() {
 function renderProducts() {
     const container = document.getElementById('products-container');
     
-    // Lógica de filtrado MEJORADA (Busca en Nombre Y Descripción)
+    // Lógica de filtrado
     const filtered = products.filter(p => {
         // 1. Chequeamos Categoría
         const matchesCategory = currentCategoryFilter === 'all' || p.category === currentCategoryFilter;
         
         // 2. Chequeamos Texto (Buscador)
         const term = currentSearchTerm.toLowerCase();
-        // Usamos ?. para evitar error si no hay descripción
         const matchesSearch = p.name.toLowerCase().includes(term) || 
                               (p.description && p.description.toLowerCase().includes(term)) ||
                               (p.category && p.category.toLowerCase().includes(term));
@@ -216,11 +219,13 @@ function renderProducts() {
     });
         
     if (filtered.length === 0) {
-        // ... (el resto de la función sigue igual que antes) ...
-        // ... copia el resto de tu función renderProducts actual aquí ...
+        container.innerHTML = `<div style="text-align:center; padding: 40px; width: 100%;">
+            <p style="color: #666; font-size: 1.2rem;">No se encontraron productos.</p>
+        </div>`;
+        return;
     }
 
-    // Renderizado (Mantenemos tu diseño actual)
+    // Renderizado
     container.innerHTML = filtered.map(p => `
         <div class="product-card fade-in" style="position: relative;">
             ${currentUser ? `
@@ -248,23 +253,37 @@ function renderProducts() {
 
 // --- UI Funciones Globales ---
 
-window.openDeleteList = () => {
+window.openDeleteList = (filterText = '') => {
     const container = document.getElementById('delete-list-container');
-    if(products.length === 0) {
-        container.innerHTML = "<p>No hay productos para borrar.</p>";
+    const term = filterText.toLowerCase();
+    
+    const list = products.filter(p => 
+        p.name.toLowerCase().includes(term) ||
+        (p.description && p.description.toLowerCase().includes(term))
+    );
+
+    if (list.length === 0) {
+        container.innerHTML = "<p style='text-align:center; padding:20px;'>No hay coincidencias.</p>";
     } else {
-        container.innerHTML = products.map(p => `
+        container.innerHTML = list.map(p => `
             <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee;">
                 <div style="display:flex; align-items:center; gap:10px;">
                     <img src="${p.image}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
-                    <span>${p.name}</span>
+                    <span style="font-size:0.9rem; font-weight:500;">${p.name}</span>
                 </div>
-                <button onclick="window.askDeleteConfirmation('${p.firestoreId}')" style="background:var(--danger); color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Borrar</button>
+                <button onclick="window.askDeleteConfirmation('${p.firestoreId}')" 
+                        style="background:#ffdddd; color:#d9534f; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold;">
+                    Borrar
+                </button>
             </div>
         `).join('');
     }
-    closeModal('dashboard-modal'); 
-    openModal('delete-list-modal'); 
+    
+    const modal = document.getElementById('delete-list-modal');
+    if (modal.style.display !== 'flex') {
+        closeModal('dashboard-modal');
+        openModal('delete-list-modal');
+    }
 };
 
 window.openEditModal = (id) => {
@@ -274,21 +293,30 @@ window.openEditModal = (id) => {
     document.getElementById('edit-id').value = id;
     document.getElementById('edit-name').value = p.name;
     document.getElementById('edit-category').value = p.category;
-    // Cambio: Cargar descripción en lugar de precio
-    document.getElementById('edit-desc').value = p.description || ''; 
-    document.getElementById('edit-image').value = p.image;
+    document.getElementById('edit-desc').value = p.description || '';
     
+    // --- LÓGICA DE IMAGEN EN EDICIÓN ---
+    // Mostramos la imagen actual
+    const preview = document.getElementById('edit-preview-img');
+    const fileInput = document.getElementById('edit-image-file');
+    
+    if(preview) {
+        preview.src = p.image || ''; 
+        preview.style.display = 'inline-block';
+    }
+    // Limpiamos el input de archivo por si tenía algo seleccionado antes
+    if(fileInput) fileInput.value = ""; 
+    
+    // Configurar botón de eliminar
     document.getElementById('btn-delete-product').onclick = () => window.askDeleteConfirmation(id);
     openModal('edit-modal');
 };
 
-// --- NUEVA FUNCIÓN: ABRIR MODAL DE DETALLES ---
 window.openDescModal = (id) => {
     const p = products.find(x => x.firestoreId === id);
     if(!p) return;
 
     document.getElementById('desc-title').innerText = p.name;
-    // Si no hay descripción guardada, mostrar texto por defecto
     document.getElementById('desc-text').innerText = p.description ? p.description : "Sin descripción técnica disponible.";
     
     openModal('desc-modal');
@@ -333,7 +361,6 @@ function updateCartUI() {
     
     if(cart.length === 0) {
         container.innerHTML = "<p>Tu lista de cotización está vacía.</p>";
-        // Ya no mostramos precio total, sino estado
         document.getElementById('cart-total').innerText = "Vacio";
         document.getElementById('whatsapp-btn').classList.add('disabled');
     } else {
@@ -349,7 +376,6 @@ function updateCartUI() {
         
         document.getElementById('cart-total').innerText = "Por Cotizar";
         
-        // WhatsApp Link - Lógica de Cotización
         let msg = "Hola Sky Automation, me gustaría solicitar una cotización formal por los siguientes equipos:%0A%0A";
         cart.forEach(p => { msg += `- ${p.name} (Cat: ${p.category})%0A`; });
         msg += `%0A¿Podrían brindarme precios y disponibilidad?`;
@@ -358,6 +384,34 @@ function updateCartUI() {
         document.getElementById('whatsapp-btn').classList.remove('disabled');
     }
 }
+
+// --- NUEVA: Abrir lista de eliminar Categorías ---
+window.openDeleteCategoryList = () => {
+    const container = document.getElementById('delete-category-container');
+    
+    if (categories.length === 0) {
+        container.innerHTML = "<p style='text-align:center;'>No hay categorías creadas.</p>";
+    } else {
+        container.innerHTML = categories.map(c => `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #eee;">
+                <span style="font-weight:500;">${c.name}</span>
+                <button onclick="window.deleteCategoryConfirm('${c.firestoreId}', '${c.name}')" 
+                        style="background: white; border: 1px solid #dc3545; color:#dc3545; padding:5px 10px; border-radius:4px; cursor:pointer; transition:0.3s;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+    closeModal('dashboard-modal');
+    openModal('delete-category-modal');
+};
+
+window.deleteCategoryConfirm = (id, name) => {
+    catIdToDelete = id;
+    document.getElementById('cat-delete-name').innerText = `"${name}"`;
+    openModal('cat-confirmation-modal');
+};
+
 
 /* =========================================
    8. LISTENERS GENERALES
@@ -371,7 +425,7 @@ function initEventListeners() {
         });
     }
 
-    // Scroll Suave en Navegación
+    // Scroll Suave
     document.querySelectorAll('a.nav-link[href^="#"]').forEach(a => {
         a.addEventListener('click', (e) => {
             const href = a.getAttribute('href');
@@ -412,7 +466,7 @@ function initEventListeners() {
         });
     }
 
-    // Formularios CRUD
+    // Agregar Categoría
     const catForm = document.getElementById('category-form');
     if(catForm) {
         catForm.addEventListener('submit', (e) => {
@@ -422,62 +476,96 @@ function initEventListeners() {
         });
     }
 
-    // AGREGAR PRODUCTO (MODIFICADO: Guarda Descripción, no Precio)
+    // --- AGREGAR PRODUCTO (CON CLOUDINARY) ---
     const prodForm = document.getElementById('product-form');
     if(prodForm) {
-        prodForm.addEventListener('submit', (e) => {
+        prodForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const cat = document.getElementById('prod-category').value;
-            if(!cat) { showToast("¡Selecciona una categoría primero!", "error"); return; }
+            
+            const btnSubmit = prodForm.querySelector('button[type="submit"]');
+            const originalText = btnSubmit.innerText;
+            btnSubmit.innerText = "Subiendo imagen...";
+            btnSubmit.disabled = true;
 
-            addProductToDB({
-                id: Date.now(),
-                name: document.getElementById('prod-name').value,
-                category: cat,
-                // price: parseFloat(...)  <-- ELIMINADO
-                description: document.getElementById('prod-desc').value, // <-- NUEVO
-                image: document.getElementById('prod-image').value
-            });
-            e.target.reset();
-        });
-        
-        // DENTRO DE initEventListeners()
+            try {
+                const name = document.getElementById('prod-name').value;
+                const category = document.getElementById('prod-category').value;
+                const desc = document.getElementById('prod-desc').value;
+                const fileInput = document.getElementById('prod-image-file');
+                const file = fileInput.files[0];
 
-    // Confirmación Borrar Categoría (Nuevo Modal)
-    const btnConfirmCatDel = document.getElementById('btn-confirm-cat-delete');
-    if(btnConfirmCatDel) {
-        btnConfirmCatDel.addEventListener('click', async () => {
-            if (catIdToDelete) {
-                try {
-                    await deleteDoc(doc(db, "categories", catIdToDelete));
-                    showToast("Categoría eliminada correctamente", "success");
-                    closeModal('cat-confirmation-modal');
-                    catIdToDelete = null;
-                } catch (e) {
-                    console.error(e);
-                    showToast("Error al eliminar: " + e.message, "error");
-                }
+                if (!category) throw new Error("Selecciona una categoría.");
+                if (!file) throw new Error("Debes seleccionar una imagen.");
+
+                // 1. Subir a Cloudinary
+                const imageUrl = await uploadToCloudinary(file);
+
+                // 2. Guardar en Firestore
+                await addProductToDB({
+                    id: Date.now(),
+                    name: name,
+                    category: category,
+                    description: desc,
+                    image: imageUrl
+                });
+
+                e.target.reset();
+                showToast("Producto agregado con éxito", "success");
+            } catch (error) {
+                console.error(error);
+                showToast(error.message || "Error al subir", "error");
+            } finally {
+                btnSubmit.innerText = originalText;
+                btnSubmit.disabled = false;
             }
         });
     }
-    }
-    
-    // EDITAR PRODUCTO (MODIFICADO: Edita Descripción, no Precio)
+
+    // --- EDITAR PRODUCTO (CON CLOUDINARY) ---
     const editForm = document.getElementById('edit-form');
     if(editForm) {
-        editForm.addEventListener('submit', (e) => {
+        editForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            updateProductInDB(document.getElementById('edit-id').value, {
-                name: document.getElementById('edit-name').value,
-                category: document.getElementById('edit-category').value,
-                // price: ... <-- ELIMINADO
-                description: document.getElementById('edit-desc').value, // <-- NUEVO
-                image: document.getElementById('edit-image').value
-            });
+
+            const btnSubmit = editForm.querySelector('button[type="submit"]');
+            const originalText = btnSubmit.innerText;
+            btnSubmit.innerText = "Guardando...";
+            btnSubmit.disabled = true;
+
+            try {
+                const id = document.getElementById('edit-id').value;
+                const fileInput = document.getElementById('edit-image-file');
+                const file = fileInput.files[0];
+
+                // Imagen por defecto (la actual)
+                let imageUrl = document.getElementById('edit-preview-img').src;
+
+                // Si hay archivo nuevo, subirlo
+                if (file) {
+                    btnSubmit.innerText = "Subiendo nueva imagen...";
+                    imageUrl = await uploadToCloudinary(file);
+                }
+
+                await updateProductInDB(id, {
+                    name: document.getElementById('edit-name').value,
+                    category: document.getElementById('edit-category').value,
+                    description: document.getElementById('edit-desc').value,
+                    image: imageUrl
+                });
+                
+                showToast("Producto editado correctamente", "success");
+                closeModal('edit-modal');
+                
+            } catch (error) {
+                showToast("Error: " + error.message, "error");
+            } finally {
+                btnSubmit.innerText = originalText;
+                btnSubmit.disabled = false;
+            }
         });
     }
 
-    // Confirmación Borrar
+    // Confirmar Borrar Producto
     const btnConfirmDel = document.getElementById('btn-confirm-delete');
     if(btnConfirmDel) {
         btnConfirmDel.addEventListener('click', () => {
@@ -489,10 +577,33 @@ function initEventListeners() {
         });
     }
 
+    // Confirmar Borrar Categoría
+    const btnConfirmCatDel = document.getElementById('btn-confirm-cat-delete');
+    if(btnConfirmCatDel) {
+        btnConfirmCatDel.addEventListener('click', async () => {
+            if (catIdToDelete) {
+                try {
+                    await deleteDoc(doc(db, "categories", catIdToDelete));
+                    showToast("Categoría eliminada", "success");
+                    closeModal('cat-confirmation-modal');
+                    catIdToDelete = null;
+                } catch (e) {
+                    console.error(e);
+                    showToast("Error al eliminar: " + e.message, "error");
+                }
+            }
+        });
+    }
+
     // Cerrar Modales (X)
-    document.getElementById('close-login').addEventListener('click', () => closeModal('login-modal'));
-    document.getElementById('close-admin').addEventListener('click', () => closeModal('admin-modal'));
-    document.getElementById('close-edit').addEventListener('click', () => closeModal('edit-modal'));
+    const closeLogin = document.getElementById('close-login');
+    if(closeLogin) closeLogin.addEventListener('click', () => closeModal('login-modal'));
+    
+    const closeAdmin = document.getElementById('close-admin');
+    if(closeAdmin) closeAdmin.addEventListener('click', () => closeModal('admin-modal'));
+    
+    const closeEdit = document.getElementById('close-edit');
+    if(closeEdit) closeEdit.addEventListener('click', () => closeModal('edit-modal'));
 
     // Toggle Password
     const toggleBtn = document.getElementById('toggle-password');
@@ -521,7 +632,7 @@ function initEventListeners() {
         });
     }
 
-    // Buscador para Borrar Productos (Admin)
+    // Buscador Borrar (Admin)
     const deleteSearch = document.getElementById('search-delete-product');
     if (deleteSearch) {
         deleteSearch.addEventListener('input', (e) => {
@@ -565,26 +676,49 @@ window.showToast = (message, type = 'info') => {
 };
 
 /* =========================================
-   10. CARRUSEL DE PROYECTOS (CON ANIMACIÓN)
+   10. FUNCIONES AUXILIARES (Cloudinary y Carrusel)
 ========================================= */
+
+// SUBIR A CLOUDINARY
+async function uploadToCloudinary(file) {
+    if (!file) return null;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET); 
+
+    try {
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) throw new Error('Error al subir imagen a Cloudinary');
+
+        const data = await response.json();
+        return data.secure_url; 
+    } catch (error) {
+        console.error("Error subiendo imagen:", error);
+        throw error; 
+    }
+}
+
+// CARRUSEL
 function initProjectsCarousel(){
     const panel = document.querySelector('.project-panel');
     if(!panel) return;
 
-    // Elementos a actualizar
     const imgEl = panel.querySelector('.project-image img');
     const titleEl = panel.querySelector('.project-title');
     const descEl = panel.querySelector('.project-desc');
-    const projectCard = panel.querySelector('.project-card'); // Contenedor para la animación
+    const projectCard = panel.querySelector('.project-card'); 
 
-    // Navegación
     const btnPrev = panel.querySelector('.project-nav.prev');
     const btnNext = panel.querySelector('.project-nav.next');
     const thumbs = Array.from(document.querySelectorAll('.project-thumbs .thumb'));
     
     if(!imgEl || !titleEl || !descEl || thumbs.length === 0) return;
 
-    // Datos del DOM
     const projects = thumbs.map(t => ({
         img: t.dataset.img,
         title: t.dataset.title || titleEl.textContent,
@@ -593,41 +727,28 @@ function initProjectsCarousel(){
 
     let current = 0;
 
-    // --- FUNCIÓN SHOW MEJORADA (Con Animación) ---
     function show(i){
-        // 1. Iniciar animación de salida (fade-out)
         projectCard.classList.add('changing');
-
-        // 2. Esperar 400ms para cambiar el contenido
         setTimeout(() => {
             const p = projects[i];
-            
-            // Cambio de contenido
             titleEl.textContent = p.title;
             descEl.textContent = p.desc;
             imgEl.src = p.img;
-            
-            // Actualizar bolitas
             thumbs.forEach((t, idx) => t.classList.toggle('active', idx === i));
-
-            // 3. Quitar clase (inicia fade-in)
             projectCard.classList.remove('changing');
         }, 400);
     }
 
-    // Funciones de navegación
     const goNext = () => { current = (current + 1) % projects.length; show(current); };
     const goPrev = () => { current = (current - 1 + projects.length) % projects.length; show(current); };
 
-    // Listeners Botones (Flechas)
     if(btnPrev) btnPrev.addEventListener('click', goPrev);
     if(btnNext) btnNext.addEventListener('click', goNext);
 
-    // Listeners Thumbnails (Bolitas)
     thumbs.forEach((t, idx) => {
         t.addEventListener('click', (e) => { 
             e.stopPropagation(); 
-            if(current !== idx) { // Solo animar si es diferente
+            if(current !== idx) { 
                 current = idx; 
                 show(current); 
             }
@@ -637,14 +758,13 @@ function initProjectsCarousel(){
     // Teclado
     document.addEventListener('keydown', (e) => {
         const rect = panel.getBoundingClientRect();
-        // Solo si es visible en pantalla
         if(rect.top < window.innerHeight && rect.bottom > 0) {
             if(e.key === 'ArrowLeft') goPrev();
             if(e.key === 'ArrowRight') goNext();
         }
     });
 
-    // Swipe para Móviles
+    // Swipe móvil
     let touchStartX = null;
     const threshold = 50;
 
@@ -656,7 +776,6 @@ function initProjectsCarousel(){
         if(touchStartX === null) return;
         const touchEndX = e.changedTouches[0].clientX;
         const dx = touchEndX - touchStartX;
-
         if(Math.abs(dx) > threshold) {
             if(dx < 0) goNext(); 
             else goPrev();
@@ -664,70 +783,3 @@ function initProjectsCarousel(){
         touchStartX = null;
     }, { passive: true });
 }
-
-// --- FUNCIÓN ACTUALIZADA: Lista de borrar productos con filtro ---
-window.openDeleteList = (filterText = '') => {
-    const container = document.getElementById('delete-list-container');
-    const term = filterText.toLowerCase();
-    
-    // Filtramos por nombre O descripción
-    const list = products.filter(p => 
-        p.name.toLowerCase().includes(term) ||
-        (p.description && p.description.toLowerCase().includes(term))
-    );
-
-    if (list.length === 0) {
-        container.innerHTML = "<p style='text-align:center; padding:20px;'>No hay coincidencias.</p>";
-    } else {
-        container.innerHTML = list.map(p => `
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid #eee;">
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <img src="${p.image}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
-                    <span style="font-size:0.9rem; font-weight:500;">${p.name}</span>
-                </div>
-                <button onclick="window.askDeleteConfirmation('${p.firestoreId}')" 
-                        style="background:#ffdddd; color:#d9534f; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:bold;">
-                    Borrar
-                </button>
-            </div>
-        `).join('');
-    }
-    
-    // Solo abrimos el modal si no está ya abierto (para evitar parpadeos al escribir)
-    const modal = document.getElementById('delete-list-modal');
-    if (modal.style.display !== 'flex') {
-        closeModal('dashboard-modal');
-        openModal('delete-list-modal');
-    }
-};
-
-// --- NUEVA: Abrir lista de eliminar Categorías ---
-window.openDeleteCategoryList = () => {
-    const container = document.getElementById('delete-category-container');
-    
-    if (categories.length === 0) {
-        container.innerHTML = "<p style='text-align:center;'>No hay categorías creadas.</p>";
-    } else {
-        container.innerHTML = categories.map(c => `
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #eee;">
-                <span style="font-weight:500;">${c.name}</span>
-                <button onclick="window.deleteCategoryConfirm('${c.firestoreId}', '${c.name}')" 
-                        style="background: white; border: 1px solid #dc3545; color:#dc3545; padding:5px 10px; border-radius:4px; cursor:pointer; transition:0.3s;">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `).join('');
-    }
-    closeModal('dashboard-modal');
-    openModal('delete-category-modal');
-};
-
-// --- NUEVA: Confirmar Borrado de Categoría (Abre Modal) ---
-window.deleteCategoryConfirm = (id, name) => {
-    // Guardamos el ID globalmente
-    catIdToDelete = id;
-    // Ponemos el nombre en el modal
-    document.getElementById('cat-delete-name').innerText = `"${name}"`;
-    // Abrimos el modal elegante
-    openModal('cat-confirmation-modal');
-};
