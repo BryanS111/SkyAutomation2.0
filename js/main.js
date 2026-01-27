@@ -925,3 +925,53 @@ function initProjectsCarousel(){
         touchStartX = null;
     }, { passive: true });
 }
+
+/* --- Pega esto en tu main.js (o script) --- */
+
+document.addEventListener("DOMContentLoaded", () => {
+    
+    const loader = document.getElementById('loader-transition');
+    
+    // 1. Función para ocultar el loader de forma segura
+    function hideLoader() {
+        if (loader) {
+            loader.classList.add('loader-hidden');
+            loader.classList.remove('loader-visible');
+        }
+    }
+
+    // 2. Ocultar loader al cargar la página por primera vez
+    // (Le damos un pequeño delay de 500ms para que se alcance a ver el logo rápido)
+    setTimeout(() => {
+        hideLoader();
+    }, 700);
+
+    // 3. INTERCEPTAR CLICS: Para ir al catálogo (u otros links) con animación
+    // Buscamos los enlaces que queremos animar (ajusta el selector si es necesario)
+    const links = document.querySelectorAll('a[href="catalogo.html"], a[href="index.html"]');
+
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); // Evitamos el cambio inmediato
+            const targetUrl = link.href;
+
+            // Mostramos el loader
+            loader.classList.remove('loader-hidden');
+            loader.classList.add('loader-visible');
+
+            // Esperamos un poco menos (400ms) y cambiamos de página
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 700); 
+        });
+    });
+
+    // 4. SOLUCIÓN SENIOR: EL FIX DEL BOTÓN ATRÁS (Móvil)
+    // Este evento se dispara siempre que la página se muestra, incluso desde caché
+    window.addEventListener('pageshow', (event) => {
+        // event.persisted es true si la página se cargó desde la memoria caché (botón atrás)
+        if (event.persisted || performance.navigation.type === 2) {
+            hideLoader(); // Forzamos a ocultar la pantalla blanca
+        }
+    });
+});
