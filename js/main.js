@@ -873,14 +873,38 @@ function initProjectsCarousel(){
 
     function show(i){
         projectCard.classList.add('changing');
+        const p = projects[i];
+        thumbs.forEach((t, idx) => t.classList.toggle('active', idx === i));
+        // Small delay to allow CSS fade-out before swapping
         setTimeout(() => {
-            const p = projects[i];
-            titleEl.textContent = p.title;
-            descEl.textContent = p.desc;
+            // Prioritize image: set src first so it begins loading/painting
             imgEl.src = p.img;
-            thumbs.forEach((t, idx) => t.classList.toggle('active', idx === i));
-            projectCard.classList.remove('changing');
-        }, 400);
+
+            // If image already cached/loaded, update text immediately
+            if (imgEl.complete) {
+                titleEl.textContent = p.title;
+                descEl.textContent = p.desc;
+                projectCard.classList.remove('changing');
+            } else {
+                // Wait for image to load (or error) before updating the rest
+                let settled = false;
+                const finish = () => {
+                    if (settled) return;
+                    settled = true;
+                    titleEl.textContent = p.title;
+                    descEl.textContent = p.desc;
+                    projectCard.classList.remove('changing');
+                    imgEl.onload = null;
+                    imgEl.onerror = null;
+                };
+
+                imgEl.onload = finish;
+                imgEl.onerror = finish;
+
+                // Fallback: don't wait forever if image fails/slow — update after 1.2s
+                setTimeout(finish, 1200);
+            }
+        }, 300);
     }
 
     const goNext = () => { current = (current + 1) % projects.length; show(current); };
