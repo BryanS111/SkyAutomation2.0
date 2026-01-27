@@ -32,6 +32,83 @@
     scroll-behavior: smooth;
 }
 
+/* animacion de transicion de interfaces (home --> catalogo)
+
+/* El fondo blanco que cubre todo */
+#loader-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff; /* Fondo blanco */
+    z-index: 9999; /* Asegura que esté encima de todo */
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none; /* Permite clicks si está invisible */
+}
+
+/* Clase para ocultarlo cuando no se usa */
+.loader-hidden {
+    opacity: 0 !important;
+    visibility: hidden;
+}
+
+/* Clase para mostrarlo cuando se activa */
+.loader-visible {
+    opacity: 1 !important;
+    visibility: visible;
+}
+
+/* Estilo del logo */
+.loader-logo {
+    width: 150px; /* Ajusta el tamaño de tu logo aquí */
+    animation: palpito 1.5s infinite ease-in-out;
+}
+
+/* La animación suave del logo (Efecto respiración/latido) */
+@keyframes palpito {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+/* seccion para el "volver" en movil */
+/* --- Estilos del Botón Volver --- */
+
+/* 1. Por defecto oculto (para que no salga en PC) */
+.mobile-back-container {
+    display: none;
+}
+
+/* 2. Regla para Celulares (pantallas menores a 768px) */
+@media (max-width: 768px) {
+    .mobile-back-container {
+        display: block; /* Ahora sí lo mostramos */
+        width: 100%;
+        text-align: left; /* Alineado a la izquierda */
+        margin-top: 15px; /* Un poco de aire arriba */
+        margin-bottom: 5px; /* Un poco de aire antes del título */
+        padding-left: 5%; /* Para que se alinee con el resto del contenido si tiene márgenes */
+    }
+
+    .btn-volver {
+        color: #0056b3; /* Un azul similar al de tu marca Sky Automation */
+        text-decoration: underline; /* Subrayado como pediste */
+        font-weight: 600; /* Un poco negrita para que se lea bien */
+        font-size: 16px; /* Tamaño legible en dedo */
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .btn-volver:hover {
+        color: #003d80; /* Se oscurece un poco al tocarlo */
+    }
+}
+
 /* --- FIX DEL SCROLL HORIZONTAL --- */
 html, body {
     width: 100%;
@@ -57,6 +134,7 @@ body {
 }
 
 .section-padding { padding: 5rem 0; }
+.catalog-section-padding { padding: 2rem 0; }
 .bg-light { background-color: var(--bg-white); }
 .bg-dark { background-color: var(--primary-dark); color: var(--bg-white); }
 .text-white { color: var(--bg-white) !important; }
@@ -108,9 +186,7 @@ body {
 
     /* 4. Elevación sutil (sin agrandar el botón, solo moverlo arriba) */
     transform: translateY(-3px);
-    
-    /* 5. Sombra más suave y oscura (más elegante) */
-    box-shadow: 0 10px 20px rgba(0, 43, 69, 0.3);
+
 }
 
 .full-width { width: 100%; }
@@ -212,7 +288,7 @@ header {
 .catalog-layout {
     display: flex;           /* Usamos Flex para apilar verticalmente */
     flex-direction: column;  /* Filtro Arriba, Productos Abajo */
-    gap: 2.5rem;             /* Espacio entre el filtro y los productos */
+    gap: 1.5rem;             /* Espacio entre el filtro y los productos */
     align-items: center;     /* Centramos todo horizontalmente */
     width: 100%;
 }
@@ -448,6 +524,7 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
     
     .section-title { font-size: 1.8rem; }
     .two-col { grid-template-columns: 1fr; }
+    .catalog-section-padding { padding: 1rem 0; }
     
     .catalog-filter-container { width: 100%; } /* Select ocupa todo el ancho en móvil */
 }

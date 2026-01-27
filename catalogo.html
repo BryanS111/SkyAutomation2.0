@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - Sky Automation</title>
+    
+    <link rel="icon" href="assets/logo_favicon.svg" type="image/svg+xml">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
+                    <img src="assets/logo_favicon.svg" alt="Logotipo Sky Automation" class="header-logo-img">
+                    SKY <span class="logo-accent">AUTOMATION</span>
+                </a>
+            </div>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+
+            <nav>
+                <ul class="nav-list" id="nav-list">
+                    <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Volver al Inicio</a></li>
+                    <li class="idp-item">
+                        <button id="btn-login-idp" class="idp-button"><i class="fas fa-lock"></i> IDP</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+
+        <div class="mobile-back-container">
+            <a href="/" class="btn-volver">Volver a la web principal</a>
+        </div>
+
+        <section id="catalog-section" class="catalog-section-padding">
+            <div class="container catalog-layout">
+                <div class="catalog-main">
+                    <div class="catalog-header">
+                        <h2>Catálogo de Productos</h2>
+                        <p>Soluciones de control y medición: sensores, nivel de líquidos y temporizadores para optimizar tus procesos industriales.</p>
+                    </div>
+
+                    <aside class="catalog-filter-container">
+                        <div class="catalog-controls-flex">
+                            
+                            <div class="control-box search-box-container">
+                                <label for="public-search" class="filter-label">
+                                    <i class="fas fa-search"></i> Buscar Producto:
+                                </label>
+                                <div style="position: relative;">
+                                    <input type="text" id="public-search" placeholder="Ej. Nombre o Código de Producto" 
+                                        style="width: 100%; padding: 12px 12px 12px 35px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; outline: none; transition: all 0.3s ease;">
+                                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="control-box filter-box-container">
+                                <label for="mobile-category-select" class="filter-label">
+                                    <i class="fas fa-filter"></i> Filtrar Categoría:
+                                </label>
+                                <select id="mobile-category-select" class="universal-select" style="width: 100%;">
+                                    <option value="all">Ver Todo el Catálogo</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-box filter-box-container" id="sub-cat-filter-container" style="display: none; margin-top: 10px;">
+                                <label for="mobile-subcategory-select" class="filter-label">
+                                    <i class="fas fa-filter"></i> Sub-Categoría:
+                                </label>
+                                <select id="mobile-subcategory-select" class="universal-select" style="width: 100%;">
+                                    <option value="all">Ver todas las subcategorías</option>
+                                </select>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <div class="products-grid" id="products-container">
+                        <p style="text-align:center; width:100%; grid-column: 1/-1;">Cargando catálogo...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+             <div class="footer-logo">
+                WEBSITE DESIGNED BY <span class="logo-accent">COGNETIX INNOVATION</span>
+            </div>
+            <p>© 2026 Sky Automation. Excelencia Técnica e Innovación.</p>
+        </div>
+    </footer>
+
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content login-box">
+            <span class="close-modal" id="close-login">×</span>
+            <h3><i class="fas fa-user-shield"></i>  Acceso Administrativo (IDP)</h3>
+            <p class="security-warning"><small><i class="fas fa-exclamation-triangle"></i> Acceso exclusivo para administradores.</small></p>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username">Correo Electrónico</label>
+                    <input type="email" id="username" required placeholder="Ingrese su correo">
+                </div>
+                <div class="input-group password-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" required placeholder="Ingrese contraseña">
+                    <i class="far fa-eye toggle-password" id="toggle-password"></i>
+                </div>
+                <button type="submit" class="cta-button full-width">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboard-modal" class="modal-overlay">
+        <div class="modal-content admin-box" style="text-align: center; max-width: 400px;">
+            <div class="admin-header" style="justify-content: center; flex-direction: column; gap:10px;">
+                <h3><i class="fas fa-user-cog"></i> Panel de Administración</h3>
+                <p>Bienvenido, Admin</p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <button onclick="openModal('admin-modal')" class="cta-button full-width" style="background-color: var(--success-green);">
+                    <i class="fas fa-plus-circle"></i> Agregar Producto
+                </button>
+
+                <button onclick="openDeleteList()" class="cta-button full-width" style="background-color: var(--danger-red);">
+                    <i class="fas fa-trash-alt"></i> Borrar Producto
+                </button>
+
+                <button onclick="openModal('category-modal')" class="cta-button full-width" style="background-color: var(--info-blue);">
+                    <i class="fas fa-tags"></i> Agregar Categoría
+                </button>
+                
+                <button class="cta-button full-width" onclick="window.openDeleteCategoryList()" style="margin-top: 10px; background-color: #dc3545; border-color: #dc3545;">
+                    <i class="fas fa-trash"></i> Eliminar Categoría
+                </button>
+
+                <button id="dashboard-logout" class="logout-btn" style="margin-top: 10px;">Cerrar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="category-modal" class="modal-overlay">
+        <div class="modal-content login-box">
+            <span class="close-modal" onclick="closeModal('category-modal')">×</span>
+            <h3><i class="fas fa-tags"></i> Nueva Categoría</h3>
+            
+            <form id="category-form">
+                <div class="input-group">
+                    <label>Nombre de la Categoría:</label>
+                    <input type="text" id="cat-name" required placeholder="Ej: Neumática">
+                </div>
+
+                <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" id="has-subcategories" style="width: auto;">
+                    <label for="has-subcategories" style="margin: 0; font-size: 0.9rem; cursor: pointer;">¿Tiene sub-categorías?</label>
+                </div>
+            
+                <div id="subcategories-input-container" class="input-group" style="display: none; background: #f0f4f8; padding: 10px; border-radius: 5px;">
+                    <label>Sub-categorías (Separadas por coma):</label>
+                    <input type="text" id="cat-subs-list" placeholder="Ej: Presión, Inductivos, Capacitivos">
+                    <small style="color: #666; font-size: 0.8rem;">Escribe los nombres separados por comas.</small>
+                </div>
+                <button type="submit" class="cta-button full-width">Guardar Categoría</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="delete-list-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 style="text-align:center; color: var(--primary-dark);">Eliminar Producto</h2>
+            
+            <div style="position: relative; margin-bottom: 15px;">
+                <i class="fas fa-search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+                <input type="text" id="search-delete-product" placeholder="Buscar producto a borrar..." 
+                    style="width: 100%; padding: 10px 10px 10px 35px; border: 1px solid #ddd; border-radius: 5px;">
+            </div>
+
+            <div id="delete-list-container" style="max-height: 300px; overflow-y: auto;">
+            </div>
+            <button class="cta-button full-width" onclick="closeModal('delete-list-modal')" style="margin-top: 20px;">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="delete-category-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 style="text-align:center; color: var(--primary-dark); margin-bottom: 10px;">Eliminar Categoría</h2>
+            <p style="font-size: 0.85rem; color: #d9534f; text-align: center; margin-bottom: 15px; background: #fff3f3; padding: 10px; border-radius: 5px;">
+                <i class="fas fa-exclamation-triangle"></i> Advertencia: Borrar una categoría no elimina sus productos, pero quedarán sin categoría asignada.
+            </p>
+            
+            <div id="delete-category-container" style="max-height: 300px; overflow-y: auto;">
+            </div>
+            
+            <button class="cta-button full-width" onclick="closeModal('delete-category-modal')" style="margin-top: 20px;">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="modal-overlay">
+        <div class="modal-content admin-box">
+            <span class="close-modal" id="close-admin">×</span>
+            <div class="admin-header">
+                <h3><i class="fas fa-plus-circle"></i> Agregar Nuevo Producto</h3>
+            </div>
+            
+            <form id="product-form">
+                <div class="input-group">
+                    <label for="prod-name">Nombre del Producto:</label>
+                    <input type="text" id="prod-name" required placeholder="Ej: Sensor Inductivo M18">
+                </div>
+
+                <div class="input-group">
+                    <label for="prod-category">Categoría:</label>
+                    <select id="prod-category" required>
+                        <option value="">Cargando...</option>
+                    </select>
+                </div>
+
+                <div class="input-group" id="prod-sub-group" style="display: none;">
+                    <label for="prod-subcategory">Sub-Categoría (Opcional):</label>
+                    <select id="prod-subcategory">
+                        <option value="">Seleccione...</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="prod-desc">Descripción Técnica:</label>
+                    <textarea id="prod-desc" rows="4" placeholder="Ej: Voltaje 24V, Alcance 5mm, Salida PNP..." required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
+                 <div class="input-group">
+                    <label for="prod-image-file">Imagen del Producto:</label>
+                    <input type="file" id="prod-image-file" accept="image/*" required 
+                        style="padding: 10px; border: 1px solid #ddd; background: #f9f9f9; width: 100%;">
+                    <small style="color: #666;">Formatos recomendados: .webp, .jpg, .png</small>
+                </div>
+
+                <button type="submit" class="cta-button full-width">Agregar al Catálogo</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="cat-confirmation-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 400px; text-align: center; border-top: 5px solid var(--danger);">
+            <span class="close-modal" onclick="closeModal('cat-confirmation-modal')">×</span>
+            <h3 style="color: var(--danger); justify-content: center; font-size: 1.5rem;">
+                <i class="fas fa-trash-alt"></i> Eliminar Categoría
+            </h3>
+            <p style="margin-bottom: 20px; color: #555; font-size: 1.1rem;">
+                ¿Estás seguro de eliminar la categoría <b id="cat-delete-name"></b>?
+            </p>
+            <div style="background-color: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; font-size: 0.9rem; margin-bottom: 20px;">
+                <i class="fas fa-exclamation-triangle"></i> Los productos asociados <strong>NO</strong> se borrarán, pero quedarán sin categoría.
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="closeModal('cat-confirmation-modal')" class="cta-button" style="background-color: #ccc; color: #333; border: none;">Cancelar</button>
+                <button id="btn-confirm-cat-delete" class="cta-button" style="background-color: var(--danger); border: none;">¡Sí, eliminar!</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal-overlay">
+        <div class="modal-content admin-box">
+            <span class="close-modal" id="close-edit">×</span>
+            <div class="admin-header">
+                <h3><i class="fas fa-edit"></i> Editar Producto</h3>
+            </div>
+            
+            <form id="edit-form">
+                <input type="hidden" id="edit-id"> 
+                <div class="input-group">
+                    <label>Nombre del Producto:</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Categoría:</label>
+                    <select id="edit-category" required>
+                        <option value="">Cargando...</option>
+                    </select>
+                </div>
+
+                <div class="input-group" id="edit-sub-group" style="display: none;">
+                    <label for="edit-subcategory">Sub-Categoría:</label>
+                    <select id="edit-subcategory">
+                        <option value="">Seleccione...</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Descripción Técnica:</label>
+                    <textarea id="edit-desc" rows="4" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"></textarea>
+                </div>
+
+                 <div class="input-group">
+                    <label>Imagen del Producto:</label>
+                    
+                    <div style="margin-bottom: 10px; text-align: center;">
+                        <img id="edit-preview-img" src="" alt="Vista previa" 
+                            style="max-height: 120px; max-width: 100%; border-radius: 8px; border: 1px solid #ccc; display: none;">
+                    </div>
+
+                    <input type="file" id="edit-image-file" accept="image/*" 
+                        style="padding: 10px; border: 1px solid #ddd; background: #f9f9f9; width: 100%;">
+                    <small style="color: #666;">Deja esto vacío si no quieres cambiar la imagen actual.</small>
+                </div>
+
+                <button type="submit" class="cta-button full-width" style="background-color: var(--secondary);">Guardar Cambios</button>
+                <button type="button" id="btn-delete-product" class="cta-button full-width" style="background-color: var(--danger); margin-top: 10px;">Eliminar Producto</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="desc-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-modal" onclick="closeModal('desc-modal')">×</span>
+            <h3 id="desc-title" style="margin-bottom: 10px; color: var(--primary);">Nombre Producto</h3>
+            <div class="modal-body" style="margin-top: 15px; text-align: left;">
+                <p id="desc-text" style="white-space: pre-wrap; line-height: 1.6; color: #555; font-size: 0.95rem;"></p>
+            </div>
+            <button type="button" class="cta-button full-width" onclick="closeModal('desc-modal')" style="margin-top: 20px; background-color: #666;">Cerrar</button>
+        </div>
+    </div>
+
+    <a href="javascript:void(0)" id="cart-float" onclick="window.toggleCart()">
+        <div class="cart-icon-container">
+            <i class="fas fa-shopping-cart"></i> 
+            <span id="cart-count">0</span>
+        </div>
+    </a>
+
+    <div id="cart-modal" class="modal-overlay">
+        <div class="modal-content cart-box">
+            <span class="close-modal" onclick="toggleCart()">×</span>
+            <h3>Tu Cotización</h3>
+            <div id="cart-items" class="cart-items-list">
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total-row">
+                    <span>Estado:</span>
+                    <span id="cart-total">Pendiente</span>
+                </div>
+                <a href="#" id="whatsapp-btn" class="whatsapp-checkout-btn disabled" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Solicitar Cotización
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <div id="confirmation-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 350px; text-align: center;">
+            <span class="close-modal" onclick="closeModal('confirmation-modal')">×</span>
+            <h3 style="color: var(--danger); justify-content: center;">
+                <i class="fas fa-exclamation-triangle"></i> ¿Estás seguro?
+            </h3>
+            <p style="margin-bottom: 20px; color: #555;">Esta acción no se puede deshacer. ¿Deseas eliminar este producto permanentemente?</p>
+            
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="closeModal('confirmation-modal')" class="cta-button" style="background-color: #ccc; color: #333;">Cancelar</button>
+                <button id="btn-confirm-delete" class="cta-button" style="background-color: var(--danger);">¡Sí, borrar!</button>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="js/main.js"></script>
+
+    <div id="loader-transition" class="loader-hidden">
+    <img src="assets/transicion/_logo_sky.webp" alt="Logo Empresa" class="loader-logo">
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Selecciona el loader
+            const loader = document.getElementById('loader-transition');
+            
+            // 2. Selecciona los enlaces que quieres que tengan este efecto.
+            // Puedes ponerle una clase especifica a tus botones (ej: class="transition-link")
+            // O seleccionar todos los enlaces del menú.
+            const links = document.querySelectorAll('a[href]'); 
+
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const targetUrl = this.href;
+
+                    // Verificamos que sea un enlace interno y no abra en otra pestaña
+                    if (this.hostname === window.location.hostname && this.target !== "_blank" && !targetUrl.includes('#')) {
+                        
+                        e.preventDefault(); // Detenemos el cambio de página brusco
+                        
+                        // Mostramos la pantalla blanca
+                        loader.classList.remove('loader-hidden');
+                        loader.classList.add('loader-visible');
+
+                        // Esperamos un tiempo (ej. 1000ms = 1 segundo) antes de ir a la otra página
+                        setTimeout(function() {
+                            window.location.href = targetUrl;
+                        }, 1000); 
+                    }
+                });
+            });
+        });
+    </script>
+
+
+</div>
+</body>
+</html>

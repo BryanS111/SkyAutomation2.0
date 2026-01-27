@@ -35,10 +35,11 @@ let products = [];
 let categories = []; 
 let cart = [];
 let currentCategoryFilter = 'all';
+let currentSubCategoryFilter = 'all'; // RESTAURADO: Filtro de subcategoría [cite: 478]
 let currentUser = null; 
-let idToDelete = null; // Para confirmar borrado producto
+let idToDelete = null; 
 let currentSearchTerm = ''; 
-let catIdToDelete = null; // Para confirmar borrado categoría
+let catIdToDelete = null; 
 
 /* =========================================
    4. INICIALIZACIÓN
@@ -47,15 +48,14 @@ document.addEventListener('DOMContentLoaded', () => {
     subscribeToData(); 
     monitorAuthState();
     initEventListeners();
-    initScrollAnimations();
     
-    // --- ANIMACIÓN HERO ---
+    try { initScrollAnimations(); } catch(e) {}
+    
     const heroContent = document.querySelector('.hero-content');
     if (heroContent) {
         heroContent.classList.add('active-hero');
     }
 
-    // Inicializar carrusel de proyectos
     try { initProjectsCarousel(); } catch(e){ console.error("Error carrusel:", e); }
 });
 
@@ -64,6 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
 ========================================= */
 
 function subscribeToData() {
+    if (!document.getElementById('products-container')) return; 
+
     // 1. Productos
     const qProd = query(collection(db, "products"), orderBy("id", "desc"));
     onSnapshot(qProd, (snapshot) => {
@@ -74,12 +76,17 @@ function subscribeToData() {
         renderProducts();
     });
 
-    // 2. Categorías
+    // 2. Categorías (RESTAURADA LOGICA DE ARRAY SUBCATEGORÍAS)
     const qCat = query(collection(db, "categories"), orderBy("name", "asc"));
     onSnapshot(qCat, (snapshot) => {
         categories = [];
         snapshot.forEach((doc) => {
-            categories.push({ firestoreId: doc.id, ...doc.data() });
+            const data = doc.data();
+            categories.push({ 
+                firestoreId: doc.id, 
+                name: data.name,
+                subcategories: data.subcategories || [] // [cite: 525]
+            });
         });
         updateCategoryDropdowns(); 
     });
@@ -109,8 +116,6 @@ async function updateProductInDB(firestoreId, updatedData) {
 async function deleteProductFromDB(firestoreId) {
     try {
         await deleteDoc(doc(db, "products", firestoreId));
-        
-        // Si estábamos en la lista de borrar, refrescarla
         if(document.getElementById('delete-list-modal').style.display === 'flex'){
              openDeleteList(); 
         } else {
@@ -122,10 +127,13 @@ async function deleteProductFromDB(firestoreId) {
     }
 }
 
-// --- CRUD CATEGORÍAS ---
-async function addCategoryToDB(catName) {
+// --- CRUD CATEGORÍAS (RESTAURADO: Aceptar array de subcategorías) ---
+async function addCategoryToDB(catName, subCatsArray) {
     try {
-        await addDoc(collection(db, "categories"), { name: catName });
+        await addDoc(collection(db, "categories"), { 
+            name: catName,
+            subcategories: subCatsArray // 
+        });
         closeModal('category-modal');
         showToast("Categoría creada con éxito.", "success");
     } catch (e) {
@@ -139,7 +147,9 @@ async function addCategoryToDB(catName) {
 function monitorAuthState() {
     onAuthStateChanged(auth, (user) => {
         currentUser = user;
-        renderProducts(); // Refrescar para mostrar/ocultar lápices
+        if (document.getElementById('products-container')) {
+            renderProducts(); 
+        }
     });
 }
 
@@ -151,7 +161,6 @@ function loginAdmin(email, password) {
             showToast("¡Bienvenido de nuevo, Admin!", "success");
         })
         .catch((error) => {
-            console.error("Error de login:", error.code);
             if (error.code === 'auth/invalid-credential' || 
                 error.code === 'auth/user-not-found' || 
                 error.code === 'auth/wrong-password') {
@@ -173,59 +182,129 @@ function logoutAdmin() {
 }
 
 /* =========================================
-   7. RENDERIZADO (UI)
+   7. RENDERIZADO (UI) Y LÓGICA DE SUBCATEGORÍAS RESTAURADA
 ========================================= */
 
+// RESTAURADO: Helper para actualizar dropdown de subcategorías en Modales 
+window.updateModalSubcategories = (selectContext, categoryName, preSelectedSub = null) => {
+    let subGroup, subSelect;
+    
+    if (selectContext === 'add') {
+        subGroup = document.getElementById('prod-sub-group');
+        subSelect = document.getElementById('prod-subcategory');
+    } else {
+        subGroup = document.getElementById('edit-sub-group');
+        subSelect = document.getElementById('edit-subcategory');
+    }
+
+    const catObj = categories.find(c => c.name === categoryName);
+    
+    if (catObj && catObj.subcategories && catObj.subcategories.length > 0) {
+        subGroup.style.display = 'block';
+        subSelect.innerHTML = '<option value="">Seleccione Sub-Categoría...</option>' + 
+            catObj.subcategories.map(sub => `<option value="${sub}">${sub}</option>`).join('');
+        
+        if (preSelectedSub) subSelect.value = preSelectedSub;
+    } else {
+        subGroup.style.display = 'none';
+        subSelect.innerHTML = '<option value="">Default</option>';
+        subSelect.value = "";
+    }
+};
+
 function updateCategoryDropdowns() {
-    // 1. Selects de Modales
+    // 1. Selects de Modales (Solo Categoría Principal)
     const optionsHTML = `<option value="">Seleccione...</option>` + 
         categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
     
-    if(document.getElementById('prod-category')) document.getElementById('prod-category').innerHTML = optionsHTML;
-    if(document.getElementById('edit-category')) document.getElementById('edit-category').innerHTML = optionsHTML;
+    const prodCat = document.getElementById('prod-category');
+    const editCat = document.getElementById('edit-category');
+    
+    if(prodCat) prodCat.innerHTML = optionsHTML;
+    if(editCat) editCat.innerHTML = optionsHTML;
 
-    // 2. Select Principal (Catálogo)
+    // 2. Select Principal (Catálogo Público)
     const mainSelect = document.getElementById('mobile-category-select');
+    
     if(mainSelect) {
+        // Guardar selección actual
+        const currentVal = mainSelect.value;
+        
         let mobileHtml = `<option value="all">Ver Todo el Catálogo</option>`;
         categories.forEach(cat => {
-            mobileHtml += `<option value="${cat.name}"> ${cat.name}</option>`;
+            mobileHtml += `<option value="${cat.name}">${cat.name}</option>`;
         });
         mainSelect.innerHTML = mobileHtml;
+        
+        // Restaurar valor
+        if(currentVal && currentVal !== 'all') mainSelect.value = currentVal;
 
         mainSelect.onchange = (e) => {
-            currentCategoryFilter = e.target.value;
-            renderProducts();
-            showToast(`Filtrando por: ${currentCategoryFilter === 'all' ? 'Todo' : currentCategoryFilter}`, 'info');
+            window.handlePublicCategoryChange(e.target.value);
         };
     }
 }
 
+// RESTAURADO: Manejo dinámico de Subcategorías en Catálogo [cite: 629]
+window.handlePublicCategoryChange = (categoryName) => {
+    currentCategoryFilter = categoryName;
+    currentSubCategoryFilter = 'all'; // Resetear subfiltro
+    
+    const subContainer = document.getElementById('sub-cat-filter-container');
+    const subSelect = document.getElementById('mobile-subcategory-select');
+    
+    const selectedCatObj = categories.find(c => c.name === categoryName);
+    
+    if (selectedCatObj && selectedCatObj.subcategories && selectedCatObj.subcategories.length > 0) {
+        subContainer.style.display = 'block';
+        subSelect.innerHTML = '<option value="all">Ver todas las subcategorías</option>' + 
+            selectedCatObj.subcategories.map(sub => `<option value="${sub}">${sub}</option>`).join('');
+    } else {
+        subContainer.style.display = 'none';
+        subSelect.innerHTML = '<option value="all">Default</option>';
+    }
+    
+    // Listener para el filtro de subcategoría
+    if(subSelect) {
+        subSelect.onchange = (e) => {
+            currentSubCategoryFilter = e.target.value;
+            renderProducts();
+        };
+    }
+    
+    renderProducts();
+};
+
 function renderProducts() {
     const container = document.getElementById('products-container');
-    
-    // Lógica de filtrado
+    if (!container) return; 
+
+    // Lógica de filtrado AUMENTADA [cite: 650]
     const filtered = products.filter(p => {
-        // 1. Chequeamos Categoría
+        // 1. Categoría Principal
         const matchesCategory = currentCategoryFilter === 'all' || p.category === currentCategoryFilter;
         
-        // 2. Chequeamos Texto (Buscador)
+        // 2. Subcategoría (Si no es 'all', debe coincidir) [cite: 655]
+        const matchesSubCategory = currentSubCategoryFilter === 'all' || p.subcategory === currentSubCategoryFilter;
+
+        // 3. Buscador (Incluye búsqueda por subcategoría) 
         const term = currentSearchTerm.toLowerCase();
         const matchesSearch = p.name.toLowerCase().includes(term) || 
                               (p.description && p.description.toLowerCase().includes(term)) ||
-                              (p.category && p.category.toLowerCase().includes(term));
+                              (p.category && p.category.toLowerCase().includes(term)) ||
+                              (p.subcategory && p.subcategory.toLowerCase().includes(term));
         
-        return matchesCategory && matchesSearch;
+        return matchesCategory && matchesSubCategory && matchesSearch;
     });
         
     if (filtered.length === 0) {
         container.innerHTML = `<div style="text-align:center; padding: 40px; width: 100%;">
-            <p style="color: #666; font-size: 1.2rem;">No se encontraron productos.</p>
+            <p style="color: #666; font-size: 1.2rem;">No se encontraron productos con estos filtros.</p>
         </div>`;
         return;
     }
 
-    // Renderizado
+    // Renderizado con Subcategoría visible 
     container.innerHTML = filtered.map(p => `
         <div class="product-card fade-in" style="position: relative;">
             ${currentUser ? `
@@ -238,7 +317,9 @@ function renderProducts() {
                 <img src="${p.image}" class="product-img" onerror="this.src='https://dummyimage.com/300x220/ccc/000&text=Sin+Imagen'">
             </div>
             <div class="product-info">
-                <span class="product-category">${p.category}</span>
+                <span class="product-category">
+                    ${p.category} ${p.subcategory ? `<i class="fas fa-chevron-right" style="font-size:0.7em; margin:0 3px;"></i> ${p.subcategory}` : ''}
+                </span>
                 <h3 class="product-title">${p.name}</h3>
                 <div class="product-footer" style="display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 10px;">
                      <button class="desc-link" onclick="window.openDescModal('${p.firestoreId}')">Descripción</button>
@@ -255,6 +336,8 @@ function renderProducts() {
 
 window.openDeleteList = (filterText = '') => {
     const container = document.getElementById('delete-list-container');
+    if (!container) return;
+
     const term = filterText.toLowerCase();
     
     const list = products.filter(p => 
@@ -295,8 +378,10 @@ window.openEditModal = (id) => {
     document.getElementById('edit-category').value = p.category;
     document.getElementById('edit-desc').value = p.description || '';
     
+    // RESTAURADO: Activar lógica de subcategoría para editar [cite: 758]
+    window.updateModalSubcategories('edit', p.category, p.subcategory);
+
     // --- LÓGICA DE IMAGEN EN EDICIÓN ---
-    // Mostramos la imagen actual
     const preview = document.getElementById('edit-preview-img');
     const fileInput = document.getElementById('edit-image-file');
     
@@ -304,10 +389,8 @@ window.openEditModal = (id) => {
         preview.src = p.image || ''; 
         preview.style.display = 'inline-block';
     }
-    // Limpiamos el input de archivo por si tenía algo seleccionado antes
     if(fileInput) fileInput.value = ""; 
     
-    // Configurar botón de eliminar
     document.getElementById('btn-delete-product').onclick = () => window.askDeleteConfirmation(id);
     openModal('edit-modal');
 };
@@ -327,12 +410,18 @@ window.askDeleteConfirmation = (id) => {
     openModal('confirmation-modal');
 };
 
-window.closeModal = (id) => document.getElementById(id).style.display = 'none';
-window.openModal = (id) => document.getElementById(id).style.display = 'flex';
+window.closeModal = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+};
+window.openModal = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'flex';
+};
 
 window.toggleCart = () => {
     const m = document.getElementById('cart-modal');
-    m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+    if (m) m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
 };
 
 window.addToCart = (id) => {
@@ -341,11 +430,10 @@ window.addToCart = (id) => {
         cart.push(p);
         updateCartUI();
 
-        // Animación carrito
         const cartFloat = document.getElementById('cart-float');
         if(cartFloat){
             cartFloat.classList.remove('cart-spin');
-            void cartFloat.offsetWidth; // Trigger reflow
+            void cartFloat.offsetWidth; 
             cartFloat.classList.add('cart-spin');
             setTimeout(() => cartFloat.classList.remove('cart-spin'), 700);
         }
@@ -356,8 +444,12 @@ window.addToCart = (id) => {
 window.removeFromCart = (i) => { cart.splice(i, 1); updateCartUI(); };
 
 function updateCartUI() {
-    document.getElementById('cart-count').innerText = cart.length;
+    const countEl = document.getElementById('cart-count');
     const container = document.getElementById('cart-items');
+    
+    if (!countEl || !container) return;
+
+    countEl.innerText = cart.length;
     
     if(cart.length === 0) {
         container.innerHTML = "<p>Tu lista de cotización está vacía.</p>";
@@ -377,7 +469,9 @@ function updateCartUI() {
         document.getElementById('cart-total').innerText = "Por Cotizar";
         
         let msg = "Hola Sky Automation, me gustaría solicitar una cotización formal por los siguientes equipos:%0A%0A";
-        cart.forEach(p => { msg += `- ${p.name} (Cat: ${p.category})%0A`; });
+        cart.forEach(p => { 
+            msg += `- ${p.name} (Cat: ${p.category}${p.subcategory ? ' - ' + p.subcategory : ''})%0A`; 
+        });
         msg += `%0A¿Podrían brindarme precios y disponibilidad?`;
 
         document.getElementById('whatsapp-btn').href = `https://wa.me/${whatsappNumber}?text=${msg}`;
@@ -385,16 +479,22 @@ function updateCartUI() {
     }
 }
 
-// --- NUEVA: Abrir lista de eliminar Categorías ---
+// --- Lista de eliminar Categorías (RESTAURADA con conteo de subcategorías) ---
 window.openDeleteCategoryList = () => {
     const container = document.getElementById('delete-category-container');
+    if (!container) return;
     
     if (categories.length === 0) {
         container.innerHTML = "<p style='text-align:center;'>No hay categorías creadas.</p>";
     } else {
         container.innerHTML = categories.map(c => `
             <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #eee;">
-                <span style="font-weight:500;">${c.name}</span>
+                <div>
+                    <span style="font-weight:500;">${c.name}</span>
+                    ${c.subcategories && c.subcategories.length > 0 
+                        ? `<br><small style="color:#666; font-size:0.8em;">Subs: ${c.subcategories.length}</small>` 
+                        : ''}
+                </div>
                 <button onclick="window.deleteCategoryConfirm('${c.firestoreId}', '${c.name}')" 
                         style="background: white; border: 1px solid #dc3545; color:#dc3545; padding:5px 10px; border-radius:4px; cursor:pointer; transition:0.3s;">
                     <i class="fas fa-trash"></i>
@@ -417,6 +517,22 @@ window.deleteCategoryConfirm = (id, name) => {
    8. LISTENERS GENERALES
 ========================================= */
 function initEventListeners() {
+    
+    // RESTAURADO: Listeners para cambios en SELECTS de Filtro (Catálogo) [cite: 842]
+    const prodCatSelect = document.getElementById('prod-category');
+    if(prodCatSelect) {
+        prodCatSelect.addEventListener('change', (e) => {
+            window.updateModalSubcategories('add', e.target.value);
+        });
+    }
+
+    const editCatSelect = document.getElementById('edit-category');
+    if(editCatSelect) {
+        editCatSelect.addEventListener('change', (e) => {
+            window.updateModalSubcategories('edit', e.target.value);
+        });
+    }
+
     // Menú móvil
     const menuToggle = document.getElementById('mobile-menu');
     if(menuToggle) {
@@ -434,7 +550,8 @@ function initEventListeners() {
                 if(target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
-                document.getElementById('nav-list').classList.remove('active');
+                const navList = document.getElementById('nav-list');
+                if(navList) navList.classList.remove('active');
             }
         });
     });
@@ -466,17 +583,39 @@ function initEventListeners() {
         });
     }
 
-    // Agregar Categoría
+    // RESTAURADO: Submit Agregar Categoría con lógica de subcategorías [cite: 839]
     const catForm = document.getElementById('category-form');
     if(catForm) {
+        // Toggle del input de subcategorías
+        const checkSub = document.getElementById('has-subcategories');
+        const subInputContainer = document.getElementById('subcategories-input-container');
+        
+        if (checkSub && subInputContainer) {
+            checkSub.addEventListener('change', () => {
+                subInputContainer.style.display = checkSub.checked ? 'block' : 'none';
+            });
+        }
+
         catForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            addCategoryToDB(document.getElementById('cat-name').value);
+            const name = document.getElementById('cat-name').value;
+            let subCats = [];
+            
+            // Convertir "a, b, c" en ["a", "b", "c"] limpiando espacios 
+            if(checkSub && checkSub.checked) {
+                const rawSubs = document.getElementById('cat-subs-list').value;
+                subCats = rawSubs.split(',').map(s => s.trim()).filter(s => s.length > 0);
+            }
+            
+            addCategoryToDB(name, subCats);
             e.target.reset();
+            
+            if(checkSub) checkSub.checked = false;
+            if(subInputContainer) subInputContainer.style.display = 'none';
         });
     }
 
-    // --- AGREGAR PRODUCTO (CON CLOUDINARY) ---
+    // --- AGREGAR PRODUCTO (CON CLOUDINARY + SUBCAT) ---
     const prodForm = document.getElementById('product-form');
     if(prodForm) {
         prodForm.addEventListener('submit', async (e) => {
@@ -490,6 +629,7 @@ function initEventListeners() {
             try {
                 const name = document.getElementById('prod-name').value;
                 const category = document.getElementById('prod-category').value;
+                const subcategory = document.getElementById('prod-subcategory').value; // RESTAURADO [cite: 847]
                 const desc = document.getElementById('prod-desc').value;
                 const fileInput = document.getElementById('prod-image-file');
                 const file = fileInput.files[0];
@@ -505,6 +645,7 @@ function initEventListeners() {
                     id: Date.now(),
                     name: name,
                     category: category,
+                    subcategory: subcategory || "", // Guardar vacío si no hay
                     description: desc,
                     image: imageUrl
                 });
@@ -521,7 +662,7 @@ function initEventListeners() {
         });
     }
 
-    // --- EDITAR PRODUCTO (CON CLOUDINARY) ---
+    // --- EDITAR PRODUCTO (CON CLOUDINARY + SUBCAT) ---
     const editForm = document.getElementById('edit-form');
     if(editForm) {
         editForm.addEventListener('submit', async (e) => {
@@ -549,6 +690,7 @@ function initEventListeners() {
                 await updateProductInDB(id, {
                     name: document.getElementById('edit-name').value,
                     category: document.getElementById('edit-category').value,
+                    subcategory: document.getElementById('edit-subcategory').value, // RESTAURADO [cite: 851]
                     description: document.getElementById('edit-desc').value,
                     image: imageUrl
                 });
@@ -659,6 +801,8 @@ function initScrollAnimations() {
 ========================================= */
 window.showToast = (message, type = 'info') => {
     const container = document.getElementById('toast-container');
+    if (!container) return; 
+
     const toast = document.createElement('div');
     toast.classList.add('toast', type);
     
@@ -755,7 +899,6 @@ function initProjectsCarousel(){
         });
     });
 
-    // Teclado
     document.addEventListener('keydown', (e) => {
         const rect = panel.getBoundingClientRect();
         if(rect.top < window.innerHeight && rect.bottom > 0) {
@@ -764,7 +907,6 @@ function initProjectsCarousel(){
         }
     });
 
-    // Swipe móvil
     let touchStartX = null;
     const threshold = 50;
 
