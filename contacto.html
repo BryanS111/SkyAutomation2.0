@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | Sky Automation</title>
+    <link rel="icon" href="assets/logo_favicon_.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+<body class="corporate-body">
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 12px;">
+                    <img src="assets/logo_favicon_.svg" alt="Logotipo Sky Automation" class="header-logo-img">
+                    <span style="color:white;">SKY <span class="logo-accent">AUTOMATION</span></span>
+                </a>
+            </div>
+            <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars text-white"></i></div>
+            <nav>
+                <ul class="nav-list" id="nav-list">
+                    <li><a href="index.html" class="nav-link text-white">Inicio</a></li>
+                    <li><a href="sobre-nosotros.html" class="nav-link text-white">Sobre Nosotros</a></li>
+                    <li><a href="servicios.html" class="nav-link text-white">Servicios</a></li>
+                    <li><a href="proyectos.html" class="nav-link text-white">Proyectos</a></li>
+                    <li><a href="catalogo.html" class="nav-link text-white">Catálogo</a></li>
+                    <li><a href="#" class="nav-link active-link">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contact-main-wrapper">
+
+        <!--colocamos un texto link para volver a la web principal-->
+        <div class="mobile-back-container">
+            <a href="index.html" class="btn-volver">Volver a la web principal</a>
+        </div>
+        
+        <section class="page-header">
+            <div class="container">
+                <span class="sub-tag">Hablemos de negocios</span>
+                <h1 style="color: var(--primary-dark);">Contacto</h1>
+                <div class="header-line"></div>
+            </div>
+        </section>
+
+        <section class="contact-interface">
+            <div class="container">
+                <div class="corporate-grid">
+                    <div class="info-sidebar">
+                        <h3>Información de Contacto</h3>
+                        <p class="info-intro">Estamos disponibles para discutir sus proyectos de automatización e ingeniería.</p>
+                        
+                        <div class="info-list">
+                            <div class="info-block">
+                                <div class="icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+                                <div>
+                                    <label>Ubicación</label>
+                                    <span>Nuevo Lourdes poniente, Senda el Limón<br>Polígono L casa #6, Lourdes Colón</span>
+                                </div>
+                            </div>
+
+                            <div class="info-block">
+                                <div class="icon-circle"><i class="fas fa-phone"></i></div>
+                                <div>
+                                    <label>Llámanos</label>
+                                    <span>+503 7873 1475</span>
+                                </div>
+                            </div>
+
+                            <div class="info-block">
+                                <div class="icon-circle"><i class="fas fa-envelope"></i></div>
+                                <div>
+                                    <label>Correo Electrónico</label>
+                                    <span>sky.automation.sv@gmail.com</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-footer">
+                            <center><label style="color: var(--accent-cyan); margin-bottom: 10px; display: block;">¿NECESITAS RESPUESTA RÁPIDA?</label></center>
+                            <center><p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">
+                                Contáctate a nuestro WhatsApp para comunicación inmediata.
+                            </p></center>
+                            <a href="https://wa.me/50378731475" target="_blank" class="whatsapp-btn-large">
+                                <i class="fab fa-whatsapp"></i> Chat Directo
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="form-container">
+                        <h3>Envíenos un mensaje</h3>
+                        
+                        <form id="contact-form">
+                            <div class="input-grid">
+                                <div class="field-wrapper">
+                                    <label for="from_name">Nombre Completo</label>
+                                    <input type="text" name="from_name" id="from_name" placeholder="Ej: Juan Pérez" required>
+                                </div>
+                                <div class="field-wrapper">
+                                    <label for="company_id">Empresa</label>
+                                    <input type="text" name="company_id" id="company_id" placeholder="Ej: Industrias S.A.">
+                                </div>
+                            </div>
+
+                            <div class="input-grid">
+                                <div class="field-wrapper">
+                                    <label for="email_id">Correo Electrónico</label>
+                                    <input type="email" name="email_id" id="email_id" placeholder="correo@empresa.com" required>
+                                </div>
+                                <div class="field-wrapper">
+                                    <label for="phone_id">Teléfono</label>
+                                    <input type="tel" name="phone_id" id="phone_id" placeholder="+503 0000 0000">
+                                </div>
+                            </div>
+
+                            <div class="field-wrapper radio-section">
+                                <label>Preferencia de contacto</label>
+                                <div class="radio-options">
+                                    <label class="custom-radio">
+                                        <input type="radio" name="contact_method" value="Correo" checked>
+                                        <span class="radio-mark"></span>
+                                        Correo
+                                    </label>
+                                    <label class="custom-radio">
+                                        <input type="radio" name="contact_method" value="WhatsApp">
+                                        <span class="radio-mark"></span>
+                                        WhatsApp
+                                    </label>
+                                    <label class="custom-radio">
+                                        <input type="radio" name="contact_method" value="Llamada">
+                                        <span class="radio-mark"></span>
+                                        Llamada
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="field-wrapper">
+                                <label for="message">Mensaje</label>
+                                <textarea name="message" id="message" rows="4" placeholder="¿En qué podemos ayudarle?" required></textarea>
+                            </div>
+
+                            <div class="form-footer">
+                                <input type="submit" id="button-send" value="ENVIAR MENSAJE" class="submit-btn-minimal">
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!--agregamos el mapa (google maps)-->
+        <section class="map-section">
+            <div class="container">
+                <h1 style="color: var(--primary-dark);">Encuéntrenos aquí</h21>
+                <br>
+                <div class="map-wrapper">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3875.8706751421423!2d-89.38829652491023!3d13.7262785866629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTPCsDQzJzM0LjYiTiA4OcKwMjMnMDguNiJX!5e0!3m2!1ses!2ssv!4v1769920032731!5m2!1ses!2ssv"
+                        width="100%" height="400" style="border:10px solid var(--primary-dark); border-radius: 5px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+             <div class="footer-logo">
+                WEBSITE DESIGNED BY <span class="logo-accent">COGNETIX INNOVATION</span>
+            </div>
+            <p>© 2026 Sky Automation. Excelencia Técnica.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('mobile-menu').addEventListener('click', () => {
+           document.getElementById('nav-list').classList.toggle('active');
+       });
+    </script>
+    <script src="js/email.js"></script> 
+    <div id="toast-container"></div>
+</body>
+</html>

@@ -164,9 +164,9 @@ function loginAdmin(email, password) {
             if (error.code === 'auth/invalid-credential' || 
                 error.code === 'auth/user-not-found' || 
                 error.code === 'auth/wrong-password') {
-                showToast("⚠️ Credenciales no autorizadas", "error");
+                showToast("Credenciales no autorizadas", "error");
             } else if (error.code === 'auth/too-many-requests') {
-                showToast("⏳ Demasiados intentos. Espera un momento.", "error");
+                showToast("Demasiados intentos. Espera un momento.", "error");
             } else {
                 showToast("Error de acceso: " + error.message, "error");
             }
