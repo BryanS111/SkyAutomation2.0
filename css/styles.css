@@ -535,7 +535,7 @@ header {
 }
 
 .catalog-header { text-align: center; margin-bottom: 1.5rem; border: none; }
-.catalog-header h2 { font-size: 2rem; }
+.catalog-header h1 { padding: 0 0 12px 0; }
 
 /* Grid de Productos */
 .products-grid {
@@ -1592,10 +1592,10 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
 
 /* --- HEADER DE SECCIÓN SIMPLE --- */
 .page-header {
-    padding: 20px 0 30px 0;;
+    padding: 10px 0 30px 0;;
 }
 .page-header h1 {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 700;
     color: white;
     margin: 5px 0 10px 0;
@@ -1609,9 +1609,8 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
 }
 .header-line {
     width: 60px;
-    height: 4px;
+    height: 3.5px;
     background-color: var(--accent-cyan);
-    border-radius: 2px;
 }
 
 /* --- GRID PRINCIPAL --- */
@@ -1829,14 +1828,47 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
     transform: translateY(-2px);
 }
 
-/* Responsive */
+/* =========================================
+   CORRECCIÓN RESPONSIVE FORMULARIO
+   ========================================= */
 @media (max-width: 900px) {
+    
+    /* 1. Apilamos las columnas verticalmente */
     .corporate-grid {
         flex-direction: column;
+        width: 100%; /* Aseguramos que no exceda el ancho */
+        margin-bottom: 30px;
     }
+
+    /* 2. Ajustamos la barra lateral (Info) */
+    .info-sidebar {
+        min-width: auto; /* Quitamos el ancho mínimo obligatorio */
+        width: 100%;     /* Que ocupe el ancho disponible */
+        padding: 30px 18px; /* Reducimos padding lateral para ganar espacio */
+    }
+
+    /* 3. Ajustamos el contenedor del formulario (EL CULPABLE PRINCIPAL) */
+    .form-container {
+        min-width: auto; /* IMPORTANTE: Quitamos el min-width de 350px */
+        width: 100%;
+        padding: 30px 20px; /* Bajamos el padding de 50px/40px a algo más móvil */
+    }
+
+    /* 4. Inputs uno debajo del otro */
     .input-grid {
         flex-direction: column;
-        gap: 0;
+        gap: 15px; /* Mantenemos un espacio vertical entre inputs */
+    }
+    
+    /* Ajuste extra para que los campos no se peguen a los bordes */
+    .field-wrapper {
+        margin-bottom: 15px;
+    }
+    
+    /* Título más pequeño en móvil */
+    .form-container h3 {
+        font-size: 1.3rem;
+        text-align: center;
     }
 }
 /* --- NUEVO BOTÓN WHATSAPP EN CONTACTO --- */
@@ -1918,24 +1950,14 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
 /* --- SECCIÓN CTA EN INDEX (LLAMADA A LA ACCIÓN) --- */
 .cta-banner {
     background: var(--bg-dark); /* Tu azul corporativo */
-    padding: 60px 0;
-    margin-top: 50px;
+    padding: 30px 0;
+    margin-top: 10px;
     position: relative;
     overflow: hidden;
     border-top: 2px solid var(--accent-cyan); /* Línea de acento arriba */
 }
 
-/* Efecto decorativo de fondo (opcional, una luz sutil) */
-.cta-banner::before {
-    content: '';
-    position: absolute;
-    top: -50%; left: -10%;
-    width: 300px; height: 300px;
-    background: var(--accent-cyan);
-    filter: blur(150px);
-    opacity: 0.1;
-    pointer-events: none;
-}
+
 
 .cta-content {
     display: flex;
