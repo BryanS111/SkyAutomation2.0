@@ -1,4 +1,58 @@
 /* =========================================
+   CORRECCIÓN SERVICIOS: PC ANCHO + MÓVIL RESPONSIVE
+   ========================================= */
+
+/* 1. Centrado General del Contenedor */
+.tech-section .container {
+    max-width: 1200px;
+    width: 85%;
+    margin: 0 auto !important; /* Centrado automático */
+    padding: 0 10px;
+}
+
+.section-title {
+    text-align: center;
+}
+
+/* 2. CONFIGURACIÓN GRID PARA PC (Tarjetas Anchas) */
+.tech-modules-grid {
+    display: grid;
+    /* En PC forzamos columnas de mínimo 500px. 
+       Esto hará que solo quepan 2 tarjetas por fila = TARJETAS ANCHAS */
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); 
+    gap: 40px; /* Un poco más de espacio entre tarjetas para que respiren */
+    justify-content: center;
+}
+
+/* 3. Módulos que ocupan todo el ancho (Venta y Formación) */
+.wide-module {
+    grid-column: 1 / -1; 
+}
+
+/* 4. MEDIA QUERY: SOLO PARA CELULARES (Pantallas < 768px) */
+@media (max-width: 768px) {
+    .tech-modules-grid {
+        /* En móvil forzamos 1 sola columna para que se vea bien */
+        grid-template-columns: 1fr; 
+        gap: 20px;
+    }
+
+    /* En móvil, los módulos anchos se comportan como normales */
+    .wide-module {
+        grid-column: auto;
+    }
+}
+
+/* 5. Botón volver centrado */
+.mobile-back-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+
+
+/* =========================================
    CORRECCIÓN RESPONSIVE HEADER - VERSION 2
    ========================================= */
 
@@ -1832,7 +1886,7 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
 }
 /* --- SECCIÓN CTA EN INDEX (LLAMADA A LA ACCIÓN) --- */
 .cta-banner {
-    background: linear-gradient(135deg, #0A2342 0%, #051024 100%); /* Tu azul corporativo */
+    background: var(--bg-dark); /* Tu azul corporativo */
     padding: 60px 0;
     margin-top: 50px;
     position: relative;

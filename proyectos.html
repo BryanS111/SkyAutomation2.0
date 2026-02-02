@@ -185,5 +185,41 @@
             document.getElementById('nav-list').classList.toggle('active');
         });
     </script>
+
+    <div id="loader-transition" class="loader-hidden">
+    <img src="assets/transicion/_logo_sky.webp" alt="Logo Empresa" class="loader-logo">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Selecciona el loader
+            const loader = document.getElementById('loader-transition');
+            
+            // 2. Selecciona los enlaces que quieres que tengan este efecto.
+            // Puedes ponerle una clase especifica a tus botones (ej: class="transition-link")
+            // O seleccionar todos los enlaces del menú.
+            const links = document.querySelectorAll('a[href]'); 
+
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const targetUrl = this.href;
+
+                    // Verificamos que sea un enlace interno y no abra en otra pestaña
+                    if (this.hostname === window.location.hostname && this.target !== "_blank" && !targetUrl.includes('#')) {
+                        
+                        e.preventDefault(); // Detenemos el cambio de página brusco
+                        
+                        // Mostramos la pantalla blanca
+                        loader.classList.remove('loader-hidden');
+                        loader.classList.add('loader-visible');
+
+                        // Esperamos un tiempo (ej. 1000ms = 1 segundo) antes de ir a la otra página
+                        setTimeout(function() {
+                            window.location.href = targetUrl;
+                        }, 1000); 
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
