@@ -1,3 +1,100 @@
+/* =========================================
+   CORRECCIÓN RESPONSIVE HEADER - VERSION 2
+   ========================================= */
+
+/* 1. Ajuste base del Header */
+header {
+    position: relative;
+    z-index: 1000;
+    background-color: var(--primary-dark, #0A2342); /* Asegura fondo oscuro siempre */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px; /* Altura fija para evitar saltos */
+    padding: 0 20px;
+}
+
+/* 2. Botón Hamburguesa (Visible solo en móvil) */
+.menu-toggle {
+    display: none;
+    font-size: 1.8rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* --- MEDIA QUERY: MÓVILES (Menos de 768px) --- */
+@media (max-width: 768px) {
+    
+    /* Mostrar botón hamburguesa */
+    .menu-toggle {
+        display: block;
+    }
+
+    /* Ocultar el menú normal y prepararlo para desplegarse */
+    .nav-list {
+        /* FLOTAR: Esto evita el bloque blanco que empuja el contenido */
+        position: absolute; 
+        top: 70px; /* Justo debajo del header (altura del header) */
+        left: 0;
+        width: 100%;
+        
+        /* FONDO: Color sólido obligatorio para que no sea transparente/blanco */
+        background-color: #0A2342; 
+        
+        /* Oculto por defecto */
+        display: none; 
+        
+        /* Diseño vertical */
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5); /* Sombra para profundidad */
+        z-index: 9999;
+    }
+
+    /* Clase que activa el JS para mostrar el menú */
+    .nav-list.active {
+        display: flex; /* Se muestra solo cuando tiene esta clase */
+    }
+
+    /* Estilo de los enlaces en móvil */
+    .nav-list li {
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .nav-list a {
+        display: block;
+        padding: 10px;
+        font-size: 1.2rem;
+        color: white !important; /* Fuerza color blanco */
+    }
+}
+
+/* =========================================
+   ALINEACIÓN DERECHA (SOLO PC)
+   ========================================= */
+@media (min-width: 769px) {
+    /* Seleccionamos la etiqueta <nav> que contiene la lista */
+    nav {
+        margin-left: auto; /* Esto empuja el menú hacia la derecha al máximo */
+    }
+
+    /* Opcional: Si sientes que está muy pegado al borde de la pantalla */
+    .header-container {
+        padding-right: 5px; /* Ajusta este valor si quieres un poco de aire a la derecha */
+    }
+}
+
+
+
+
+
 /* --- 1. VARIABLES & RESET --- */
 :root {
     /* Paleta Corporativa Sky Automation */
@@ -226,6 +323,7 @@ header {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 0px;
 }
 
 .logo {
@@ -233,12 +331,13 @@ header {
     font-size: 1.5rem; font-weight: 800;
     color: var(--bg-white); letter-spacing: 1px;
     text-decoration: none;
+    margin-right: auto;
 }
 
-.header-logo-img { height: 45px; width: auto; object-fit: contain; }
+.header-logo-img { height: 45px; width: auto; object-fit: contain;}
 .logo-accent { color: var(--accent-cyan); }
 
-.nav-list { list-style: none; display: flex; gap: 25px; align-items: center; }
+.nav-list { list-style: none; display: flex; gap: 25px; align-items: center; justify-content: right; }
 .nav-link {
     color: var(--bg-white); text-decoration: none;
     font-weight: 500; font-size: 0.95rem;
