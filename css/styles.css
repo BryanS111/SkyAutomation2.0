@@ -1,7 +1,15 @@
 /* =========================================
+   OCULTAR IMAGEN PROYECTOS EN MÓVIL
+   ========================================= */
+@media (max-width: 768px) {
+    /* Seleccionamos la columna de la imagen dentro de la sección de proyectos */
+    #projects-summary .col-img {
+        display: none !important; /* !important fuerza el ocultamiento sobre los estilos en línea */
+    }
+}
+/* =========================================
    CORRECCIÓN SERVICIOS: PC ANCHO + MÓVIL RESPONSIVE
    ========================================= */
-
 /* 1. Centrado General del Contenedor */
 .tech-section .container {
     max-width: 1200px;
@@ -95,18 +103,22 @@ header {
         left: 0;
         width: 100%;
         
-        /* FONDO: Color sólido obligatorio para que no sea transparente/blanco */
-        background-color: #0A2342; 
+        background-color: rgba(10, 35, 66, 0.85); 
         
+        /* 2. Blur: Esto difumina lo que está DETRÁS del menú */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px); /* Obligatorio para que funcione en iPhone/Safari */
+
         /* Oculto por defecto */
         display: none; 
         
         /* Diseño vertical */
         flex-direction: column;
         align-items: center;
-        padding: 20px 0;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.5); /* Sombra para profundidad */
+        padding: 30px 0; /* Le di un poco más de aire arriba y abajo */
+        border-top: 1px solid rgba(255,255,255,0.1); /* Línea sutil arriba */
+        border-bottom: 1px solid rgba(255,255,255,0.05); /* Línea sutil abajo (opcional) */
+        box-shadow: 0 15px 30px rgba(0,0,0,0.4); /* Sombra un poco más suave */
         z-index: 9999;
     }
 
@@ -683,12 +695,31 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
 
 @media (max-width: 768px) {
     .menu-toggle { display: block; }
+    
     .nav-list {
-        position: fixed; top: var(--header-height); left: 0; width: 100%;
-        background-color: var(--primary-dark); flex-direction: column;
-        padding: 2rem 0; gap: 1.5rem; transform: translateY(-150%);
-        transition: transform 0.4s ease-in-out; box-shadow: var(--shadow-lg); z-index: 999;
+        position: fixed; 
+        top: var(--header-height); 
+        left: 0; 
+        width: 100%;
+        
+        /* === AQUÍ ESTÁ EL CAMBIO (Glassmorphism) === */
+        /* Quitamos var(--primary-dark) solido y ponemos esto: */
+        background-color: rgba(10, 35, 66, 0.65); /* Tu azul con 85% opacidad */
+        backdrop-filter: blur(12px);              /* Desenfoque del fondo */
+        -webkit-backdrop-filter: blur(12px);      /* Soporte para iPhone */
+        /* =========================================== */
+        
+        flex-direction: column;
+        padding: 2rem 0; 
+        gap: 0rem; 
+        
+        /* Mantenemos tu animación original */
+        transform: translateY(-150%);
+        transition: transform 0.4s ease-in-out; 
+        box-shadow: var(--shadow-lg); 
+        z-index: 999;
     }
+    
     .nav-list.active { transform: translateY(0); }
     .idp-button { width: 80%; justify-content: center; margin: 0 auto; }
     
@@ -696,7 +727,7 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
     .two-col { grid-template-columns: 1fr; }
     .catalog-section-padding { padding: 1rem 0; }
     
-    .catalog-filter-container { width: 100%; } /* Select ocupa todo el ancho en móvil */
+    .catalog-filter-container { width: 100%; }
 }
 
 
@@ -801,7 +832,7 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
     .project-card{ flex-direction:column; }
     .project-image{ width:100%; }
     .project-image img{ height:220px; }
-    .project-title{ font-size:32px; text-align:center; }
+    .project-title{ font-size:32px; text-align:left; }
     .project-info{ padding:16px 0; text-align:center; }
     .project-nav.prev{ left:8px; }
     .project-nav.next{ right:8px; }
