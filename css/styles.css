@@ -1620,7 +1620,6 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
     background: #0f172a; /* Color de tarjeta suave */
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     margin-bottom: 60px;
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -1833,6 +1832,13 @@ footer { background: #061629; padding: 3rem 0; text-align: center; color: var(--
    ========================================= */
 @media (max-width: 900px) {
     
+    .contact-interface .container {
+        padding-left: 12px !important;  /* Antes tenía 15px o 20px */
+        padding-right: 12px !important; /* Lo bajamos a 5px para que casi toque el borde */
+        max-width: 100%;
+        width: 100%;
+    }
+
     /* 1. Apilamos las columnas verticalmente */
     .corporate-grid {
         flex-direction: column;
