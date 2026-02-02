@@ -30,7 +30,7 @@ const auth = getAuth(app);
 /* =========================================
    3. VARIABLES GLOBALES
 ========================================= */
-const whatsappNumber = "50370404773"; 
+const whatsappNumber = "50378731475"; 
 let products = []; 
 let categories = []; 
 let cart = [];
