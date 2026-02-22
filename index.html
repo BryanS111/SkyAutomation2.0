@@ -332,5 +332,74 @@
     </script>
 
 </div>
+<!--En este espacio estara la pantalla de hibernacion de la web por temas de entrega-->
+<style>
+    /* Estilos para el contenedor que cubre toda la pantalla */
+    #hibernation-overlay {
+        position: fixed; /* Se queda fijo en la pantalla */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* Usamos un color oscuro muy similar al de tu web con un poco de transparencia */
+        background-color: rgba(11, 17, 32, 0.98); 
+        /* Z-index muy alto para asegurar que esté encima de TODO (header, menú móvil, etc.) */
+        z-index: 999999; 
+        /* Usamos flexbox para centrar el mensaje */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* Asegura que el cursor no muestre opciones de clic */
+        cursor: not-allowed;
+        /* Evita el scroll en el cuerpo mientras está activo (opcional, pero recomendado) */
+        overscroll-behavior: contain;
+    }
+
+    /* Estilos para la caja del mensaje */
+    .hibernation-modal-box {
+        background-color: #1a2236; /* Un tono ligeramente más claro que el fondo */
+        padding: 2.5rem;
+        border-radius: 8px;
+        max-width: 90%;
+        width: 450px;
+        text-align: center;
+        color: #ffffff;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        /* Borde superior con el color cian de acento de tu web */
+        border-top: 4px solid #00a8e8; /* Color cian aproximado de tu diseño */
+    }
+
+    .hibernation-modal-box i {
+        font-size: 3rem;
+        /* Usamos el color de acento para el icono */
+        color: #00a8e8; 
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+
+    .hibernation-modal-box h2 {
+        margin: 0 0 1rem 0;
+        font-size: 1.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .hibernation-modal-box p {
+        margin: 0;
+        font-size: 1.1rem;
+        color: #cbd5e1; /* Un blanco grisáceo para el texto secundario */
+        line-height: 1.5;
+    }
+</style>
+
+<div id="hibernation-overlay">
+    <div class="hibernation-modal-box">
+        <i class="fas fa-user-lock"></i>
+        <h2>Web en hibernación</h2>
+        <p>Por proceso de desarrollo.</p>
+    </div>
+</div>
+<!--fin de hibernacion de la web por temas de entrega-->
 </body>
 </html>
