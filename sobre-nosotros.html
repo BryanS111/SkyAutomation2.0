@@ -4,17 +4,356 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre Nosotros | Sky Automation</title>
-    
+
     <link rel="icon" href="assets/logo_favicon_.svg" type="image/svg+xml">
-    
+
     <meta name="description" content="Conoce la misión, visión y valores de Sky Automation. Somos líderes en automatización industrial en El Salvador.">
     <meta name="robots" content="index, follow">
-    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =============================================
+           FUENTES GLOBALES
+           ============================================= */
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #f4f6f9;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Barlow Condensed', sans-serif;
+        }
+
+        /* =============================================
+           BOTÓN VOLVER — ESTÉTICA CORPORATIVA
+           ============================================= */
+        .mobile-back-container {
+            background-color: #0A2342;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .btn-volver {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-cyan) !important;
+            text-decoration: none;
+        }
+        .btn-volver:hover {
+            color: #ffffff !important;
+        }
+
+        /* =============================================
+           SECCIÓN QUIÉNES SOMOS
+           ============================================= */
+        .sn-who {
+            padding: 80px 0;
+            background-color: #ffffff;
+        }
+        .sn-who__inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+        }
+        .sn-who__image-wrap {
+            position: relative;
+        }
+        .sn-who__image-wrap::before {
+            content: '';
+            position: absolute;
+            top: -16px;
+            left: -16px;
+            right: 16px;
+            bottom: 16px;
+            border: 2px solid var(--accent-cyan);
+            z-index: 0;
+        }
+        .sn-who__image-wrap img {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            display: block;
+            object-fit: cover;
+            aspect-ratio: 4/3;
+        }
+        .sn-who__text .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+        .sn-who__text .section-label::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+        .sn-who__text h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        .sn-who__text p {
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            color: #5a6a7a;
+            line-height: 1.75;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 900px) {
+            .sn-who__inner {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .sn-who__image-wrap::before { display: none; }
+            .sn-who__text {
+                text-align: center;
+            }
+            .sn-who__text .section-label {
+                justify-content: center;
+            }
+        }
+
+        /* =============================================
+           SECCIÓN MISIÓN Y VISIÓN
+           ============================================= */
+        .sn-mv {
+            padding: 80px 0;
+            background-color: #f4f6f9;
+        }
+        .sn-mv__header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .sn-mv__header .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 0.8rem;
+        }
+        .sn-mv__header .section-label::before,
+        .sn-mv__header .section-label::after {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+        .sn-mv__header h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+        }
+
+        .sn-mv__grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background-color: #dde3ec;
+        }
+        .sn-mv__card {
+            background-color: #ffffff;
+            padding: 48px 44px;
+            position: relative;
+            overflow: hidden;
+        }
+        .sn-mv__card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent-cyan);
+            transition: width 0.4s ease;
+        }
+        .sn-mv__card:hover::after { width: 100%; }
+
+        .sn-mv__card-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            background-color: #f4f6f9;
+            border: 2px solid #dde3ec;
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+            color: #0A2342;
+            transition: all 0.3s;
+        }
+        .sn-mv__card:hover .sn-mv__card-icon {
+            background-color: #0A2342;
+            border-color: #0A2342;
+            color: var(--accent-cyan);
+        }
+        .sn-mv__card h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .sn-mv__card p {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.97rem;
+            color: #5a6a7a;
+            line-height: 1.75;
+        }
+
+        @media (max-width: 768px) {
+            .sn-mv__grid {
+                grid-template-columns: 1fr;
+            }
+            .sn-mv__card {
+                padding: 36px 28px;
+                text-align: center;
+            }
+            .sn-mv__card-icon {
+                margin: 0 auto 1.2rem auto;
+            }
+        }
+
+        /* =============================================
+           SECCIÓN VALORES
+           ============================================= */
+        .sn-values {
+            padding: 80px 0;
+            background-color: #ffffff;
+        }
+        .sn-values__header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .sn-values__header .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 0.8rem;
+        }
+        .sn-values__header .section-label::before,
+        .sn-values__header .section-label::after {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+        .sn-values__header h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+        }
+
+        .sn-values__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background-color: #dde3ec;
+        }
+        .sn-value-card {
+            background-color: #f4f6f9;
+            padding: 40px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: background-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .sn-value-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent-cyan);
+            transition: width 0.4s ease;
+        }
+        .sn-value-card:hover {
+            background-color: #0A2342;
+        }
+        .sn-value-card:hover::after { width: 100%; }
+        .sn-value-card:hover .sn-value-card__icon { color: var(--accent-cyan); }
+        .sn-value-card:hover .sn-value-card__title { color: #ffffff; }
+        .sn-value-card:hover .sn-value-card__desc { color: #94a3b8; }
+
+        .sn-value-card__icon {
+            font-size: 1.8rem;
+            color: #0A2342;
+            transition: color 0.3s;
+        }
+        .sn-value-card__title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0A2342;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+        }
+        .sn-value-card__desc {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.92rem;
+            color: #5a6a7a;
+            line-height: 1.65;
+            transition: color 0.3s;
+        }
+
+        @media (max-width: 900px) {
+            .sn-values__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 560px) {
+            .sn-values__grid {
+                grid-template-columns: 1fr;
+            }
+            .sn-value-card {
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
 
+    <!-- ====== HEADER ====== -->
     <header>
         <div class="header-container">
             <div class="logo">
@@ -23,11 +362,9 @@
                     SKY <span class="logo-accent">AUTOMATION</span>
                 </a>
             </div>
-            
             <div class="menu-toggle" id="mobile-menu">
                 <i class="fas fa-bars"></i>
             </div>
-
             <nav>
                 <ul class="nav-list" id="nav-list">
                     <li><a href="index.html" class="nav-link">Inicio</a></li>
@@ -42,21 +379,22 @@
     </header>
 
     <main>
-        <!--colocamos un texto link para volver a la web principal-->
+
+        <!-- Botón volver (solo móvil) -->
         <div class="mobile-back-container">
-            <a href="index.html" class="btn-volver">Volver a la web principal</a>
+            <a href="index.html" class="btn-volver">← Volver a la web principal</a>
         </div>
 
-        <section class="section-padding-reduced bg-white">
+        <!-- ====== QUIÉNES SOMOS ====== -->
+        <section class="sn-who">
             <div class="container">
-                <div class="about-grid">
-                    <div class="tech-frame">
+                <div class="sn-who__inner">
+                    <div class="sn-who__image-wrap">
                         <img src="assets/imagenes/sobre-nosotros(img2.2).webp" alt="Equipo Sky Automation">
-                        <div class="corner-deco top-left"></div>
-                        <div class="corner-deco bottom-right"></div>
                     </div>
-                    <div class="about-text">
-                        <h2 class="section-title" style="text-align: center; margin-bottom: 2rem; color: var(--primary-dark);">Quiénes Somos</h2>
+                    <div class="sn-who__text">
+                        <span class="section-label">Quiénes Somos</span>
+                        <h2>Líderes en Automatización Industrial</h2>
                         <p>
                             Somos una empresa líder en el desarrollo e implementación de soluciones de automatización industrial. 
                             Nos especializamos en mejorar la eficiencia y productividad de los procesos industriales a través de 
@@ -67,95 +405,94 @@
                             tecnologías que no solo optimizan procesos, sino que también promueven la resiliencia y la 
                             adaptabilidad en un mundo en constante evolución.
                         </p>
-
-                        <!--COLOCAMOS UN BOTON PARA DESCARGAR CV
-                        <div class="boton-descargar-cv" style="margin-top: 2rem; text-align: center;">
-                            <a href="assets/documentos/cv-empresarial-SkyAutomation.pdf" class="cta-button" download>
-                                <i class="fas fa-check-circle" style="margin-right: 8px;"></i> Descargar CV Empresarial
-                            </a>
-                        </div>-->
-
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="section-padding bg-light">
+        <!-- ====== MISIÓN Y VISIÓN ====== -->
+        <section class="sn-mv">
             <div class="container">
-                <div class="mission-vision">
-                    <div class="mv-box">
-                        <h3><i class="fas fa-rocket icon-accent"></i> Nuestra Misión</h3>
+                <div class="sn-mv__header">
+                    <div class="section-label">Propósito</div>
+                    <h2>Misión y Visión</h2>
+                </div>
+                <div class="sn-mv__grid">
+                    <div class="sn-mv__card">
+                        <div class="sn-mv__card-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Nuestra Misión</h3>
                         <p>Revolucionar el futuro de la industria mediante soluciones de automatización innovadoras, eficientes y sostenibles. 
                             Nos dedicamos a optimizar procesos, mejorar la productividad y reducir los costos operativos de nuestros clientes a través de tecnología avanzada y servicios personalizados. 
-                            Nuestro compromiso es impulsar la transformación digital, proporcionando sistemas robustos y escalables que faciliten la operación continua y mejoren la competitividad en el mercado global.
-                        </p>
+                            Nuestro compromiso es impulsar la transformación digital, proporcionando sistemas robustos y escalables que faciliten la operación continua y mejoren la competitividad en el mercado global.</p>
                     </div>
-                    <div class="mv-box">
-                        <h3><i class="fas fa-eye icon-accent"></i> Nuestra Visión</h3>
+                    <div class="sn-mv__card">
+                        <div class="sn-mv__card-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Nuestra Visión</h3>
                         <p>Ser líderes globales en soluciones de automatización, reconocidos por nuestra innovación, excelencia operativa y compromiso con la sostenibilidad. 
                             Aspiramos a transformar industrias enteras, creando entornos de trabajo más seguros, eficientes y conectados. Nos vemos como socios estratégicos para nuestros clientes, impulsando su crecimiento 
-                            mediante tecnologías de automatización que no solo optimicen procesos, sino que también promuevan la resiliencia y la adaptabilidad en un mundo en constante evolución.
-                        </p>
+                            mediante tecnologías de automatización que no solo optimicen procesos, sino que también promuevan la resiliencia y la adaptabilidad en un mundo en constante evolución.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="section-padding">
+        <!-- ====== VALORES ====== -->
+        <section class="sn-values">
             <div class="container">
-                <h2 class="section-title" style="color: var(--primary-dark);">Nuestros Valores</h2>
-                
-                <div class="services-grid">
-                    
-                    <div class="service-card">
-                        <i class="fas fa-lightbulb"></i>
-                        <h3>Innovación</h3>
-                        <p>Compromiso con la creación de soluciones nuevas y avanzadas para mejorar la eficiencia de los procesos automatizados de nuestros clientes.</p>
+                <div class="sn-values__header">
+                    <div class="section-label">Lo que nos define</div>
+                    <h2>Nuestros Valores</h2>
+                </div>
+                <div class="sn-values__grid">
+
+                    <div class="sn-value-card">
+                        <i class="fas fa-lightbulb sn-value-card__icon"></i>
+                        <div class="sn-value-card__title">Innovación</div>
+                        <p class="sn-value-card__desc">Compromiso con la creación de soluciones nuevas y avanzadas para mejorar la eficiencia de los procesos automatizados de nuestros clientes.</p>
                     </div>
 
-                    <div class="service-card">
-                        <i class="fas fa-award"></i>
-                        <h3>Calidad</h3>
-                        <p>Asegurarse de que los productos y servicios cumplan con los más altos estándares de calidad y confiabilidad.</p>
+                    <div class="sn-value-card">
+                        <i class="fas fa-award sn-value-card__icon"></i>
+                        <div class="sn-value-card__title">Calidad</div>
+                        <p class="sn-value-card__desc">Asegurarse de que los productos y servicios cumplan con los más altos estándares de calidad y confiabilidad.</p>
                     </div>
 
-                    <div class="service-card">
-                        <i class="fas fa-smile-beam"></i>
-                        <h3>Satisfacción del Cliente</h3>
-                        <p>Enfocarse en comprender y satisfacer las necesidades de los clientes, ofreciendo soluciones personalizadas y soporte continuo.</p>
+                    <div class="sn-value-card">
+                        <i class="fas fa-smile-beam sn-value-card__icon"></i>
+                        <div class="sn-value-card__title">Satisfacción del Cliente</div>
+                        <p class="sn-value-card__desc">Enfocarse en comprender y satisfacer las necesidades de los clientes, ofreciendo soluciones personalizadas y soporte continuo.</p>
                     </div>
 
-                    <div class="service-card">
-                        <i class="fas fa-leaf"></i>
-                        <h3>Sostenibilidad</h3>
-                        <p>Promover prácticas que minimicen el impacto ambiental y fomenten la responsabilidad social.</p>
+                    <div class="sn-value-card">
+                        <i class="fas fa-leaf sn-value-card__icon"></i>
+                        <div class="sn-value-card__title">Sostenibilidad</div>
+                        <p class="sn-value-card__desc">Promover prácticas que minimicen el impacto ambiental y fomenten la responsabilidad social.</p>
                     </div>
 
-                    <div class="service-card">
-                        <i class="fas fa-users"></i>
-                        <h3>Colaboración</h3>
-                        <p>Fomentar un entorno de trabajo colaborativo tanto internamente como con socios y clientes, para lograr objetivos comunes.</p>
+                    <div class="sn-value-card">
+                        <i class="fas fa-users sn-value-card__icon"></i>
+                        <div class="sn-value-card__title">Colaboración</div>
+                        <p class="sn-value-card__desc">Fomentar un entorno de trabajo colaborativo tanto internamente como con socios y clientes, para lograr objetivos comunes.</p>
                     </div>
 
-                    <div class="service-card">
-                        <i class="fas fa-microchip"></i>
-                        <h3>Excelencia Técnica</h3>
-                        <p>Mantener un alto nivel de competencia técnica y actualización continua en las últimas tecnologías y metodologías.</p>
+                    <div class="sn-value-card">
+                        <i class="fas fa-microchip sn-value-card__icon"></i>
+                        <div class="sn-value-card__title">Excelencia Técnica</div>
+                        <p class="sn-value-card__desc">Mantener un alto nivel de competencia técnica y actualización continua en las últimas tecnologías y metodologías.</p>
                     </div>
 
                 </div>
             </div>
         </section>
-
-        
 
     </main>
 
     <footer>
         <div class="container footer-content">
-             <div class="footer-logo">
-                WEBSITE DEVELOPED BY <span class="logo-accent">COGNETIX INNOVATION</span>
-            </div>
             <p>© 2026 Sky Automation. Excelencia Técnica e Innovación.</p>
         </div>
     </footer>
@@ -166,40 +503,33 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. Loader Logic
             const loader = document.getElementById('loader-transition');
-            const links = document.querySelectorAll('a[href]'); 
+            const links = document.querySelectorAll('a[href]');
 
             links.forEach(link => {
                 link.addEventListener('click', function(e) {
                     const targetUrl = this.href;
-                    // Solo activar loader si es cambio de pagina interna
                     if (this.hostname === window.location.hostname && this.target !== "_blank" && !targetUrl.includes('#')) {
                         e.preventDefault();
                         loader.classList.remove('loader-hidden');
                         loader.classList.add('loader-visible');
                         setTimeout(function() {
                             window.location.href = targetUrl;
-                        }, 1000); 
+                        }, 1000);
                     }
                 });
             });
 
-            // 2. Mobile Menu Logic (Simple version for this page)
             const menuToggle = document.getElementById('mobile-menu');
             const navList = document.getElementById('nav-list');
-            
-            if(menuToggle && navList) {
+            if (menuToggle && navList) {
                 menuToggle.addEventListener('click', () => {
                     navList.classList.toggle('active');
-                    // Cambiar icono
                     const icon = menuToggle.querySelector('i');
                     if (navList.classList.contains('active')) {
-                        icon.classList.remove('fa-bars');
-                        icon.classList.add('fa-times');
+                        icon.classList.replace('fa-bars', 'fa-times');
                     } else {
-                        icon.classList.remove('fa-times');
-                        icon.classList.add('fa-bars');
+                        icon.classList.replace('fa-times', 'fa-bars');
                     }
                 });
             }

@@ -4,30 +4,559 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servicios Técnicos | Sky Automation</title>
+
     <link rel="icon" href="assets/logo_favicon_.svg" type="image/svg+xml">
-    
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body class="tech-body">
 
+    <style>
+        /* =============================================
+           FUENTES GLOBALES
+           ============================================= */
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #f4f6f9;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Barlow Condensed', sans-serif;
+        }
+
+        /* =============================================
+           BOTÓN VOLVER — ESTÉTICA CORPORATIVA
+           ============================================= */
+        .mobile-back-container {
+            background-color: #0A2342;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .btn-volver {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-cyan) !important;
+            text-decoration: none;
+        }
+        .btn-volver:hover {
+            color: #ffffff !important;
+        }
+
+        /* =============================================
+           INTRO HEADER DE SECCIÓN
+           ============================================= */
+        .srv-intro {
+            padding: 60px 0 50px;
+            background-color: #ffffff;
+            border-bottom: 2px solid #dde3ec;
+        }
+        .srv-intro .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 0.8rem;
+        }
+        .srv-intro .section-label::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+        .srv-intro h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+            line-height: 1.05;
+            margin-bottom: 1rem;
+        }
+        .srv-intro p {
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            color: #5a6a7a;
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        /* =============================================
+           GRID PRINCIPAL DE SERVICIOS
+           ============================================= */
+        .srv-section {
+            padding: 70px 0;
+        }
+        .srv-section.alt {
+            background-color: #ffffff;
+        }
+
+        .srv-section__header {
+            margin-bottom: 40px;
+        }
+        .srv-section__header .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 0.6rem;
+        }
+        .srv-section__header .section-label::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+        .srv-section__header h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+
+        /* =============================================
+           TARJETA GRANDE — DISEÑO Y AUTOMATIZACIÓN
+           ============================================= */
+        .srv-main-card {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            background-color: #ffffff;
+            border: 1px solid #dde3ec;
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+        }
+        .srv-main-card:hover {
+            box-shadow: 0 8px 32px rgba(10,35,66,0.10);
+        }
+        .srv-main-card__aside {
+            background-color: #0A2342;
+            padding: 44px 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .srv-main-card__aside::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 3px;
+            background: var(--accent-cyan);
+        }
+        .srv-main-card__aside-icon {
+            font-size: 2.2rem;
+            color: var(--accent-cyan);
+        }
+        .srv-main-card__aside h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+        .srv-main-card__aside p {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.88rem;
+            color: #8fb3d4;
+            line-height: 1.6;
+        }
+        .srv-main-card__body {
+            padding: 44px 44px;
+        }
+        .srv-specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .srv-spec-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            background-color: #f4f6f9;
+            border-left: 3px solid transparent;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        .srv-spec-item:hover {
+            border-left-color: var(--accent-cyan);
+            background-color: #eaf0f7;
+        }
+        .srv-spec-item__icon {
+            font-size: 1rem;
+            color: var(--accent-cyan);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .srv-spec-item__label {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #0A2342;
+        }
+        .srv-spec-item__desc {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.82rem;
+            color: #5a6a7a;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 860px) {
+            .srv-main-card {
+                grid-template-columns: 1fr;
+            }
+            .srv-main-card__aside {
+                padding: 32px 28px;
+                flex-direction: row;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+            .srv-main-card__aside::after { display: none; }
+            .srv-main-card__body { padding: 28px; }
+            .srv-specs-grid { grid-template-columns: 1fr; }
+        }
+
+        /* =============================================
+           GRID DE TARJETAS MEDIANAS (IoT, Consultoría, Mant.)
+           ============================================= */
+        .srv-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background-color: #dde3ec;
+        }
+        .srv-card {
+            background-color: #ffffff;
+            padding: 40px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s;
+        }
+        .srv-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0%; height: 3px;
+            background: var(--accent-cyan);
+            transition: width 0.4s ease;
+        }
+        .srv-card:hover { background-color: #0A2342; }
+        .srv-card:hover::after { width: 100%; }
+        .srv-card:hover .srv-card__icon { color: var(--accent-cyan); }
+        .srv-card:hover .srv-card__title { color: #ffffff; }
+        .srv-card:hover .srv-card__desc { color: #94a3b8; }
+        .srv-card:hover .srv-card__tag { background-color: rgba(0,168,232,0.15); color: var(--accent-cyan); }
+
+        .srv-card__icon {
+            font-size: 1.8rem;
+            color: #0A2342;
+            transition: color 0.3s;
+        }
+        .srv-card__title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .srv-card__desc {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.92rem;
+            color: #5a6a7a;
+            line-height: 1.65;
+            transition: color 0.3s;
+        }
+        .srv-card__tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .srv-card__tag {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            background-color: #f4f6f9;
+            color: #0A2342;
+            transition: all 0.3s;
+        }
+        .srv-card__list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .srv-card__list li {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.88rem;
+            color: #5a6a7a;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        .srv-card:hover .srv-card__list li { color: #94a3b8; }
+        .srv-card__list li::before {
+            content: '—';
+            color: var(--accent-cyan);
+            flex-shrink: 0;
+            font-size: 0.75rem;
+            margin-top: 1px;
+        }
+
+        @media (max-width: 900px) {
+            .srv-cards-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 560px) {
+            .srv-cards-grid { grid-template-columns: 1fr; }
+            .srv-card {
+                align-items: flex-start;
+                text-align: left;
+            }
+        }
+
+        /* =============================================
+           SECCIÓN VENTA — GRID DE CATEGORÍAS
+           ============================================= */
+        .srv-equip {
+            padding: 70px 0;
+            background-color: #0A2342;
+            position: relative;
+            overflow: hidden;
+        }
+        .srv-equip::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(0,168,232,0.08) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+        .srv-equip__inner {
+            position: relative;
+            z-index: 1;
+        }
+        .srv-equip__header {
+            margin-bottom: 40px;
+        }
+        .srv-equip__header .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 0.6rem;
+        }
+        .srv-equip__header .section-label::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+        .srv-equip__header h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+        .srv-equip__grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2px;
+            background-color: rgba(255,255,255,0.08);
+        }
+        .srv-equip__item {
+            background-color: rgba(255,255,255,0.04);
+            padding: 36px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: background-color 0.3s;
+            cursor: default;
+        }
+        .srv-equip__item:hover {
+            background-color: rgba(0,168,232,0.12);
+        }
+        .srv-equip__item i {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+        }
+        .srv-equip__item span {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 860px) {
+            .srv-equip__grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 500px) {
+            .srv-equip__grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* =============================================
+           SECCIÓN FORMACIÓN
+           ============================================= */
+        .srv-training {
+            padding: 70px 0;
+            background-color: #ffffff;
+        }
+        .srv-training__inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .srv-training__text .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 0.8rem;
+        }
+        .srv-training__text .section-label::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+        .srv-training__text h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .srv-training__text p {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.97rem;
+            color: #5a6a7a;
+            line-height: 1.75;
+        }
+        .srv-training__options {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background-color: #dde3ec;
+        }
+        .srv-training__option {
+            background-color: #f4f6f9;
+            padding: 28px 32px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: background-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .srv-training__option::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 3px; height: 0%;
+            background: var(--accent-cyan);
+            transition: height 0.4s ease;
+        }
+        .srv-training__option:hover { background-color: #eaf0f7; }
+        .srv-training__option:hover::after { height: 100%; }
+        .srv-training__option-icon {
+            width: 48px; height: 48px;
+            background-color: #0A2342;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+        }
+        .srv-training__option-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+        }
+        .srv-training__option-desc {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.88rem;
+            color: #5a6a7a;
+            margin-top: 3px;
+        }
+
+        @media (max-width: 860px) {
+            .srv-training__inner {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+            .srv-training__text { text-align: center; }
+            .srv-training__text .section-label { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== HEADER ====== -->
     <header>
         <div class="header-container">
             <div class="logo">
                 <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 12px;">
                     <img src="assets/logo_favicon_.svg" alt="Logotipo Sky Automation" class="header-logo-img">
-                    <span style="color:white;">SKY <span class="logo-accent">AUTOMATION</span></span>
+                    SKY <span class="logo-accent">AUTOMATION</span>
                 </a>
             </div>
-            <div class="menu-toggle" id="mobile-menu"><i class="fas fa-bars text-white"></i></div>
+            <div class="menu-toggle" id="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
             <nav>
                 <ul class="nav-list" id="nav-list">
-                    <li><a href="index.html" class="nav-link text-white">Inicio</a></li>
-                    <li><a href="sobre-nosotros.html" class="nav-link text-white">Sobre Nosotros</a></li>
+                    <li><a href="index.html" class="nav-link">Inicio</a></li>
+                    <li><a href="sobre-nosotros.html" class="nav-link">Sobre Nosotros</a></li>
                     <li><a href="#" class="nav-link" style="color: var(--accent-cyan);">Servicios</a></li>
-                    <li><a href="proyectos.html" class="nav-link text-white">Proyectos</a></li>
-                    <li><a href="catalogo.html" class="nav-link text-white">Catálogo</a></li>
-                    <li><a href="contacto.html" class="nav-link text-white">Contacto</a></li>
+                    <li><a href="proyectos.html" class="nav-link">Proyectos</a></li>
+                    <li><a href="catalogo.html" class="nav-link">Catálogo</a></li>
+                    <li><a href="contacto.html" class="nav-link">Contacto</a></li>
                 </ul>
             </nav>
         </div>
@@ -35,158 +564,194 @@
 
     <main>
 
-        <!--colocamos un texto link para volver a la web principal-->
+        <!-- Botón volver (solo móvil) -->
         <div class="mobile-back-container">
-            <a href="index.html" class="btn-volver">Volver a la web principal</a>
+            <a href="index.html" class="btn-volver">← Volver a la web principal</a>
         </div>
 
-        <br>
-        <h2 class="section-title" style="margin-bottom: 1rem;">SERVICIOS</h2>
-        
+        <!-- ====== INTRO ====== -->
+        <section class="srv-intro">
+            <center><div class="container">
+                <div class="section-label">Lo que hacemos</div>
+                <h1>Servicios</h1>
+                <p>Soluciones integrales de automatización industrial, mantenimiento técnico y consultoría para optimizar sus procesos productivos.</p>
+            </div></center>
+        </section>
 
-        <section class="section-padding-reduced tech-section">
+        <!-- ====== DISEÑO Y AUTOMATIZACIÓN ====== -->
+        <section class="srv-section">
             <div class="container">
-                
-                <div class="tech-modules-grid">
+                <div class="srv-section__header">
+                    <div class="section-label">Servicio principal</div>
+                    <h2>Diseño y Desarrollo de Sistemas de Automatización</h2>
+                </div>
+                <div class="srv-main-card">
+                    <div class="srv-main-card__aside">
+                        <i class="fas fa-microchip srv-main-card__aside-icon"></i>
+                        <h3>Automatización Industrial</h3>
+                        <p>Diseñamos e implementamos sistemas de control a medida para cualquier proceso industrial.</p>
+                    </div>
+                    <div class="srv-main-card__body">
+                        <div class="srv-specs-grid">
+                            <div class="srv-spec-item">
+                                <i class="fas fa-server srv-spec-item__icon"></i>
+                                <div>
+                                    <div class="srv-spec-item__label">DCS</div>
+                                    <div class="srv-spec-item__desc">Sistemas de Control Distribuido.</div>
+                                </div>
+                            </div>
+                            <div class="srv-spec-item">
+                                <i class="fas fa-microchip srv-spec-item__icon"></i>
+                                <div>
+                                    <div class="srv-spec-item__label">PLC</div>
+                                    <div class="srv-spec-item__desc">Programación de controladores lógicos programables.</div>
+                                </div>
+                            </div>
+                            <div class="srv-spec-item">
+                                <i class="fas fa-desktop srv-spec-item__icon"></i>
+                                <div>
+                                    <div class="srv-spec-item__label">HMI</div>
+                                    <div class="srv-spec-item__desc">Programación de interfaces hombre-máquina.</div>
+                                </div>
+                            </div>
+                            <div class="srv-spec-item">
+                                <i class="fas fa-cogs srv-spec-item__icon"></i>
+                                <div>
+                                    <div class="srv-spec-item__label">Motion</div>
+                                    <div class="srv-spec-item__desc">Programación de Variadores de frecuencia y Servodrives.</div>
+                                </div>
+                            </div>
+                            <div class="srv-spec-item">
+                                <i class="fas fa-network-wired srv-spec-item__icon"></i>
+                                <div>
+                                    <div class="srv-spec-item__label">Redes</div>
+                                    <div class="srv-spec-item__desc">Comunicación y redes industriales.</div>
+                                </div>
+                            </div>
+                            <div class="srv-spec-item">
+                                <i class="fas fa-bolt srv-spec-item__icon"></i>
+                                <div>
+                                    <div class="srv-spec-item__label">Energía</div>
+                                    <div class="srv-spec-item__desc">Análisis de calidad de energía.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                    <div class="tech-module">
-                        <div class="module-header">
-                            <div class="icon-hud">
-                                <i class="fas fa-microchip"></i>
-                            </div>
-                            <div class="header-text">
-                                <h3>Diseño y Desarrollo de Sistemas de Automatización</h3>
-                            </div>
-                        </div>
-                        <div class="module-body">
-                            <ul class="tech-specs-list">
-                                <li><strong>DCS:</strong> Sistemas de Control Distribuido.</li>
-                                <li><strong>PLC:</strong> Programación de controladores lógicos programables.</li>
-                                <li><strong>HMI:</strong> Programación de interfaces hombre-máquina.</li>
-                                <li><strong>Motion:</strong> Programación de Variadores de frecuencia y Servodrives.</li>
-                                <li><strong>Redes:</strong> Comunicación y redes industriales.</li>
-                                <li><strong>Energía:</strong> Análisis de calidad de energía.</li>
-                            </ul>
-                        </div>
-                        <div class="module-corner"></div>
+        <!-- ====== IOT + CONSULTORÍA + MANTENIMIENTO ====== -->
+        <section class="srv-section alt">
+            <div class="container">
+                <div class="srv-section__header">
+                    <div class="section-label">Más servicios</div>
+                    <h2>Soluciones Especializadas</h2>
+                </div>
+                <div class="srv-cards-grid">
+
+                    <div class="srv-card">
+                        <i class="fas fa-network-wired srv-card__icon"></i>
+                        <div class="srv-card__title">Soluciones IoT</div>
+                        <ul class="srv-card__list">
+                            <li>Sensores Inteligentes (Smart Sensors).</li>
+                            <li>Análisis de datos en tiempo real.</li>
+                            <li>Mantenimiento Predictivo.</li>
+                        </ul>
                     </div>
 
-                    <div class="tech-module">
-                        <div class="module-header">
-                            <div class="icon-hud">
-                                <i class="fas fa-network-wired"></i>
-                            </div>
-                            <div class="header-text">
-                                <h3>Soluciones IoT</h3>
-                            </div>
+                    <div class="srv-card">
+                        <i class="fas fa-tools srv-card__icon"></i>
+                        <div class="srv-card__title">Mantenimiento Técnico</div>
+                        <p class="srv-card__desc">Soporte preventivo y correctivo especializado para infraestructura crítica:</p>
+                        <div class="srv-card__tags">
+                            <span class="srv-card__tag">Calderas</span>
+                            <span class="srv-card__tag">PTAR</span>
+                            <span class="srv-card__tag">TETRAPAK</span>
+                            <span class="srv-card__tag">Subestaciones</span>
                         </div>
-                        <div class="module-body">
-                            <ul class="tech-specs-list">
-                                <li><i class="fas fa-caret-right accent"></i> Sensores Inteligentes (Smart Sensors).</li>
-                                <li><i class="fas fa-caret-right accent"></i> Análisis de datos en tiempo real.</li>
-                                <li><i class="fas fa-caret-right accent"></i> Mantenimiento Predictivo.</li>
-                            </ul>
-                        </div>
-                        <div class="module-corner"></div>
+                        <ul class="srv-card__list" style="margin-top: 8px;">
+                            <li>Actualización y modernización de sistemas.</li>
+                            <li>Soporte 24/7.</li>
+                        </ul>
                     </div>
 
-                    <div class="tech-module">
-                        <div class="module-header">
-                            <div class="icon-hud">
-                                <i class="fas fa-tools"></i>
-                            </div>
-                            <div class="header-text">
-                                <h3>Mantenimiento Técnico</h3>
-                            </div>
-                        </div>
-                        <div class="module-body">
-                            <p class="tech-desc">Soporte preventivo y correctivo especializado para infraestructura crítica:</p>
-                            <div class="tech-tags">
-                                <span>Calderas</span>
-                                <span>PTAR</span>
-                                <span>Maquinaria TETRAPAK</span>
-                                <span>Subestaciones</span>
-                            </div>
-                            <p class="tech-highlight">- Actualización y modernización de sistemas.</p>
-                            <br>
-                            <p class="tech-highlight">- Soporte 24/7.</p>
-                        </div>
-                        <div class="module-corner"></div>
-                    </div>
-
-                    <div class="tech-module">
-                        <div class="module-header">
-                            <div class="icon-hud">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <div class="header-text">
-                                <h3>Consultoría y Asesoramiento</h3>
-                            </div>
-                        </div>
-                        <div class="module-body">
-                            <ul class="tech-specs-list">
-                                <li>Análisis integral de procesos.</li>
-                                <li>Mejora de eficiencia operativa.</li>
-                                <li>Estrategias de automatización</li>
-                            </ul>
-                        </div>
-                        <div class="module-corner"></div>
-                    </div>
-
-                    <div class="tech-module wide-module">
-                        <div class="module-header">
-                            <div class="icon-hud">
-                                <i class="fas fa-box-open"></i>
-                            </div>
-                            <div class="header-text">
-                                <h3>Venta de Equipos y Componentes</h3>
-                            </div>
-                        </div>
-                        <div class="module-body horizontal-layout">
-                            <div class="tech-category">
-                                <h4><i class="fas fa-bolt"></i> Eléctricos</h4>
-                                <div class="bar-deco"></div>
-                            </div>
-                            <div class="tech-category">
-                                <h4><i class="fas fa-microchip"></i> Electrónicos</h4>
-                                <div class="bar-deco"></div>
-                            </div>
-                            <div class="tech-category">
-                                <h4><i class="fas fa-wind"></i> Neumáticos</h4>
-                                <div class="bar-deco"></div>
-                            </div>
-                            <div class="tech-category">
-                                <h4><i class="fas fa-tachometer-alt"></i> Instrumentación</h4>
-                                <div class="bar-deco"></div>
-                            </div>
-                            <div class="tech-category">
-                                <h4><i class="fas fa-chalkboard-teacher"></i> Control</h4>
-                                <div class="bar-deco"></div>
-                            </div>
-                        </div>
-                        <div class="module-corner"></div>
-                    </div>
-                     <div class="tech-module wide-module">
-                        <div class="module-header">
-                            <div class="icon-hud">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                            </div>
-                            <div class="header-text">
-                                <h3>Formación y Capacitación</h3>
-                            </div>
-                        </div>
-                        <div class="module-body">
-                            <p>Capacitación especializada para equipos de ingeniería y mantenimiento.</p>
-                            <ul class="tech-specs-inline">
-                                <li><i class="fas fa-check-circle"></i> Cursos In-Company</li>
-                                <li><i class="fas fa-check-circle"></i> Formación Online</li>
-                            </ul>
-                        </div>
-                        <div class="module-corner"></div>
+                    <div class="srv-card">
+                        <i class="fas fa-chart-line srv-card__icon"></i>
+                        <div class="srv-card__title">Consultoría y Asesoramiento</div>
+                        <ul class="srv-card__list">
+                            <li>Análisis integral de procesos.</li>
+                            <li>Mejora de eficiencia operativa.</li>
+                            <li>Estrategias de automatización.</li>
+                        </ul>
                     </div>
 
                 </div>
+            </div>
+        </section>
 
+        <!-- ====== VENTA DE EQUIPOS ====== -->
+        <section class="srv-equip">
+            <div class="container srv-equip__inner">
+                <div class="srv-equip__header">
+                    <div class="section-label">Componentes</div>
+                    <h2>Venta de Equipos y Componentes</h2>
+                </div>
+                <div class="srv-equip__grid">
+                    <div class="srv-equip__item">
+                        <i class="fas fa-bolt"></i>
+                        <span>Eléctricos</span>
+                    </div>
+                    <div class="srv-equip__item">
+                        <i class="fas fa-microchip"></i>
+                        <span>Electrónicos</span>
+                    </div>
+                    <div class="srv-equip__item">
+                        <i class="fas fa-wind"></i>
+                        <span>Neumáticos</span>
+                    </div>
+                    <div class="srv-equip__item">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Instrumentación</span>
+                    </div>
+                    <div class="srv-equip__item">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Control</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ====== FORMACIÓN Y CAPACITACIÓN ====== -->
+        <section class="srv-training">
+            <div class="container">
+                <div class="srv-training__inner">
+                    <div class="srv-training__text">
+                        <div class="section-label">Formación</div>
+                        <h2>Capacitación y Formación Técnica</h2>
+                        <p>Capacitación especializada para equipos de ingeniería y mantenimiento. Potenciamos el talento humano de su organización con conocimiento técnico de alto nivel.</p>
+                    </div>
+                    <div class="srv-training__options">
+                        <div class="srv-training__option">
+                            <div class="srv-training__option-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div>
+                                <div class="srv-training__option-title">Cursos In-Company</div>
+                                <div class="srv-training__option-desc">Capacitación presencial en las instalaciones del cliente.</div>
+                            </div>
+                        </div>
+                        <div class="srv-training__option">
+                            <div class="srv-training__option-icon">
+                                <i class="fas fa-laptop"></i>
+                            </div>
+                            <div>
+                                <div class="srv-training__option-title">Formación Online</div>
+                                <div class="srv-training__option-desc">Cursos virtuales adaptados a la disponibilidad del equipo.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -194,9 +759,6 @@
 
     <footer>
         <div class="container footer-content">
-             <div class="footer-logo">
-                WEBSITE DEVELOPED BY <span class="logo-accent">COGNETIX INNOVATION</span>
-            </div>
             <p>© 2026 Sky Automation. Excelencia Técnica e Innovación.</p>
         </div>
     </footer>
@@ -204,6 +766,7 @@
     <div id="loader-transition" class="loader-hidden">
         <img src="assets/transicion/_logo_sky.webp" alt="Logo" class="loader-logo">
     </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const loader = document.getElementById('loader-transition');
@@ -219,8 +782,15 @@
             });
             const menu = document.getElementById('mobile-menu');
             const nav = document.getElementById('nav-list');
-            if(menu) menu.addEventListener('click', () => nav.classList.toggle('active'));
+            if (menu) menu.addEventListener('click', () => {
+                nav.classList.toggle('active');
+                const icon = menu.querySelector('i');
+                icon.classList.contains('fa-bars')
+                    ? icon.classList.replace('fa-bars', 'fa-times')
+                    : icon.classList.replace('fa-times', 'fa-bars');
+            });
         });
     </script>
+
 </body>
 </html>

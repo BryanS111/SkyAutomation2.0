@@ -5,10 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto | Sky Automation</title>
     <link rel="icon" href="assets/logo_favicon_.svg" type="image/svg+xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <style>
+        body { font-family: 'Lato', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Barlow Condensed', sans-serif; }
+
+        .mobile-back-container {
+            background-color: #0A2342;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .btn-volver {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-cyan) !important;
+            text-decoration: none;
+        }
+        .btn-volver:hover { color: #ffffff !important; }
+
+        .cnt-intro {
+            padding: 52px 0 40px;
+            background-color: #ffffff;
+            border-bottom: 2px solid #dde3ec;
+        }
+        .cnt-intro__label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 0.8rem;
+        }
+        .cnt-intro__label::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+        .cnt-intro h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+            line-height: 1.05;
+        }
+    </style>
 </head>
 <body class="corporate-body">
 
@@ -36,16 +94,15 @@
 
     <main class="contact-main-wrapper">
 
-        <!--colocamos un texto link para volver a la web principal-->
         <div class="mobile-back-container">
-            <a href="index.html" class="btn-volver">Volver a la web principal</a>
+            <a href="index.html" class="btn-volver">← Volver a la web principal</a>
         </div>
-        
-        <section class="page-header">
-            <div class="container">
-                <center><h1 style="color: var(--primary-dark);">CONTACTO</h1></center>
-                <center><div class="header-line"></div></center>
-            </div>
+
+        <section class="cnt-intro">
+            <center><div class="container">
+                <div class="cnt-intro__label">Estamos para ayudarte</div>
+                <h1>Contacto</h1>
+            </div></center>
         </section>
 
         <section class="contact-interface">
@@ -63,7 +120,6 @@
                                     <span>Nuevo Lourdes poniente, Senda el Limón<br>Polígono L casa #6, Lourdes Colón</span>
                                 </div>
                             </div>
-
                             <div class="info-block">
                                 <div class="icon-circle"><i class="fas fa-phone"></i></div>
                                 <div>
@@ -71,7 +127,6 @@
                                     <span>+503 7873 1475</span>
                                 </div>
                             </div>
-
                             <div class="info-block">
                                 <div class="icon-circle"><i class="fas fa-envelope"></i></div>
                                 <div>
@@ -149,74 +204,62 @@
                             </div>
                         </form>
                     </div>
-
                 </div>
             </div>
         </section>
 
-        <!--agregamos el mapa (google maps)-->
         <section class="map-section">
             <div class="container">
-                <h1 style="color: var(--primary-dark);">Encuéntrenos aquí</h21>
+                <h1 style="color: var(--primary-dark);">Encuéntrenos aquí</h1>
                 <br>
                 <div class="map-wrapper">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3875.8706751421423!2d-89.38829652491023!3d13.7262785866629!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTPCsDQzJzM0LjYiTiA4OcKwMjMnMDguNiJX!5e0!3m2!1ses!2ssv!4v1769920032731!5m2!1ses!2ssv"
                         width="100%" height="400" style="border:10px solid var(--primary-dark); border-radius: 5px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
+        </section>
+
     </main>
 
     <footer>
         <div class="container footer-content">
-             <div class="footer-logo">
-                WEBSITE DESIGNED BY <span class="logo-accent">COGNETIX INNOVATION</span>
-            </div>
             <p>© 2026 Sky Automation. Excelencia Técnica.</p>
         </div>
     </footer>
 
     <script>
         document.getElementById('mobile-menu').addEventListener('click', () => {
-           document.getElementById('nav-list').classList.toggle('active');
-       });
+            document.getElementById('nav-list').classList.toggle('active');
+        });
     </script>
-    <script src="js/email.js"></script> 
+
+    <script src="js/email.js"></script>
+
     <div id="toast-container"></div>
 
     <div id="loader-transition" class="loader-hidden">
-    <img src="assets/transicion/_logo_sky.webp" alt="Logo Empresa" class="loader-logo">
+        <img src="assets/transicion/_logo_sky.webp" alt="Logo Empresa" class="loader-logo">
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. Selecciona el loader
             const loader = document.getElementById('loader-transition');
-            
-            // 2. Selecciona los enlaces que quieres que tengan este efecto.
-            // Puedes ponerle una clase especifica a tus botones (ej: class="transition-link")
-            // O seleccionar todos los enlaces del menú.
-            const links = document.querySelectorAll('a[href]'); 
-
+            const links = document.querySelectorAll('a[href]');
             links.forEach(link => {
                 link.addEventListener('click', function(e) {
                     const targetUrl = this.href;
-
-                    // Verificamos que sea un enlace interno y no abra en otra pestaña
                     if (this.hostname === window.location.hostname && this.target !== "_blank" && !targetUrl.includes('#')) {
-                        
-                        e.preventDefault(); // Detenemos el cambio de página brusco
-                        
-                        // Mostramos la pantalla blanca
+                        e.preventDefault();
                         loader.classList.remove('loader-hidden');
                         loader.classList.add('loader-visible');
-
-                        // Esperamos un tiempo (ej. 1000ms = 1 segundo) antes de ir a la otra página
                         setTimeout(function() {
                             window.location.href = targetUrl;
-                        }, 1000); 
+                        }, 1000);
                     }
                 });
             });
         });
     </script>
+
 </body>
 </html>

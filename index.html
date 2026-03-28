@@ -18,7 +18,6 @@
     <meta property="og:description" content="Expertos en automatización industrial, PLC, sistemas DCS y mantenimiento en El Salvador. Optimizamos su eficiencia operativa." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://skyautomation.vercel.app/" />
-
     <meta property="og:image" content="https://skyautomation.vercel.app/assets/og/portada.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -26,8 +25,853 @@
     <meta name="twitter:description" content="Líderes en transformación y automatización industrial. Especialistas en control, instrumentación y mantenimiento" />
     <meta name="twitter:image" content="https://skyautomation.vercel.app/assets/og/portada.png" />
 
+    <!-- Google Fonts: Barlow Condensed (títulos) + Lato (cuerpo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* =============================================
+           OVERRIDE DE FUENTES PARA ESTE INDEX
+           ============================================= */
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Barlow Condensed', sans-serif;
+        }
+
+        /* =============================================
+           HERO REDISEÑADO — CORPORATIVO LIMPIO
+           ============================================= */
+        .hero-v2 {
+            position: relative;
+            height: 100vh;
+            min-height: 580px;
+            /* Sube el hero para pegarlo al header en desktop */
+            margin-top: calc(-1 * var(--header-height, 70px));
+            padding-top: var(--header-height, 70px);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background-color: #071526;
+            box-sizing: border-box;
+        }
+
+        /* En móvil el body sí tiene padding-top del styles.css global.
+           Lo anulamos aquí y dejamos que el hero maneje su propio espacio. */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 0 !important;
+            }
+            .hero-v2 {
+                margin-top: 0;
+                padding-top: 0;
+                height: calc(100vh - var(--header-height, 70px));
+            }
+        }
+
+        /* Imagen de fondo con overlay sofisticado */
+        .hero-v2__bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('assets/hero.webp');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.22;
+        }
+
+        /* Línea diagonal decorativa */
+        .hero-v2__diagonal {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 42%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(0, 168, 232, 0.07) 100%);
+            clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+
+        /* Línea cian vertical sutil */
+        .hero-v2__line {
+            position: absolute;
+            left: 50px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--accent-cyan), transparent);
+            opacity: 0.3;
+        }
+
+        .hero-v2__content {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Etiqueta pequeña encima del título */
+        .hero-v2__label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 1.2rem;
+        }
+        .hero-v2__label::before {
+            content: '';
+            display: inline-block;
+            width: 28px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+
+        .hero-v2__title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* .hero-v2__title em overridden by animation block below */
+
+        .hero-v2__desc {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: #b0c4d8;
+            max-width: 520px;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-v2__actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background-color: var(--accent-cyan);
+            color: #071526;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 2px solid var(--accent-cyan);
+            transition: all 0.3s ease;
+        }
+        .hero-btn-primary:hover {
+            background-color: transparent;
+            color: var(--accent-cyan);
+        }
+
+        .hero-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background-color: transparent;
+            color: #ffffff;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 2px solid rgba(255,255,255,0.35);
+            transition: all 0.3s ease;
+        }
+        .hero-btn-secondary:hover {
+            border-color: #ffffff;
+            background-color: rgba(255,255,255,0.07);
+        }
+
+        /* Stats dentro del hero */
+        .hero-v2__stats {
+            position: absolute;
+            bottom: 40px;
+            right: 0;
+            width: 90%;
+            max-width: 1200px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: flex-end;
+            gap: 50px;
+            z-index: 2;
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat__number {
+            display: block;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1;
+        }
+        .hero-stat__label {
+            display: block;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-v2__stats {
+                justify-content: center;
+                gap: 30px;
+                bottom: 20px;
+            }
+            .hero-stat__number { font-size: 1.8rem; }
+        }
+
+        /* =============================================
+           SECCIÓN "QUIÉNES SOMOS" — LIMPIO Y SERIO
+           ============================================= */
+        .about-v2 {
+            padding: 90px 0;
+            background-color: #ffffff;
+        }
+
+        .about-v2__inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-v2__image-wrap {
+            position: relative;
+        }
+
+        .about-v2__image-wrap img {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+            aspect-ratio: 4/3;
+        }
+
+        /* Borde decorativo desplazado */
+        .about-v2__image-wrap::before {
+            content: '';
+            position: absolute;
+            top: -16px;
+            left: -16px;
+            right: 16px;
+            bottom: 16px;
+            border: 2px solid var(--accent-cyan);
+            z-index: 0;
+        }
+
+        .about-v2__image-wrap img {
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-v2__text .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+        .about-v2__text .section-label::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+
+        .about-v2__text h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-v2__text p {
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            color: #5a6a7a;
+            line-height: 1.75;
+            margin-bottom: 1rem;
+        }
+
+        .about-v2__text .cta-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1.5rem;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 0.88rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #0A2342;
+            text-decoration: none;
+            border-bottom: 2px solid var(--accent-cyan);
+            padding-bottom: 3px;
+            transition: color 0.3s, gap 0.3s;
+        }
+        .about-v2__text .cta-link:hover {
+            color: var(--accent-cyan);
+            gap: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .about-v2__inner {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+            .about-v2__image-wrap::before { display: none; }
+        }
+
+        /* =============================================
+           SECCIÓN SERVICIOS — GRID DE ÍCONOS UNIFORME
+           ============================================= */
+        .services-v2 {
+            padding: 90px 0;
+            background-color: #f4f6f9;
+        }
+
+        .services-v2__header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .services-v2__header .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+        .services-v2__header .section-label::before,
+        .services-v2__header .section-label::after {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+
+        .services-v2__header h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+        }
+
+        .services-v2__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background-color: #dde3ec;
+        }
+
+        .service-v2-card {
+            background-color: #ffffff;
+            padding: 44px 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .service-v2-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent-cyan);
+            transition: width 0.4s ease;
+        }
+
+        .service-v2-card:hover {
+            background-color: #0A2342;
+            transform: translateY(-4px);
+        }
+
+        .service-v2-card:hover::after {
+            width: 100%;
+        }
+
+        .service-v2-card:hover .service-v2-card__icon { color: var(--accent-cyan); }
+        .service-v2-card:hover .service-v2-card__title { color: #ffffff; }
+        .service-v2-card:hover .service-v2-card__desc { color: #94a3b8; }
+
+        .service-v2-card__icon {
+            font-size: 2rem;
+            color: #0A2342;
+            transition: color 0.3s;
+        }
+
+        .service-v2-card__title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0A2342;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+        }
+
+        .service-v2-card__desc {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.92rem;
+            color: #5a6a7a;
+            line-height: 1.6;
+            transition: color 0.3s;
+        }
+
+        .services-v2__cta {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 900px) {
+            .services-v2__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .services-v2__grid {
+                grid-template-columns: 1fr;
+            }
+            /* Centrar contenido de cada card en movil */
+            .service-v2-card {
+                align-items: center;
+                text-align: center;
+            }
+            .service-v2-card__icon {
+                align-self: center;
+            }
+        }
+
+        /* =============================================
+           SECCIÓN PROYECTOS — TARJETAS HORIZONTALES
+           ============================================= */
+        .projects-v2 {
+            padding: 90px 0;
+            background-color: #ffffff;
+        }
+
+        .projects-v2__header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .projects-v2__header-left .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 0.8rem;
+        }
+        .projects-v2__header-left .section-label::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+
+        .projects-v2__header-left h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+        }
+
+        .projects-v2__list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            background-color: #dde3ec;
+        }
+
+        .project-v2-card {
+            background-color: #f4f6f9;
+            display: flex;
+            overflow: hidden;
+            transition: background-color 0.3s;
+        }
+
+        .project-v2-card:hover {
+            background-color: #eaf0f7;
+        }
+
+        .project-v2-card__img {
+            width: 160px;
+            flex-shrink: 0;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(30%);
+            transition: filter 0.4s;
+        }
+
+        .project-v2-card:hover .project-v2-card__img {
+            filter: grayscale(0%);
+        }
+
+        .project-v2-card__body {
+            padding: 28px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .project-v2-card__tag {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+        }
+
+        .project-v2-card__title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #0A2342;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .project-v2-card__desc {
+            font-family: 'Lato', sans-serif;
+            font-size: 0.88rem;
+            color: #5a6a7a;
+            line-height: 1.6;
+        }
+
+        .project-v2-card__status {
+            display: inline-block;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            margin-top: 4px;
+            border-radius: 2px;
+        }
+        .project-v2-card__status.delivered {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .project-v2-card__status.in-progress {
+            background-color: #fff8e1;
+            color: #f57f17;
+        }
+
+        .projects-v2__cta {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        @media (max-width: 860px) {
+            .projects-v2__list {
+                grid-template-columns: 1fr;
+            }
+            .project-v2-card__img {
+                width: 120px;
+            }
+        }
+        @media (max-width: 500px) {
+            .project-v2-card__img {
+                display: none;
+            }
+        }
+
+        /* =============================================
+           SECCIÓN CATÁLOGO — BANNER SIMPLE Y SERIO
+           ============================================= */
+        .catalog-v2 {
+            padding: 80px 0;
+            background-color: #0A2342;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Patrón de puntos sutil */
+        .catalog-v2::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(0,168,232,0.1) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        .catalog-v2__inner {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .catalog-v2__text .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 0.8rem;
+        }
+        .catalog-v2__text .section-label::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+
+        .catalog-v2__text h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 0.8rem;
+        }
+
+        .catalog-v2__text p {
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            color: #8fb3d4;
+            max-width: 420px;
+            line-height: 1.6;
+        }
+
+        .catalog-v2__action {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 700px) {
+            .catalog-v2__inner { flex-direction: column; text-align: center; }
+            .catalog-v2__text .section-label { justify-content: center; }
+        }
+
+        /* =============================================
+           SECCIÓN CTA CONTACTO — FONDO CLARO
+           ============================================= */
+        .cta-v2 {
+            padding: 90px 0;
+            background-color: #f4f6f9;
+            text-align: center;
+        }
+
+        .cta-v2 .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+        .cta-v2 .section-label::before,
+        .cta-v2 .section-label::after {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--accent-cyan);
+        }
+
+        .cta-v2 h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #0A2342;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .cta-v2 p {
+            font-family: 'Lato', sans-serif;
+            font-size: 1.05rem;
+            color: #5a6a7a;
+            max-width: 500px;
+            margin: 0 auto 2.5rem auto;
+            line-height: 1.7;
+        }
+
+        .cta-v2__actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* =============================================
+           BTN UNIVERSAL CORPORATIVO (reemplaza .cta-button en index)
+           ============================================= */
+        .btn-corp {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 0.88rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 2px solid;
+            transition: all 0.3s ease;
+        }
+
+        .btn-corp--filled {
+            background-color: #0A2342;
+            color: #ffffff;
+            border-color: #0A2342;
+        }
+        .btn-corp--filled:hover {
+            background-color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            color: #0A2342;
+        }
+
+        .btn-corp--outline {
+            background-color: transparent;
+            color: #0A2342;
+            border-color: #0A2342;
+        }
+        .btn-corp--outline:hover {
+            background-color: #0A2342;
+            color: #ffffff;
+        }
+
+        .btn-corp--light {
+            background-color: transparent;
+            color: #ffffff;
+            border-color: rgba(255,255,255,0.5);
+        }
+        .btn-corp--light:hover {
+            background-color: #ffffff;
+            border-color: #ffffff;
+            color: #0A2342;
+        }
+
+        /* =============================================
+           ANIMACIÓN LETRA POR LETRA — "INDUSTRIA"
+           ============================================= */
+        @keyframes letterSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(40px);
+                filter: blur(4px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+                filter: blur(0);
+            }
+        }
+
+        .hero-v2__title em {
+            font-style: normal;
+            color: var(--accent-cyan);
+            display: inline-block;
+        }
+
+        /* Cada letra es un span individual */
+        .hero-word-animated .letter {
+            display: inline-block;
+            opacity: 0;
+            animation: letterSlideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* Delay escalonado para cada letra (9 letras: I-N-D-U-S-T-R-I-A) */
+        .hero-word-animated .letter:nth-child(1)  { animation-delay: 0.3s; }
+        .hero-word-animated .letter:nth-child(2)  { animation-delay: 0.42s; }
+        .hero-word-animated .letter:nth-child(3)  { animation-delay: 0.54s; }
+        .hero-word-animated .letter:nth-child(4)  { animation-delay: 0.66s; }
+        .hero-word-animated .letter:nth-child(5)  { animation-delay: 0.78s; }
+        .hero-word-animated .letter:nth-child(6)  { animation-delay: 0.90s; }
+        .hero-word-animated .letter:nth-child(7)  { animation-delay: 1.02s; }
+        .hero-word-animated .letter:nth-child(8)  { animation-delay: 1.14s; }
+        .hero-word-animated .letter:nth-child(9)  { animation-delay: 1.26s; }
+
+
+        @media (max-width: 768px) {
+            .about-v2__text {
+                text-align: center;
+            }
+            .about-v2__text .section-label {
+                justify-content: center;
+            }
+            .about-v2__text .cta-link {
+                justify-content: center;
+            }
+        }
+    </style>
 
     <script type="application/ld+json">
     {
@@ -53,14 +897,7 @@
       "priceRange": "$$",
       "openingHoursSpecification": {
         "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday"
-        ],
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
         "opens": "08:00",
         "closes": "17:00"
       },
@@ -73,6 +910,7 @@
 </head>
 <body>
 
+    <!-- ====== HEADER (sin cambios de estructura) ====== -->
     <header>
         <div class="header-container">
             <div class="logo">
@@ -97,194 +935,242 @@
     </header>
 
 <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h1>INNOVACIÓN Y CONTROL <br>AL ALCANCE DE TU INDUSTRIA</h1>
-                <p>Optimizamos procesos, mejoramos la productividad y reducimos costos operativos a través de tecnologías de automatización avanzadas.</p>
-                <a href="catalogo.html" class="cta-button">Ver Catálogo</a>
+
+    <!-- ====== HERO V2 ====== -->
+    <section class="hero-v2">
+        <div class="hero-v2__bg"></div>
+        <div class="hero-v2__diagonal"></div>
+        <div class="hero-v2__line"></div>
+
+        <div class="hero-v2__content">
+            <div class="hero-v2__label">Automatización Industrial · El Salvador</div>
+            <h1 class="hero-v2__title">
+                Innovación y Control<br>
+                al Alcance de tu <em class="hero-word-animated"><span class="letter">I</span><span class="letter">N</span><span class="letter">D</span><span class="letter">U</span><span class="letter">S</span><span class="letter">T</span><span class="letter">R</span><span class="letter">I</span><span class="letter">A</span></em>
+            </h1>
+            <p class="hero-v2__desc">
+                Optimizamos procesos, mejoramos la productividad y reducimos costos operativos a través de tecnologías de automatización avanzadas.
+            </p>
+            <div class="hero-v2__actions">
+                <a href="contacto.html" class="hero-btn-primary">
+                    <i class="fas fa-phone"></i> Contáctenos
+                </a>
+                <a href="catalogo.html" class="hero-btn-secondary">
+                    Ver Catálogo <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
-        </section>
+        </div>
 
-        <section id="about" class="section-padding hidden">
-            <div class="container">
-                <h2 class="section-title">Nuestra Esencia</h2>
-                <div class="about-grid">
-                    <div class="about-text">
-                        <p>
-                            Somos una empresa líder dedicada a impulsar la transformación digital en la industria. 
-                            Nos especializamos en mejorar la eficiencia y productividad a través de tecnologías de automatización avanzadas.
-                        </p>
-                        <p>
-                            Nuestro enfoque integral nos permite no solo implementar tecnología, sino crear ecosistemas industriales eficientes y sostenibles.
-                        </p>
-                        
-                        <div style="margin-top: 2rem; text-align: center;">
-                            <a href="sobre-nosotros.html" class="cta-button">
-                                <i class="fas fa-info-circle"></i> Conoce más sobre nosotros
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="about-image">
-                        <img src="assets/imagenes/img-sobrenosotros.webp" alt="Ingeniero trabajando en automatización">
-                    </div>
-                </div>
+        <div class="hero-v2__stats">
+            <div class="hero-stat">
+                <span class="hero-stat__number">+5</span>
+                <span class="hero-stat__label">Años de Experiencia</span>
             </div>
-        </section>
-
-        <section id="services" class="section-padding bg-light">
-            <div class="container">
-                <h2 class="section-title">Nuestras Soluciones</h2>
-                
-                <div class="carousel-wrapper">
-                    <div class="carousel-track-container">
-                        <div class="carousel-track">
-                            
-                            <div class="carousel-card">
-                                <i class="fas fa-layer-group"></i>
-                                <h4>Diseño y Desarrollo</h4>
-                            </div>
-                            <div class="carousel-card">
-                                <i class="fas fa-wifi"></i>
-                                <h4>Soluciones IoT</h4>
-                            </div>
-                            <div class="carousel-card">
-                                <i class="fas fa-clipboard-check"></i>
-                                <h4>Consultoría</h4>
-                            </div>
-                            <div class="carousel-card">
-                                <i class="fas fa-tools"></i>
-                                <h4>Mantenimiento</h4>
-                            </div>
-                            <div class="carousel-card">
-                                <i class="fas fa-box-open"></i>
-                                <h4>Venta de Equipos</h4>
-                            </div>
-                            <div class="carousel-card">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                                <h4>Capacitación</h4>
-                            </div>
-
-                            <div class="carousel-card">
-                                <i class="fas fa-layer-group"></i>
-                                <h4>Diseño y Desarrollo</h4>
-                            </div>
-                            <div class="carousel-card">
-                                <i class="fas fa-wifi"></i>
-                                <h4>Soluciones IoT</h4>
-                            </div>
-                            <div class="carousel-card">
-                                <i class="fas fa-clipboard-check"></i>
-                                <h4>Consultoría</h4>
-                            </div>
-                            <div class="carousel-card">
-                                <i class="fas fa-tools"></i>
-                                <h4>Mantenimiento</h4>
-                            </div>
-                            <div class="carousel-card">
-                                <i class="fas fa-box-open"></i>
-                                <h4>Venta de Equipos</h4>
-                            </div>
-                            <div class="carousel-card">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                                <h4>Capacitación</h4>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div style="text-align: center; margin-top: 3rem;">
-                    <a href="servicios.html" class="cta-button">
-                        <i class="fas fa-network-wired"></i> Explorar Todos los Servicios
-                    </a>
-                </div>
-
+            <div class="hero-stat">
+                <span class="hero-stat__number">+30</span>
+                <span class="hero-stat__label">Proyectos Entregados</span>
             </div>
-        </section>
-
-        <section id="projects-summary" class="section-padding bg-dark text-white" style="position: relative; overflow: hidden;">
-    
-            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #0b1120; z-index: -2;"></div>
-            <div style="position: absolute; right: -100px; top: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,168,232,0.15) 0%, transparent 70%); z-index: -1;"></div>
-
-            <div class="container">
-                <div class="row align-items-center" style="display: flex; flex-wrap: wrap; align-items: center; gap: 40px;">
-                    
-                    <div class="col-text" style="flex: 1; min-width: 300px;">
-                        <h2 class="text-white" style="font-size: 2.2rem; margin-top: 10px; ">PROYECTOS QUE <br>IMPULSAN LA INDUSTRIA</h2>
-                        <br>
-                        <p style="color: #cbd5e1; margin-bottom: 30px; font-size: 1.1rem;">
-                            Desde la modernización de maquinaria crítica hasta la implementación de plantas completas. Transformamos desafíos complejos en sistemas eficientes y rentables.
-                        </p>
-                        
-                        <div class="stats-row" style="display: flex; gap: 30px; margin-bottom: 30px;">
-                            <div>
-                                <h3 style="color: var(--accent-cyan); font-size: 2rem; margin: 0;">+5</h3>
-                                <p style="font-size: 0.8rem; opacity: 0.7;">AÑOS DE EXPERIENCIA</p>
-                            </div>
-                            <div>
-                                <h3 style="color: var(--accent-cyan); font-size: 2rem; margin: 0;">100%</h3>
-                                <p style="font-size: 0.8rem; opacity: 0.7;">GARANTÍA TÉCNICA</p>
-                            </div>
-                        </div>
-
-                        <a href="proyectos.html" class="cta-button"><center> <i class="fas fa-layer-group"></i> VER PORTAFOLIO COMPLETO</center> </a>
-                    </div>
-
-                    <div class="col-img" style="flex: 1; min-width: 300px; position: relative;">
-                        <div style="border: 1px solid var(--accent-cyan); padding: 15px; position: relative;">
-                            <div style="position: absolute; top: -1px; left: -1px; width: 20px; height: 20px; border-top: 3px solid var(--accent-cyan); border-left: 3px solid var(--accent-cyan);"></div>
-                            <div style="position: absolute; bottom: -1px; right: -1px; width: 20px; height: 20px; border-bottom: 3px solid var(--accent-cyan); border-right: 3px solid var(--accent-cyan);"></div>
-                            
-                            <img src="assets/imagenes/proyectos-index.webp" alt="Ingeniería en acción" style="width: 100%; height: 380px; object-fit: cover; display: block;">
-                        </div>
-                    </div>
-
-                </div>
+            <div class="hero-stat">
+                <span class="hero-stat__number">24/7</span>
+                <span class="hero-stat__label">Soporte Técnico</span>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!--seccion para dirigirnos al catalogo-->
-
-        </section>
-
-        <section class="section-padding bg-light" style="text-align: center;">
-            <div class="container">
-                <h2 class="section-title">Catálogo de Componentes</h2>
-                
-                <div style="max-width: 800px; margin: 0 auto;">
-                    <p style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 2rem;">
-                        Contamos con un amplio stock de componentes de automatización. 
-                        Encuentra la pieza clave para optimizar tus procesos.
+    <!-- ====== QUIÉNES SOMOS ====== -->
+    <section id="about" class="about-v2">
+        <div class="container">
+            <div class="about-v2__inner">
+                <div class="about-v2__image-wrap">
+                    <img src="assets/imagenes/img-sobrenosotros.webp" alt="Ingeniero trabajando en automatización">
+                </div>
+                <div class="about-v2__text">
+                    <span class="section-label">Nuestra Esencia</span>
+                    <h2>Socios Estratégicos para tu Industria</h2>
+                    <p>
+                        Somos una empresa líder dedicada a impulsar la transformación digital en la industria. 
+                        Nos especializamos en mejorar la eficiencia y productividad a través de tecnologías de automatización avanzadas.
                     </p>
-                    
-                    <a href="catalogo.html" class="cta-button">
-                        <i class="fas fa-box-open" style="margin-right: 8px;"></i> Ver Catálogo Completo
+                    <p>
+                        Nuestro enfoque integral nos permite no solo implementar tecnología, sino crear ecosistemas industriales eficientes y sostenibles, adaptados a las necesidades reales de cada cliente.
+                    </p>
+                    <a href="sobre-nosotros.html" class="cta-link">
+                        Conoce más sobre nosotros <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
-        </section>
-        <section id="contact" class="section-padding bg-dark hidden">
+        </div>
+    </section>
 
-        <!--seccion para contacto-->
+    <!-- ====== NUESTRAS SOLUCIONES ====== -->
+    <section id="services" class="services-v2">
+        <div class="container">
+            <div class="services-v2__header">
+                <div class="section-label">Lo que hacemos</div>
+                <h2>Nuestras Soluciones</h2>
+            </div>
 
-        <section class="cta-banner">
-            <div class="container cta-content">
-                <div class="cta-text">
-                    <h2>¿Listo para llevar tu industria al siguiente nivel?</h2>
-                    <p>Hablemos sobre cómo Sky Automation puede optimizar tus procesos hoy mismo.</p>
+            <div class="services-v2__grid">
+
+                <div class="service-v2-card">
+                    <i class="fas fa-microchip service-v2-card__icon"></i>
+                    <div class="service-v2-card__title">Diseño y Desarrollo</div>
+                    <p class="service-v2-card__desc">PLC, HMI, DCS, redes industriales y análisis de energía. Soluciones de control a medida.</p>
                 </div>
-                <div class="cta-action">
-                 <a href="contacto.html" class="cta-button"><i class="fas fa-phone"></i> CONTACTAR </a>
+
+                <div class="service-v2-card">
+                    <i class="fas fa-wifi service-v2-card__icon"></i>
+                    <div class="service-v2-card__title">Soluciones IoT</div>
+                    <p class="service-v2-card__desc">Sensores inteligentes, análisis de datos en tiempo real y mantenimiento predictivo.</p>
+                </div>
+
+                <div class="service-v2-card">
+                    <i class="fas fa-tools service-v2-card__icon"></i>
+                    <div class="service-v2-card__title">Mantenimiento Técnico</div>
+                    <p class="service-v2-card__desc">Soporte preventivo y correctivo 24/7 para calderas, PTAR, TETRAPAK y subestaciones.</p>
+                </div>
+
+                <div class="service-v2-card">
+                    <i class="fas fa-chart-line service-v2-card__icon"></i>
+                    <div class="service-v2-card__title">Consultoría</div>
+                    <p class="service-v2-card__desc">Análisis de procesos, mejora de eficiencia operativa y estrategias de automatización.</p>
+                </div>
+
+                <div class="service-v2-card">
+                    <i class="fas fa-box-open service-v2-card__icon"></i>
+                    <div class="service-v2-card__title">Venta de Equipos</div>
+                    <p class="service-v2-card__desc">Componentes eléctricos, electrónicos, neumáticos, instrumentación y control.</p>
+                </div>
+
+                <div class="service-v2-card">
+                    <i class="fas fa-chalkboard-teacher service-v2-card__icon"></i>
+                    <div class="service-v2-card__title">Capacitación</div>
+                    <p class="service-v2-card__desc">Cursos in-company y formación online para equipos de ingeniería y mantenimiento.</p>
+                </div>
+
+            </div>
+
+            <div class="services-v2__cta">
+                <a href="servicios.html" class="btn-corp btn-corp--outline">
+                    <i class="fas fa-layer-group"></i> Ver todos los servicios
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== PROYECTOS ====== -->
+    <section id="projects-summary" class="projects-v2">
+        <div class="container">
+            <div class="projects-v2__header">
+                <div class="projects-v2__header-left">
+                    <div class="section-label">Portafolio</div>
+                    <h2>Proyectos Destacados</h2>
+                </div>
+                <a href="proyectos.html" class="btn-corp btn-corp--outline">
+                    Ver portafolio completo <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="projects-v2__list">
+
+                <div class="project-v2-card">
+                    <img class="project-v2-card__img"
+                         src="assets/ejemploProyecto3.webp"
+                         alt="Tetrapak"
+                         onerror="this.src='https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=400'">
+                    <div class="project-v2-card__body">
+                        <span class="project-v2-card__tag">Industria Alimentaria</span>
+                        <div class="project-v2-card__title">Mantenimiento Tetrapak</div>
+                        <p class="project-v2-card__desc">Modernización de sistema de control. PLC S7-1500, HMI Comfort Panel, Servomotores V90.</p>
+                        <span class="project-v2-card__status delivered">Entregado</span>
+                    </div>
+                </div>
+
+                <div class="project-v2-card">
+                    <img class="project-v2-card__img"
+                         src="assets/ejemploProyecto3.webp"
+                         alt="PTAR"
+                         onerror="this.src='https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=400'">
+                    <div class="project-v2-card__body">
+                        <span class="project-v2-card__tag">Saneamiento</span>
+                        <div class="project-v2-card__title">Automatización PTAR</div>
+                        <p class="project-v2-card__desc">Sistema SCADA centralizado. Telemetría IoT, Historian Server, sensores analógicos.</p>
+                        <span class="project-v2-card__status delivered">Entregado</span>
+                    </div>
+                </div>
+
+                <div class="project-v2-card">
+                    <img class="project-v2-card__img"
+                         src="assets/ejemploProyecto3.webp"
+                         alt="Calderas"
+                         onerror="this.src='https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&q=80&w=400'">
+                    <div class="project-v2-card__body">
+                        <span class="project-v2-card__tag">Textil / Industrial</span>
+                        <div class="project-v2-card__title">Control de Calderas</div>
+                        <p class="project-v2-card__desc">Optimización de lazos PID en calderas industriales de vapor. Reducción de consumo de combustible.</p>
+                        <span class="project-v2-card__status delivered">Entregado</span>
+                    </div>
+                </div>
+
+                <div class="project-v2-card">
+                    <img class="project-v2-card__img"
+                         src="assets/ejemploProyecto3.webp"
+                         alt="Tableros"
+                         onerror="this.src='https://images.unsplash.com/photo-1555664424-778a69032054?auto=format&fit=crop&q=80&w=400'">
+                    <div class="project-v2-card__body">
+                        <span class="project-v2-card__tag">Manufactura</span>
+                        <div class="project-v2-card__title">Armado de Tableros</div>
+                        <p class="project-v2-card__desc">Diseño, montaje y cableado de tableros CCM bajo norma IEC 61439. Planos EPLAN.</p>
+                        <span class="project-v2-card__status in-progress">En Proceso</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== CATÁLOGO ====== -->
+    <section class="catalog-v2">
+        <div class="container">
+            <div class="catalog-v2__inner">
+                <div class="catalog-v2__text">
+                    <div class="section-label">Equipos y Componentes</div>
+                    <h2>Catálogo de<br>Componentes</h2>
+                    <p>
+                        Contamos con un amplio stock de componentes de automatización. Encuentra la pieza clave para optimizar tus procesos.
+                    </p>
+                </div>
+                <div class="catalog-v2__action">
+                    <a href="catalogo.html" class="hero-btn-primary">
+                        <i class="fas fa-box-open"></i> Ver Catálogo Completo
+                    </a>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+
+    <!-- ====== CTA CONTACTO ====== -->
+    <section id="contact" class="cta-v2">
+        <div class="container">
+            <div class="section-label">¿Listo para comenzar?</div>
+            <h2>Llevemos tu Industria<br>al Siguiente Nivel</h2>
+            <p>Hablemos sobre cómo Sky Automation puede optimizar tus procesos industriales hoy mismo.</p>
+            <div class="cta-v2__actions">
+                <a href="contacto.html" class="btn-corp btn-corp--filled">
+                    <i class="fas fa-phone"></i> Contactar ahora
+                </a>
+                <a href="https://wa.me/50378731475" target="_blank" class="btn-corp btn-corp--outline">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
 
     <footer>
         <div class="container footer-content">
-             <div class="footer-logo">
+            <div class="footer-logo">
                 WEBSITE DEVELOPED BY <span class="logo-accent">COGNETIX INNOVATION</span>
             </div>
             <p>© 2026 Sky Automation. Excelencia Técnica e Innovación.</p>
@@ -296,110 +1182,10 @@
     <script type="module" src="js/main.js"></script>
 
     <div id="loader-transition" class="loader-hidden">
-    <img src="assets/transicion/_logo_sky.webp" alt="Logo Empresa" class="loader-logo">
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // 1. Selecciona el loader
-            const loader = document.getElementById('loader-transition');
-            
-            // 2. Selecciona los enlaces que quieres que tengan este efecto.
-            // Puedes ponerle una clase especifica a tus botones (ej: class="transition-link")
-            // O seleccionar todos los enlaces del menú.
-            const links = document.querySelectorAll('a[href]'); 
-
-            links.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const targetUrl = this.href;
-
-                    // Verificamos que sea un enlace interno y no abra en otra pestaña
-                    if (this.hostname === window.location.hostname && this.target !== "_blank" && !targetUrl.includes('#')) {
-                        
-                        e.preventDefault(); // Detenemos el cambio de página brusco
-                        
-                        // Mostramos la pantalla blanca
-                        loader.classList.remove('loader-hidden');
-                        loader.classList.add('loader-visible');
-
-                        // Esperamos un tiempo (ej. 1000ms = 1 segundo) antes de ir a la otra página
-                        setTimeout(function() {
-                            window.location.href = targetUrl;
-                        }, 1000); 
-                    }
-                });
-            });
-        });
-    </script>
-
-</div>
-<!--En este espacio estara la pantalla de hibernacion de la web por temas de entrega-->
-<style>
-    /* Estilos para el contenedor que cubre toda la pantalla */
-    #hibernation-overlay {
-        position: fixed; /* Se queda fijo en la pantalla */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        /* Usamos un color oscuro muy similar al de tu web con un poco de transparencia */
-        background-color: rgba(11, 17, 32, 0.98); 
-        /* Z-index muy alto para asegurar que esté encima de TODO (header, menú móvil, etc.) */
-        z-index: 999999; 
-        /* Usamos flexbox para centrar el mensaje */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* Asegura que el cursor no muestre opciones de clic */
-        cursor: not-allowed;
-        /* Evita el scroll en el cuerpo mientras está activo (opcional, pero recomendado) */
-        overscroll-behavior: contain;
-    }
-
-    /* Estilos para la caja del mensaje */
-    .hibernation-modal-box {
-        background-color: #1a2236; /* Un tono ligeramente más claro que el fondo */
-        padding: 2.5rem;
-        border-radius: 8px;
-        max-width: 90%;
-        width: 450px;
-        text-align: center;
-        color: #ffffff;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-        /* Borde superior con el color cian de acento de tu web */
-        border-top: 4px solid #00a8e8; /* Color cian aproximado de tu diseño */
-    }
-
-    .hibernation-modal-box i {
-        font-size: 3rem;
-        /* Usamos el color de acento para el icono */
-        color: #00a8e8; 
-        margin-bottom: 1.5rem;
-        display: block;
-    }
-
-    .hibernation-modal-box h2 {
-        margin: 0 0 1rem 0;
-        font-size: 1.8rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .hibernation-modal-box p {
-        margin: 0;
-        font-size: 1.1rem;
-        color: #cbd5e1; /* Un blanco grisáceo para el texto secundario */
-        line-height: 1.5;
-    }
-</style>
-
-<div id="hibernation-overlay">
-    <div class="hibernation-modal-box">
-        <i class="fas fa-user-lock"></i>
-        <h2>Web en hibernación</h2>
-        <p>Por proceso de desarrollo.</p>
+        <img src="assets/transicion/_logo_sky.webp" alt="Logo Empresa" class="loader-logo">
     </div>
-</div>
-<!--fin de hibernacion de la web por temas de entrega-->
+
+    <!-- Menu y loader manejados por main.js -->
+
 </body>
 </html>
