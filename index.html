@@ -69,25 +69,86 @@
             }
             .hero-v2 {
                 margin-top: 0;
-                padding-top: 0;
-                /* En móvil usamos min-height para que el hero
-                   crezca si el contenido no cabe */
+                padding-top: 28px;
+                padding-bottom: 28px;
                 height: auto;
                 min-height: calc(100vh - var(--header-height, 70px));
-                /* Pasamos a column para que los stats fluyan debajo */
                 flex-direction: column;
                 justify-content: center;
-                padding-bottom: 30px;
+                align-items: stretch;
             }
-            /* Stats: sacamos de absolute, fluyen en el layout normal */
-            .hero-v2__stats {
-                position: static;
-                transform: none;
+            .hero-v2__line {
+                display: none;
+            }
+            .hero-v2__content {
+                position: relative;
+                z-index: 5;
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                padding: 0 24px;
+            }
+            .hero-v2__label {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                color: var(--accent-cyan) !important;
+                font-size: 0.68rem;
+                letter-spacing: 2px;
+                margin-bottom: 1rem;
+            }
+            .hero-v2__title {
+                font-size: clamp(1.9rem, 9vw, 2.6rem);
+                margin-bottom: 1rem;
+                line-height: 1.1;
+            }
+            .hero-v2__desc {
+                font-size: 0.92rem;
+                margin-bottom: 1.4rem;
+                max-width: 100%;
+            }
+            .hero-v2__actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+            .hero-btn-primary,
+            .hero-btn-secondary {
                 width: 100%;
                 justify-content: center;
-                gap: 24px;
-                margin-top: 32px;
-                padding: 0 20px;
+                text-align: center;
+            }
+            .hero-v2__stats {
+                position: static !important;
+                transform: none !important;
+                left: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                width: 100%;
+                max-width: 100%;
+                display: flex;
+                justify-content: space-around;
+                gap: 0;
+                padding: 20px 0 0 0;
+                margin-top: 16px;
+                z-index: 5;
+                box-sizing: border-box;
+                overflow: visible;
+            }
+            .hero-stat {
+                flex: 1;
+                min-width: 0;
+                text-align: center;
+                padding: 0 4px;
+            }
+            .hero-stat__number {
+                font-size: clamp(1.1rem, 6vw, 1.5rem);
+                white-space: nowrap;
+            }
+            .hero-stat__label {
+                font-size: clamp(0.5rem, 2.2vw, 0.62rem);
+                letter-spacing: 1px;
+                white-space: nowrap;
             }
         }
 
@@ -259,14 +320,7 @@
             margin-top: 4px;
         }
 
-        @media (max-width: 768px) {
-            .hero-v2__stats {
-                justify-content: center;
-                gap: 30px;
-                bottom: 20px;
-            }
-            .hero-stat__number { font-size: 1.8rem; }
-        }
+
 
         /* =============================================
            SECCIÓN "QUIÉNES SOMOS" — LIMPIO Y SERIO
