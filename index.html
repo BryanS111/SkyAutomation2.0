@@ -70,7 +70,24 @@
             .hero-v2 {
                 margin-top: 0;
                 padding-top: 0;
-                height: calc(100vh - var(--header-height, 70px));
+                /* En móvil usamos min-height para que el hero
+                   crezca si el contenido no cabe */
+                height: auto;
+                min-height: calc(100vh - var(--header-height, 70px));
+                /* Pasamos a column para que los stats fluyan debajo */
+                flex-direction: column;
+                justify-content: center;
+                padding-bottom: 30px;
+            }
+            /* Stats: sacamos de absolute, fluyen en el layout normal */
+            .hero-v2__stats {
+                position: static;
+                transform: none;
+                width: 100%;
+                justify-content: center;
+                gap: 24px;
+                margin-top: 32px;
+                padding: 0 20px;
             }
         }
 
@@ -1159,9 +1176,9 @@
                 <a href="contacto.html" class="btn-corp btn-corp--filled">
                     <i class="fas fa-phone"></i> Contactar ahora
                 </a>
-                <!-- <a href="https://wa.me/50378731475" target="_blank" class="btn-corp btn-corp--outline">
+                <a href="https://wa.me/50378731475" target="_blank" class="btn-corp btn-corp--outline">
                     <i class="fab fa-whatsapp"></i> WhatsApp
-                </a> -->
+                </a>
             </div>
         </div>
     </section>
